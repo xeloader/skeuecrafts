@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SquareButton } from '@/components/ep133-ui/Button';
+import { Colors, SquareButton } from '@/components/ep133-ui/Button';
 import type { SquareButtonProps } from '@/components/ep133-ui/Button';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -15,7 +15,10 @@ const meta: Meta<typeof SquareButton> = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    // backgroundColor: { control: 'color' },
+    color: {
+      options: Colors,
+      control: { type: 'radio' },
+    }
   },
 };
 
@@ -23,9 +26,8 @@ export default meta;
 type Story = StoryObj<typeof SquareButton>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
+export const Dark: Story = {
   args: {
-    primary: true,
-    label: 'Button',
+    color: Colors.Dark
   },
 } satisfies Meta<SquareButtonProps>;
