@@ -18,7 +18,8 @@ const meta: Meta<typeof SquareButton> = {
     color: {
       options: Colors,
       control: { type: 'radio' },
-    }
+    },
+    onClick: { action: 'clicked' }
   },
 };
 
@@ -29,6 +30,6 @@ type Story = StoryObj<typeof SquareButton>;
 export const Dark: Story = {
   args: {
     value: '5',
-    color: Colors.Dark
+    color: Colors.Dark,
   },
 } satisfies Meta<SquareButtonProps>;
