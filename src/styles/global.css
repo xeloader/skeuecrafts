@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/** 
+  Font Technotype is a trademark of Teenage Engineering, used here under fair use for personal, non-commercial purposes. 
+  All rights reserved to Teenage Engineering. 
+*/
+@font-face {
+  font-family: 'Technotype';
+  font-weight: 500;
+  font-style: normal;
+  font-named-instance: 'Regular';
+  src: url(../../static/fonts/Technotype34-Regular.woff2) format("woff2");
+}

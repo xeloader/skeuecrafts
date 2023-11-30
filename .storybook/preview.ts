@@ -3,6 +3,19 @@ import '../src/styles/global.css';
 
 const preview: Preview = {
   parameters: {
+    backgrounds: {
+      default: 'nintendo',
+      values: [
+        {
+          name: 'nintendo-dark',
+          value: '#8A8685',
+        },
+        {
+          name: 'nintendo',
+          value: '#BAB7B6'
+        }
+      ]
+    },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {

@@ -28,6 +28,7 @@ type Story = StoryObj<typeof SquareButton>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Dark: Story = {
   args: {
+    value: '5',
     color: Colors.Dark
   },
 } satisfies Meta<SquareButtonProps>;

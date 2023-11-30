@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -6,11 +8,31 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        ep133: 'Technotype, monospace'
+      },
+      textShadow: {
+        '2xs': '0 0.5px 0.2px rgba(0,0,0,0.2)'
+      },
+      colors: {
+        'plastic-white': '#E0E0E0'
+      },
       borderRadius: {
         2: '0.5rem',
         4: '1rem'
       }
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    }),
+  ]
 }
