@@ -2,13 +2,13 @@
   "name": "css-art",
   "version": "0.1.0",
   "private": true,
-  "description": "Art and depictions of objects made primarily in CSS",
+  "description": "Art and depictions of objects made primarily in CSS / Tailwind and React",
   "author": "Victor Ingman",
   "keywords": [
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
+    "dev": "gatsby develop",
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
