@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
 
-import DarkNoiseTexture from '@/images/ep133/texture-noise-dark.png'
 import classNames from 'classnames'
 
 export enum Colors {
@@ -113,7 +112,7 @@ interface BaseButtonProps
   reflectClassName?: string
   valueClassName?: string
   type?: Types
-  texture?: string
+  Texture?: JSX.Element
   value?: string | JSX.Element
   symbol?: string | JSX.Element
 }
@@ -125,7 +124,7 @@ export function BaseButton ({
   type,
   value,
   symbol,
-  texture,
+  Texture,
   reflectClassName,
   frontClassName,
   valueClassName,
@@ -158,7 +157,11 @@ export function BaseButton ({
             {type === Types.CapDual && <CapDual symbol={symbol} value={value} symbolClassName={valueClassName} valueClassName={valueClassName} />}
           </div>
         </div>
-        {texture != null && <img src={texture} className='absolute z-10 h-full w-full opacity-5' />}
+        {(Texture != null) && (
+          <div className='absolute z-10 h-full w-full'>
+            {Texture}
+          </div>
+        )}
         <div className={classNames(
           'w-full h-full rounded-2',
           frontClassName
@@ -177,7 +180,7 @@ export function DarkSquareButton ({
       className='bg-[#171717] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
       frontClassName='bg-[#1E1E1E]'
       valueClassName='text-plastic-white'
-      texture={DarkNoiseTexture}
+      Texture={<div className='group-active/button:bg-[-1px_-1px] w-full h-full bg-texture-noise-dark bg-[length:80%] opacity-10 mix-blend-screen' />}
       {...rootProps}
     />
   )
@@ -198,6 +201,8 @@ export function OrangeSquareButton ({
   )
 }
 
+const TextureLightButton = <div className='mix-blend-multiply group-active/button:bg-[-1px_-1px] w-full h-full bg-texture-grip-dark bg-[length:50%] opacity-5' />
+
 export function CheeseDoodledButton ({
   ...rootProps
 }: BaseButtonProps): JSX.Element {
@@ -206,6 +211,7 @@ export function CheeseDoodledButton ({
       className='bg-[#BFBEBD] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50'
       frontClassName='bg-[#BFBEBD] shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_8px_8px_16px_rgba(255,145,0,0.5)]'
       valueClassName='text-plastic-white'
+      Texture={TextureLightButton}
       {...rootProps}
     />
   )
@@ -219,6 +225,7 @@ export function GraySquareButton ({
       className='bg-[#BFBEBD] from-white/50 to-60% to-black/25 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
       frontClassName='bg-[#BFBEBD]'
       valueClassName='text-plastic-white'
+      Texture={TextureLightButton}
       {...rootProps}
     />
   )
