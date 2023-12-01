@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 
 import DarkNoiseTexture from '@/images/ep133/texture-noise-dark.png'
+import classNames from 'classnames'
 
 export enum Colors {
   LightGray = 'light-gray',
@@ -76,6 +77,99 @@ export const Hole = ({
   )
 }
 
+interface BaseButtonProps
+  extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
+  shadow?: boolean
+  reflected?: boolean
+  children: JSX.Element
+  className?: string
+  frontClassName?: string
+  reflectClassName?: string
+}
+
+export function BaseButton ({
+  children,
+  shadow = true,
+  reflected = false,
+  className,
+  reflectClassName,
+  frontClassName,
+  onClick
+}: BaseButtonProps): JSX.Element {
+  return (
+    <button
+      onClick={onClick}
+      className={classNames(
+        'z-10 relative w-24 h-24 flex flex-col items-center justify-center p-[0.1rem] rounded-2 bg-gradient-to-br',
+        className
+      )}
+    >
+      <div className='absolute mt-[0.5px] ml-[0.5px] w-8 h-8 rounded-tl-2 left-0 top-0 from-white/75 to-25% bg-gradient-to-br group-active/button:opacity-0' />
+      {shadow && <div className='absolute w-full h-full bg-black z-0 rounded-2 opacity-80 transition-all group-hover/button:-bottom-2.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-3 -right-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />}
+      {reflected && (
+        <div className={classNames(
+          'absolute w-full h-full bg-black z-0 rounded-2 opacity-30 transition-all group-hover/button:-top-2.5 group-hover/button:-left-1.5 group-hover/button:blur-[0.4rem] -top-3 -left-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
+          reflectClassName
+        )}
+        />
+      )}
+      <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
+        <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
+          {children}
+        </div>
+        <img src={DarkNoiseTexture} className='absolute z-10 h-full w-full opacity-5' />
+        <div className={classNames(
+          'w-full h-full',
+          frontClassName
+        )}
+        />
+      </div>
+    </button>
+  )
+}
+
+export function DarkSquareButton ({
+  children,
+  ...rootProps
+}: BaseButtonProps): JSX.Element {
+  return (
+    <BaseButton
+      className='bg-[#171717] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
+      frontClassName='bg-[#1E1E1E]'
+      {...rootProps}
+    >
+      {children}
+    </BaseButton>
+  )
+}
+
+export function OrangeSquareButton ({
+  children,
+  ...rootProps
+}: BaseButtonProps): JSX.Element {
+  return (
+    <BaseButton
+      className='bg-[#F72900] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
+      frontClassName='bg-[#F72900]'
+      reflectClassName='bg-[#F72900]'
+      reflected
+      {...rootProps}
+    >
+      {children}
+    </BaseButton>
+  )
+}
+
+function buttonWrapperForColor (color: Colors): FunctionComponent<BaseButtonProps> {
+  if (color === Colors.Dark) {
+    return DarkSquareButton
+  } else if (color === Colors.Orange) {
+    return OrangeSquareButton
+  } else {
+    return DarkSquareButton
+  }
+}
+
 export interface SquareButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   color?: Colors
@@ -88,6 +182,7 @@ export interface SquareButtonProps
 }
 
 export function SquareButton ({
+  color = Colors.Dark,
   value,
   symbol,
   lightIntensity = 0.9,
@@ -99,30 +194,21 @@ export function SquareButton ({
   const style = { '--light-intensity': lightIntensity } as React.CSSProperties // eslint-disable-line
   const _value = Value != null ? Value : value
   const _symbol = Symbol != null ? Symbol : symbol
+  const ButtonWrapper = buttonWrapperForColor(color)
+
   return (
     <div
       style={style}
       className='relative group/button ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
     >
       <Hole>
-        <button
-          onClick={onClick}
-          className='z-10 relative w-24 h-24 flex flex-col items-center bg-[#171717] justify-center bg-gradient-to-br from-white/50 to-60% to-black/50 rounded-2 p-[0.1rem] shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 transition-all'
-        >
-          <div className='absolute mt-[0.5px] ml-[0.5px] w-8 h-8 rounded-tl-2 left-0 top-0 from-white/75 to-25% bg-gradient-to-br group-active/button:opacity-0' />
-          <div className='absolute w-24 h-24 bg-black z-0 rounded-2 opacity-80 transition-all group-hover/button:-bottom-2.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-3 -right-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />
-          <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
-            <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
-              <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
-                {type === Types.CapText && <CapText value={_value} />}
-                {type === Types.CapCenter && <CapCenter value={_value} />}
-                {type === Types.CapDual && <CapDual symbol={_symbol} value={_value} />}
-              </div>
-            </div>
-            <img src={DarkNoiseTexture} className='absolute z-10 h-full w-full opacity-5' />
-            <div className='w-full h-full bg-[#1E1E1E]' />
+        <ButtonWrapper>
+          <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
+            {type === Types.CapText && <CapText value={_value} />}
+            {type === Types.CapCenter && <CapCenter value={_value} />}
+            {type === Types.CapDual && <CapDual symbol={_symbol} value={_value} />}
           </div>
-        </button>
+        </ButtonWrapper>
       </Hole>
     </div>
   )
