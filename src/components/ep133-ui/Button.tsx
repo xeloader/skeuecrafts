@@ -7,7 +7,8 @@ export enum Colors {
   LightGray = 'light-gray',
   Gray = 'gray',
   Dark = 'dark',
-  Orange = 'orange'
+  Orange = 'orange',
+  CheeseDoodled = 'cheese-doodled',
 }
 
 export enum Types {
@@ -17,39 +18,65 @@ export enum Types {
 }
 
 export interface CapProps {
-  value: string | JSX.Element
-  symbol: string | JSX.Element
+  value?: string | JSX.Element
+  valueClassName?: string
+  symbol?: string | JSX.Element
+  symbolClassName?: string
 }
 
 export const CapCenter = ({
-  value
-}: Pick<CapProps, 'value'>): JSX.Element => {
+  value,
+  valueClassName
+}: CapProps): JSX.Element => {
   return (
     <div className='flex flex-row items-center justify-center h-full'>
-      <p className='text-3xl text-plastic-white'>{value}</p>
+      <p className={classNames(
+        'text-3xl',
+        valueClassName
+      )}
+      >{value}
+      </p>
     </div>
   )
 }
 
 export const CapText = ({
-  value
-}: Pick<CapProps, 'value'>): JSX.Element => {
+  value,
+  valueClassName
+}: CapProps): JSX.Element => {
   return (
     <div className='flex flex-row text-center items-start justify-center'>
-      <p className='text-xl text-plastic-white'>{value}</p>
+      <p className={classNames(
+        'text-xl',
+        valueClassName
+      )}
+      >{value}
+      </p>
     </div>
   )
 }
 
 export const CapDual = ({
   value,
-  symbol
+  valueClassName,
+  symbol,
+  symbolClassName
 }: Partial<CapProps>): JSX.Element => {
   return (
     <div className='grid grid-cols-3 h-full w-full'>
-      <div className='flex flex-col justify-between leading-none text-plastic-white'>
-        <p className='text-[1.8rem] self-center text-shadow-2xs'>{value}</p>
-        <p className='self-start leading-none'>{symbol}</p>
+      <div className='flex flex-col justify-between leading-none'>
+        <p className={classNames(
+          'text-[1.8rem] self-center text-shadow-2xs',
+          valueClassName
+        )}
+        >{value}
+        </p>
+        <p className={classNames(
+          'self-start leading-none',
+          symbolClassName
+        )}
+        >{symbol}
+        </p>
       </div>
     </div>
   )
@@ -81,19 +108,27 @@ interface BaseButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   shadow?: boolean
   reflected?: boolean
-  children: JSX.Element
   className?: string
   frontClassName?: string
   reflectClassName?: string
+  valueClassName?: string
+  type?: Types
+  texture?: string
+  value?: string | JSX.Element
+  symbol?: string | JSX.Element
 }
 
 export function BaseButton ({
-  children,
   shadow = true,
   reflected = false,
   className,
+  type,
+  value,
+  symbol,
+  texture,
   reflectClassName,
   frontClassName,
+  valueClassName,
   onClick
 }: BaseButtonProps): JSX.Element {
   return (
@@ -117,9 +152,13 @@ export function BaseButton ({
       )}
       <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
         <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
-          {children}
+          <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
+            {type === Types.CapText && <CapText value={value} valueClassName={valueClassName} />}
+            {type === Types.CapCenter && <CapCenter value={value} valueClassName={valueClassName} />}
+            {type === Types.CapDual && <CapDual symbol={symbol} value={value} symbolClassName={valueClassName} valueClassName={valueClassName} />}
+          </div>
         </div>
-        <img src={DarkNoiseTexture} className='absolute z-10 h-full w-full opacity-5' />
+        {texture != null && <img src={texture} className='absolute z-10 h-full w-full opacity-5' />}
         <div className={classNames(
           'w-full h-full rounded-2',
           frontClassName
@@ -131,22 +170,20 @@ export function BaseButton ({
 }
 
 export function DarkSquareButton ({
-  children,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
       className='bg-[#171717] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
       frontClassName='bg-[#1E1E1E]'
+      valueClassName='text-plastic-white'
+      texture={DarkNoiseTexture}
       {...rootProps}
-    >
-      {children}
-    </BaseButton>
+    />
   )
 }
 
 export function OrangeSquareButton ({
-  children,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
@@ -154,11 +191,36 @@ export function OrangeSquareButton ({
       className='bg-[#F72900] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50'
       frontClassName='bg-[#F72900] shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_8px_8px_16px_rgba(255,145,0,0.5)] group-active/button:shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_4px_4px_8px_rgba(255,145,0,0.25)]'
       reflectClassName='bg-[#F72900]'
+      valueClassName='text-plastic-white'
       reflected
       {...rootProps}
-    >
-      {children}
-    </BaseButton>
+    />
+  )
+}
+
+export function CheeseDoodledButton ({
+  ...rootProps
+}: BaseButtonProps): JSX.Element {
+  return (
+    <BaseButton
+      className='bg-[#BFBEBD] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50'
+      frontClassName='bg-[#BFBEBD] shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_8px_8px_16px_rgba(255,145,0,0.5)]'
+      valueClassName='text-plastic-white'
+      {...rootProps}
+    />
+  )
+}
+
+export function GraySquareButton ({
+  ...rootProps
+}: BaseButtonProps): JSX.Element {
+  return (
+    <BaseButton
+      className='bg-[#BFBEBD] from-white/50 to-60% to-black/25 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
+      frontClassName='bg-[#BFBEBD]'
+      valueClassName='text-plastic-white'
+      {...rootProps}
+    />
   )
 }
 
@@ -167,6 +229,10 @@ function buttonWrapperForColor (color: Colors): FunctionComponent<BaseButtonProp
     return DarkSquareButton
   } else if (color === Colors.Orange) {
     return OrangeSquareButton
+  } else if (color === Colors.Gray) {
+    return GraySquareButton
+  } else if (color === Colors.CheeseDoodled) { // 🥚
+    return CheeseDoodledButton
   } else {
     return DarkSquareButton
   }
@@ -204,13 +270,12 @@ export function SquareButton ({
       className='relative group/button ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
     >
       <Hole>
-        <ButtonWrapper>
-          <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
-            {type === Types.CapText && <CapText value={_value} />}
-            {type === Types.CapCenter && <CapCenter value={_value} />}
-            {type === Types.CapDual && <CapDual symbol={_symbol} value={_value} />}
-          </div>
-        </ButtonWrapper>
+        <ButtonWrapper
+          type={type}
+          value={_value}
+          symbol={_symbol}
+          onClick={onClick}
+        />
       </Hole>
     </div>
   )
