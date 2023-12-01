@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Colors, SquareButton } from '@/components/ep133-ui/Button'
+import { Colors, SquareButton, Types } from '@/components/ep133-ui/Button'
 import type { SquareButtonProps } from '@/components/ep133-ui/Button'
 import { TurnAroundArrowLeft } from '@/components/ep133-ui/Symbols'
 
@@ -21,6 +21,10 @@ const meta: Meta<typeof SquareButton> = {
       options: Colors,
       control: { type: 'radio' }
     },
+    type: {
+      options: Types,
+      control: { type: 'radio' }
+    },
     onClick: { action: 'clicked' },
     value: {
       control: { type: 'text' }
@@ -35,7 +39,7 @@ const meta: Meta<typeof SquareButton> = {
     Symbol: {
       options: ['arrow-svg'],
       mapping: {
-        'arrow-svg': <TurnAroundArrowLeft width='1.25rem' className='mt-4' />
+        'arrow-svg': <TurnAroundArrowLeft width='1.25rem' className='translate-y-4' />
       }
     }
   }
@@ -47,7 +51,7 @@ type Story = StoryObj<typeof SquareButton>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Dark: Story = {
   args: {
-    value: 5,
+    value: '5',
     color: Colors.Dark
   }
 } satisfies Meta<SquareButtonProps>
