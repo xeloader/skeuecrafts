@@ -107,11 +107,13 @@ export function BaseButton ({
       <div className='absolute mt-[0.5px] ml-[0.5px] w-8 h-8 rounded-tl-2 left-0 top-0 from-white/75 to-25% bg-gradient-to-br group-active/button:opacity-0' />
       {shadow && <div className='absolute w-full h-full bg-black z-0 rounded-2 opacity-80 transition-all group-hover/button:-bottom-2.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-3 -right-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />}
       {reflected && (
-        <div className={classNames(
-          'absolute w-full h-full bg-black z-0 rounded-2 opacity-30 transition-all group-hover/button:-top-2.5 group-hover/button:-left-1.5 group-hover/button:blur-[0.4rem] -top-3 -left-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
-          reflectClassName
-        )}
-        />
+        <div>
+          <div className={classNames(
+            'absolute w-full h-full z-0 rounded-2 opacity-20 transition-all group-hover/button:-top-2 group-hover/button:-left-1 group-hover/button:blur-[0.4rem] -top-2.5 -left-1.5 blur-[0.5rem] group-active/button:-top-1 group-active/button:-left-0.5 group-active/button:opacity-20 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
+            reflectClassName
+          )}
+          />
+        </div>
       )}
       <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
         <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
@@ -119,7 +121,7 @@ export function BaseButton ({
         </div>
         <img src={DarkNoiseTexture} className='absolute z-10 h-full w-full opacity-5' />
         <div className={classNames(
-          'w-full h-full',
+          'w-full h-full rounded-2',
           frontClassName
         )}
         />
@@ -149,8 +151,8 @@ export function OrangeSquareButton ({
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-[#F72900] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
-      frontClassName='bg-[#F72900]'
+      className='bg-[#F72900] from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50'
+      frontClassName='bg-[#F72900] shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_8px_8px_16px_rgba(255,145,0,0.5)] group-active/button:shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_4px_4px_8px_rgba(255,145,0,0.25)]'
       reflectClassName='bg-[#F72900]'
       reflected
       {...rootProps}
