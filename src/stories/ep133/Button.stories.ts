@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Colors, SquareButton } from '@/components/ep133-ui/Button';
-import type { SquareButtonProps } from '@/components/ep133-ui/Button';
+import { Colors, SquareButton } from '@/components/ep133-ui/Button'
+import type { SquareButtonProps } from '@/components/ep133-ui/Button'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof SquareButton> = {
@@ -9,7 +9,7 @@ const meta: Meta<typeof SquareButton> = {
   component: SquareButton,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
+    layout: 'centered'
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
@@ -17,19 +17,19 @@ const meta: Meta<typeof SquareButton> = {
   argTypes: {
     color: {
       options: Colors,
-      control: { type: 'radio' },
+      control: { type: 'radio' }
     },
     onClick: { action: 'clicked' }
-  },
-};
+  }
+}
 
-export default meta;
-type Story = StoryObj<typeof SquareButton>;
+export default meta
+type Story = StoryObj<typeof SquareButton>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Dark: Story = {
   args: {
     value: '5',
-    color: Colors.Dark,
-  },
-} satisfies Meta<SquareButtonProps>;
+    color: Colors.Dark
+  }
+} satisfies Meta<SquareButtonProps>
