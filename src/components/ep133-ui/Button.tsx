@@ -8,6 +8,7 @@ export enum Colors {
   Dark = 'dark',
   Orange = 'orange',
   CheeseDoodled = 'cheese-doodled',
+  DarkGray = 'dark-gray'
 }
 
 export enum Types {
@@ -238,6 +239,20 @@ export function GraySquareButton ({
   )
 }
 
+export function DarkGraySquareButton ({
+  ...rootProps
+}: BaseButtonProps): JSX.Element {
+  return (
+    <BaseButton
+      className='bg-[#555352] from-white/50 from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)] group-active/button:from-white/30'
+      frontClassName='bg-[#555352] shadow-[inset_-1px_-1px_1px_rgba(0,0,0,0.1),inset_1px_1px_1px_rgba(255,255,255,0.2)]'
+      valueClassName='text-plastic-white'
+      Texture={<div className='mix-blend-multiply group-active/button:bg-[-1px_-1px] w-full h-full bg-texture-noise-dark bg-[length:50%] opacity-5' />}
+      {...rootProps}
+    />
+  )
+}
+
 export function LightGraySquareButton ({
   ...rootProps
 }: BaseButtonProps): JSX.Element {
@@ -259,6 +274,8 @@ function buttonWrapperForColor (color: Colors): FunctionComponent<BaseButtonProp
     return OrangeSquareButton
   } else if (color === Colors.Gray) {
     return GraySquareButton
+  } else if (color === Colors.DarkGray) {
+    return DarkGraySquareButton
   } else if (color === Colors.LightGray) {
     return LightGraySquareButton
   } else if (color === Colors.CheeseDoodled) { // 🥚
