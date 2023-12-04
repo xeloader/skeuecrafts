@@ -11,10 +11,15 @@ export enum Colors {
   DarkGray = 'dark-gray'
 }
 
-export enum Types {
+export enum Type {
   CapDual = 'cap-dual',
   CapCenter = 'cap-center',
   CapText = 'cap-text'
+}
+
+export enum Size {
+  Small = 'size-small',
+  Square = 'size-square'
 }
 
 export interface CapProps {
@@ -83,7 +88,7 @@ export const CapDual = ({
 }
 
 interface HoleProps {
-  children: JSX.Element
+  children: JSX.Element | JSX.Element[]
 }
 
 export const Hole = ({
@@ -112,10 +117,11 @@ interface BaseButtonProps
   frontClassName?: string
   reflectClassName?: string
   valueClassName?: string
-  type?: Types
+  type?: Type
   Texture?: JSX.Element
   value?: string | JSX.Element
   symbol?: string | JSX.Element
+  sizeClassName?: string
 }
 
 export function BaseButton ({
@@ -129,6 +135,7 @@ export function BaseButton ({
   reflectClassName,
   frontClassName,
   valueClassName,
+  sizeClassName = 'h-24 w-24',
   onClick
 }: BaseButtonProps): JSX.Element {
   return (
@@ -151,7 +158,8 @@ export function BaseButton ({
       <button
         onClick={onClick}
         className={classNames(
-          'z-10 relative w-24 h-24 flex flex-col items-center justify-center p-[0.1rem] rounded-2 bg-gradient-to-br',
+          'z-10 relative flex flex-col items-center justify-center p-[0.1rem] rounded-2 bg-gradient-to-br',
+          sizeClassName,
           className
         )}
       >
@@ -159,9 +167,9 @@ export function BaseButton ({
         <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
           <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
             <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
-              {type === Types.CapText && <CapText value={value} valueClassName={valueClassName} />}
-              {type === Types.CapCenter && <CapCenter value={value} valueClassName={valueClassName} />}
-              {type === Types.CapDual && <CapDual symbol={symbol} value={value} symbolClassName={valueClassName} valueClassName={valueClassName} />}
+              {type === Type.CapText && <CapText value={value} valueClassName={valueClassName} />}
+              {type === Type.CapCenter && <CapCenter value={value} valueClassName={valueClassName} />}
+              {type === Type.CapDual && <CapDual symbol={symbol} value={value} symbolClassName={valueClassName} valueClassName={valueClassName} />}
             </div>
           </div>
           {(Texture != null) && (
@@ -285,15 +293,26 @@ function buttonWrapperForColor (color: Colors): FunctionComponent<BaseButtonProp
   }
 }
 
+function classNameForSize (size: Size): string {
+  if (size === Size.Small) {
+    return 'w-24 h-12'
+  } else if (size === Size.Square) {
+    return 'w-24 h-24'
+  }
+  return ''
+}
+
 export interface SquareButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   color?: Colors
-  type?: Types
+  type?: Type
   value: string
   symbol?: string
   lightIntensity?: number
   Value: JSX.Element
   Symbol: JSX.Element
+  size?: Size
+  children: JSX.Element
 }
 
 export function SquareButton ({
@@ -302,14 +321,17 @@ export function SquareButton ({
   symbol,
   lightIntensity = 0.9,
   onClick,
-  type = Types.CapCenter,
+  type = Type.CapCenter,
   Value,
-  Symbol
+  Symbol,
+  children,
+  size = Size.Square
 }: SquareButtonProps): JSX.Element {
   const style = { '--light-intensity': lightIntensity } as React.CSSProperties // eslint-disable-line
   const _value = Value != null ? Value : value
   const _symbol = Symbol != null ? Symbol : symbol
   const ButtonWrapper = buttonWrapperForColor(color)
+  const sizeClassName = classNameForSize(size)
 
   return (
     <div
@@ -319,10 +341,12 @@ export function SquareButton ({
       <Hole>
         <ButtonWrapper
           type={type}
+          sizeClassName={sizeClassName}
           value={_value}
           symbol={_symbol}
           onClick={onClick}
         />
+        {children}
       </Hole>
     </div>
   )

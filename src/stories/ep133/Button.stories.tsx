@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Colors, SquareButton, Types } from '@/components/ep133-ui/Button'
+import { Colors, SquareButton, Type, Size, BaseButton } from '@/components/ep133-ui/Button'
 import type { SquareButtonProps } from '@/components/ep133-ui/Button'
 import { TurnAroundArrowLeft } from '@/components/ep133-ui/Symbols'
 
@@ -22,7 +22,11 @@ const meta: Meta<typeof SquareButton> = {
       control: { type: 'radio' }
     },
     type: {
-      options: Types,
+      options: Type,
+      control: { type: 'radio' }
+    },
+    size: {
+      options: Size,
       control: { type: 'radio' }
     },
     onClick: { action: 'clicked' },
@@ -49,9 +53,28 @@ export default meta
 type Story = StoryObj<typeof SquareButton>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Dark: Story = {
+export const Square: Story = {
   args: {
     value: '5',
     color: Colors.Dark
+  }
+} satisfies Meta<SquareButtonProps>
+
+export const Small: Story = {
+  args: {
+    value: 'KEYS',
+    size: Size.Small,
+    color: Colors.Gray,
+    type: Type.CapText
+  }
+} satisfies Meta<SquareButtonProps>
+
+export const SmallWithChild: Story = {
+  args: {
+    value: 'SHIFT',
+    size: Size.Small,
+    color: Colors.Orange,
+    type: Type.CapText,
+    children: <p className='h-12 flex flex-col items-center justify-center text-plastic-white'>I AM AI</p>
   }
 } satisfies Meta<SquareButtonProps>
