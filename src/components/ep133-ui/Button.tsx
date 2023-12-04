@@ -131,14 +131,7 @@ export function BaseButton ({
   onClick
 }: BaseButtonProps): JSX.Element {
   return (
-    <button
-      onClick={onClick}
-      className={classNames(
-        'z-10 relative w-24 h-24 flex flex-col items-center justify-center p-[0.1rem] rounded-2 bg-gradient-to-br',
-        className
-      )}
-    >
-      <div className='absolute mt-[0.5px] ml-[0.5px] w-8 h-8 rounded-tl-2 left-0 top-0 from-white/75 to-25% bg-gradient-to-br group-active/button:opacity-0' />
+    <div className='relative'>
       {shadow && <div className='absolute w-full h-full bg-black z-0 rounded-2 opacity-80 transition-all group-hover/button:-bottom-2.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-3 -right-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />}
       {reflected && (
         <div>
@@ -147,28 +140,42 @@ export function BaseButton ({
             reflectClassName
           )}
           />
+          <div className={classNames(
+            'absolute w-full h-full z-0 rounded-2 opacity-20 transition-all group-hover/button:top-1 group-hover/button:-right-0.5 group-hover/button:blur-[0.2rem] top-2 -right-1.5 blur-[0.2rem] group-active/button:top-1 group-active/button:-right-1 group-active/button:opacity-10 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
+            reflectClassName
+          )}
+          />
         </div>
       )}
-      <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
-        <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
-          <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
-            {type === Types.CapText && <CapText value={value} valueClassName={valueClassName} />}
-            {type === Types.CapCenter && <CapCenter value={value} valueClassName={valueClassName} />}
-            {type === Types.CapDual && <CapDual symbol={symbol} value={value} symbolClassName={valueClassName} valueClassName={valueClassName} />}
+      <button
+        onClick={onClick}
+        className={classNames(
+          'z-10 relative w-24 h-24 flex flex-col items-center justify-center p-[0.1rem] rounded-2 bg-gradient-to-br',
+          className
+        )}
+      >
+        <div className='absolute mt-[0.5px] ml-[0.5px] w-8 h-8 rounded-tl-2 left-0 top-0 from-white/75 to-25% bg-gradient-to-br group-active/button:opacity-0' />
+        <div className='relative h-full w-full overflow-hidden rounded-[calc(0.5rem-1px)]'>
+          <div className='absolute z-20 h-full w-full group-hover/button:-translate-y-[0.5px] group-hover/button:-translate-x-[0.5px] group-active/button:-translate-y-[1.5px] group-active/button:-translate-x-[1.5px]'>
+            <div className='px-[0.8rem] py-[0.7rem] w-full h-full'>
+              {type === Types.CapText && <CapText value={value} valueClassName={valueClassName} />}
+              {type === Types.CapCenter && <CapCenter value={value} valueClassName={valueClassName} />}
+              {type === Types.CapDual && <CapDual symbol={symbol} value={value} symbolClassName={valueClassName} valueClassName={valueClassName} />}
+            </div>
           </div>
+          {(Texture != null) && (
+            <div className='absolute z-10 h-full w-full'>
+              {Texture}
+            </div>
+          )}
+          <div className={classNames(
+            'w-full h-full rounded-2',
+            frontClassName
+          )}
+          />
         </div>
-        {(Texture != null) && (
-          <div className='absolute z-10 h-full w-full'>
-            {Texture}
-          </div>
-        )}
-        <div className={classNames(
-          'w-full h-full rounded-2',
-          frontClassName
-        )}
-        />
-      </div>
-    </button>
+      </button>
+    </div>
   )
 }
 
@@ -222,8 +229,8 @@ export function GraySquareButton ({
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-[#BFBEBD] from-white/50 to-60% to-black/25 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
-      frontClassName='bg-[#BFBEBD]'
+      className='bg-[#BFBEBD] from-white from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)]'
+      frontClassName='bg-[#BFBEBD] shadow-[inset_0px_0px_2px_rgba(255,255,255,0.2)]'
       valueClassName='text-plastic-white'
       Texture={TextureLightButton}
       {...rootProps}

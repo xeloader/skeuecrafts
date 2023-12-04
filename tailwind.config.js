@@ -22,7 +22,7 @@ module.exports = {
         'texture-noise-light': 'url(static/textures/noise-light.png)'
       },
       colors: {
-        'plastic-white': '#E0E0E0',
+        'plastic-white': '#EBEBEB',
         'plastic-black': '#222222'
       },
       borderRadius: {
