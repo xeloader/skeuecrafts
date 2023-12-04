@@ -238,6 +238,20 @@ export function GraySquareButton ({
   )
 }
 
+export function LightGraySquareButton ({
+  ...rootProps
+}: BaseButtonProps): JSX.Element {
+  return (
+    <BaseButton
+      className='bg-[#CAC9C9] from-white from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)]'
+      frontClassName='bg-[#CAC9C9] shadow-[inset_0px_0px_2px_rgba(255,255,255,0.2)]'
+      valueClassName='text-plastic-black'
+      Texture={TextureLightButton}
+      {...rootProps}
+    />
+  )
+}
+
 function buttonWrapperForColor (color: Colors): FunctionComponent<BaseButtonProps> {
   if (color === Colors.Dark) {
     return DarkSquareButton
@@ -245,6 +259,8 @@ function buttonWrapperForColor (color: Colors): FunctionComponent<BaseButtonProp
     return OrangeSquareButton
   } else if (color === Colors.Gray) {
     return GraySquareButton
+  } else if (color === Colors.LightGray) {
+    return LightGraySquareButton
   } else if (color === Colors.CheeseDoodled) { // 🥚
     return CheeseDoodledButton
   } else {
