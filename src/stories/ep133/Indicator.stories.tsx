@@ -12,6 +12,7 @@ const meta: Meta<typeof Indicator> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    children: {}
   }
 }
 

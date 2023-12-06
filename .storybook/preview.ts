@@ -13,6 +13,10 @@ const preview: Preview = {
         {
           name: 'nintendo',
           value: '#BAB7B6'
+        },
+        {
+          name: 'screen-dark',
+          value: '#191919'
         }
       ]
     },
