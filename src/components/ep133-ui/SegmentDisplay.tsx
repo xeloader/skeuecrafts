@@ -155,7 +155,8 @@ export function SegmentNumber ({
   )
 }
 
-function valueToSegments (value?: string, fixedLength?: number): SegmentMatrix[] {
+// returns segments with dots in value accounted for
+function valueToDotSegments (value?: string): SegmentMatrix[] {
   if (value == null) return []
   let ptr = 0
   const segments = []
@@ -177,6 +178,12 @@ function valueToSegments (value?: string, fixedLength?: number): SegmentMatrix[]
   return segments
 }
 
+function valueToSegments (value?: string): SegmentMatrix[] {
+  if (value == null) return []
+  return value.split('')
+    .map((char) => getMatrixFor(char as SegmentValue))
+}
+
 export interface SegmentDisplayProps {
   value?: string
   dotValue?: string
@@ -185,10 +192,11 @@ export interface SegmentDisplayProps {
 
 export default function SegmentDisplay ({
   value = '',
+  dotValue = '',
   displayLength = 3
 }: SegmentDisplayProps): JSX.Element {
   const segments = useMemo<SegmentMatrix[]>(() => {
-    return valueToSegments(value, displayLength)
+    return valueToSegments(value)
   }, [value, displayLength])
   return (
     <div className='flex flex-row last-child'>
@@ -196,6 +204,7 @@ export default function SegmentDisplay ({
         .map((_, i) => (
           <SegmentNumber
             key={i}
+            dot={dotValue[i - 1] === '.'}
             matrix={segments[i]}
             hideDot={i === 0}
           />

@@ -12,7 +12,8 @@ const meta: Meta<typeof SegmentDisplay> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    children: {}
+    children: {},
+    dotValue: {}
   }
 }
 
