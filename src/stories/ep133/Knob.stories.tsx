@@ -19,6 +19,6 @@ type Story = StoryObj<typeof Knob>
 
 export const Display: Story = {
   args: {
-    step: 50
+    step: 2
   }
 } satisfies Meta<KnobProps>
