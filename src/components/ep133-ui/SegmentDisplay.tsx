@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import React, { useMemo, useState } from 'react'
 
 enum SegmentValue {
@@ -116,7 +117,7 @@ export function SegmentNumber ({
     fill: inactiveColor
   }
   return (
-    <svg width='113' height='143' viewBox='0 0 113 143' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg width='100%' height='100%' viewBox='0 0 113 143' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <g id='segments' className='[&>*]:transition-all'>
         <path {...matrix['left-bar'] === true ? activeProps : inactiveProps} name='left-bar' d='M13.5599 26.8531L24.1955 16.0129L25.9628 16.7585V122.247L24.1955 122.993L13.5599 112.152V26.8531Z' />
         <path {...matrix['right-bar'] === true ? activeProps : inactiveProps} name='right-bar' d='M99.0377 16.0118L109.673 26.852V112.151L99.0377 122.987L97.2704 122.246V16.7574L99.0377 16.0118Z' />
@@ -188,18 +189,24 @@ export interface SegmentDisplayProps {
   value?: string
   dotValue?: string
   displayLength?: number
+  className?: string
 }
 
 export default function SegmentDisplay ({
   value = '',
   dotValue = '',
-  displayLength = 3
+  displayLength = 3,
+  className
 }: SegmentDisplayProps): JSX.Element {
   const segments = useMemo<SegmentMatrix[]>(() => {
     return valueToSegments(value)
   }, [value, displayLength])
   return (
-    <div className='flex flex-row last-child'>
+    <div className={classNames(
+      'flex flex-row last-child',
+      className
+    )}
+    >
       {Array.from(Array(displayLength))
         .map((_, i) => (
           <SegmentNumber
