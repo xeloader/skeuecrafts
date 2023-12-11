@@ -1,15 +1,8 @@
 import React, { FunctionComponent } from 'react'
 
 import classNames from 'classnames'
-
-export enum Colors {
-  LightGray = 'light-gray',
-  Gray = 'gray',
-  Dark = 'dark',
-  Orange = 'orange',
-  CheeseDoodled = 'cheese-doodled',
-  DarkGray = 'dark-gray'
-}
+import { Colors } from '@/types'
+import Hole from './Hole'
 
 export enum Type {
   CapDual = 'cap-dual',
@@ -52,7 +45,7 @@ export const CapText = ({
   return (
     <div className='flex flex-row text-center items-start justify-center'>
       <p className={classNames(
-        'text-xl',
+        'text-lg',
         valueClassName
       )}
       >{value}
@@ -87,28 +80,6 @@ export const CapDual = ({
   )
 }
 
-interface HoleProps {
-  children: JSX.Element | JSX.Element[]
-}
-
-export const Hole = ({
-  children
-}: HoleProps): JSX.Element => {
-  return (
-    <div>
-      <div className='group-hover/button:opacity-90 opacity-100 transition-all group-active/button:opacity-0'>
-        <div className='absolute left-0 bottom-0 w-3 h-[1px] shadow-[0px_1px_1px_rgba(255,255,255,var(--light-intensity))]' />
-        <div className='absolute right-0 bottom-0 w-1 h-[1px] shadow-[0px_1px_1px_rgba(255,255,255,var(--light-intensity))]' />
-        <div className='absolute right-0 top-0 w-[1px] h-6 shadow-[1px_0px_1px_rgba(255,255,255,var(--light-intensity))]' />
-      </div>
-      <div className='w-full h-full absolute shadow-[1px_1px_1px_rgba(255,255,255,calc(0.8*var(--light-intensity)))] transition-all opacity-0 group-active/button:opacity-100' />
-      <div className='flex flex-col items-center justify-center p-[2px] rounded-[1px] bg-[#050404]'>
-        {children}
-      </div>
-    </div>
-  )
-}
-
 interface BaseButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   shadow?: boolean
@@ -122,6 +93,7 @@ interface BaseButtonProps
   value?: string | JSX.Element
   symbol?: string | JSX.Element
   sizeClassName?: string
+  rootClassName?: string
 }
 
 export function BaseButton ({
@@ -132,6 +104,7 @@ export function BaseButton ({
   value,
   symbol,
   Texture,
+  rootClassName,
   reflectClassName,
   frontClassName,
   valueClassName,
@@ -139,17 +112,21 @@ export function BaseButton ({
   onClick
 }: BaseButtonProps): JSX.Element {
   return (
-    <div className='relative'>
-      {shadow && <div className='absolute w-full h-full bg-black z-0 rounded-2 opacity-80 transition-all group-hover/button:-bottom-2.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-3 -right-2 blur-[0.5rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />}
+    <div className={classNames(
+      'relative [&_*]:transition-all [&_*]:duration-100',
+      rootClassName
+    )}
+    >
+      {shadow && <div className='absolute w-full h-full bg-black z-0 rounded-2 opacity-50 group-hover/button:opacity-30 group-hover/button:-bottom-1.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-2 -right-2 blur-[0.3rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />}
       {reflected && (
         <div>
           <div className={classNames(
-            'absolute w-full h-full z-0 rounded-2 opacity-20 transition-all group-hover/button:-top-2 group-hover/button:-left-1 group-hover/button:blur-[0.4rem] -top-2.5 -left-1.5 blur-[0.5rem] group-active/button:-top-1 group-active/button:-left-0.5 group-active/button:opacity-20 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
+            'absolute w-full h-full z-0 rounded-2 opacity-20 group-hover/button:-top-2 group-hover/button:-left-1 group-hover/button:blur-[0.4rem] -top-2.5 -left-1.5 blur-[0.5rem] group-active/button:-top-1 group-active/button:-left-0.5 group-active/button:opacity-20 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
             reflectClassName
           )}
           />
           <div className={classNames(
-            'absolute w-full h-full z-0 rounded-2 opacity-20 transition-all group-hover/button:top-1 group-hover/button:-right-0.5 group-hover/button:blur-[0.2rem] top-2 -right-1.5 blur-[0.2rem] group-active/button:top-1 group-active/button:-right-1 group-active/button:opacity-10 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
+            'absolute w-full h-full z-0 rounded-2 opacity-20 group-hover/button:top-1 group-hover/button:-right-0.5 group-hover/button:blur-[0.2rem] top-2 -right-1.5 blur-[0.2rem] group-active/button:top-1 group-active/button:-right-1 group-active/button:opacity-10 group-active/button:blur-[0.1rem] mix-blend-plus-lighter',
             reflectClassName
           )}
           />
@@ -336,16 +313,19 @@ export function SquareButton ({
   return (
     <div
       style={style}
-      className='relative group/button ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
+      className='relative ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
     >
       <Hole>
-        <ButtonWrapper
-          type={type}
-          sizeClassName={sizeClassName}
-          value={_value}
-          symbol={_symbol}
-          onClick={onClick}
-        />
+        <div className='p-[2px]'>
+          <ButtonWrapper
+            type={type}
+            rootClassName='group/button'
+            sizeClassName={sizeClassName}
+            value={_value}
+            symbol={_symbol}
+            onClick={onClick}
+          />
+        </div>
         {children}
       </Hole>
     </div>

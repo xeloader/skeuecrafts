@@ -1,9 +1,11 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Colors, SquareButton, Type, Size, BaseButton } from '@/components/ep133-ui/Button'
+import { Colors } from '@/types'
+import { SquareButton, Type, Size } from '@/components/ep133-ui/Button'
 import type { SquareButtonProps } from '@/components/ep133-ui/Button'
 import { TurnAroundArrowLeft } from '@/components/ep133-ui/Symbols'
+import Cap from '@/components/ep133-ui/Cap'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof SquareButton> = {
@@ -66,6 +68,16 @@ export const Small: Story = {
     size: Size.Small,
     color: Colors.Gray,
     type: Type.CapText
+  }
+} satisfies Meta<SquareButtonProps>
+
+export const SmallWithCap: Story = {
+  args: {
+    value: 'SHIFT',
+    size: Size.Small,
+    color: Colors.Orange,
+    type: Type.CapText,
+    children: <Cap value='COMMIT' color={Colors.Orange} />
   }
 } satisfies Meta<SquareButtonProps>
 
