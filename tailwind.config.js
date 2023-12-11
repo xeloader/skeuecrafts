@@ -15,6 +15,9 @@ module.exports = {
       textShadow: {
         '2xs': '0 0.5px 0.2px rgba(0,0,0,0.2)'
       },
+      gridTemplateColumns: {
+        20: 'repeat(20, minmax(0, 1fr)) '
+      },
       backgroundImage: {
         'texture-grip-dark': 'url(static/textures/grip-dark.png)',
         'texture-grip-light': 'url(static/textures/grip-light.png)',
