@@ -23,7 +23,15 @@ module.exports = {
       },
       colors: {
         'plastic-white': '#EBEBEB',
-        'plastic-black': '#222222'
+        'plastic-black': '#222222',
+        ep133: {
+          dark: '#1A1A1A',
+          orange: '#F72900',
+          gray: '#BFBEBD',
+          'gray-dark': '#555352',
+          'gray-light': '#CAC9C9'
+        }
+
       },
       borderRadius: {
         2: '0.5rem',
