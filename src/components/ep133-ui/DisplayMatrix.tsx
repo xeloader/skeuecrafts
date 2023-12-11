@@ -20,7 +20,28 @@ export default function DisplayMatrix ({
       {/* {Array.from(Array((20 * 4) - (4 * 2))).map((_, i) => <div key={i} className='bg-[red] w-6 h-6'>{i}</div>)} */}
       <Symbol.BPMLabel className='col-start-12 col-span-1' />
       <Symbol.RecordPlayer className='col-start-[15] col-span-1 row-start-2 row-span-1' />
-      {/* Last Row */}
+      {/* Third Row */}
+      <Symbol.Keyboard className='col-start-1 row-start-3 col-span-1 row-span-1' />
+      <Symbol.LowFade className='col-start-2 row-start-3 col-span-1 row-span-1' />
+      <Symbol.CButton className='col-start-3 row-start-3 col-span-1 row-span-1' />
+      <Symbol.SampleNote className='col-start-4 row-start-3 col-span-1 row-span-1' />
+      <Symbol.SampleTrim className='col-start-5 row-start-3 col-span-1 row-span-1' />
+      <Symbol.SampleEnvelope className='col-start-6 row-start-3 col-span-1 row-span-1' />
+      <Symbol.Rabbit className='col-start-7 row-start-3 col-span-1 row-span-1' />
+      <Symbol.RecordSymbol className='col-start-8 row-start-3 col-span-1 row-span-1' />
+      <Symbol.PlaySymbol className='col-start-9 row-start-3 col-span-1 row-span-1' />
+      <Symbol.RepeatSymbol className='col-start-10 row-start-3 col-span-1 row-span-1' />
+      <Symbol.PointingFinger className='col-start-[11] row-start-3 col-span-1 row-span-1' />
+      <Symbol.FXLeft className='col-start-[12] row-start-3 col-span-1 row-span-1' />
+      <Symbol.FXLabel className='col-start-[13] row-start-3 col-span-1 row-span-1' />
+      <Symbol.FXRight className='col-start-[14] row-start-3 col-span-1 row-span-1' />
+      <Symbol.VacuumTube className='col-start-[15] row-start-3 col-span-1 row-span-1' />
+      <Symbol.Microphone className='col-start-[16] row-start-3 col-span-1 row-span-1' />
+      <Symbol.LineIn className='col-start-[17] row-start-3 col-span-1 row-span-1' />
+      <Symbol.LowMidLevel className='col-start-[18] row-start-3 col-span-1 row-span-1' />
+      <Symbol.QLabel className='col-start-[19] row-start-3 col-span-1 row-span-1' />
+      <Symbol.FreeSwing className='col-start-[20] row-start-3 col-span-1 row-span-1' />
+      {/* Fourth Row */}
       <Symbol.Slider className='col-start-1 row-start-4 col-span-1 row-span-1' />
       <Symbol.LowestFade className='col-start-2 row-start-4 col-span-1 row-span-1' />
       <Symbol.DButton className='col-start-3 row-start-4 col-span-1 row-span-1' />
