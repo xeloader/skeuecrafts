@@ -85,7 +85,6 @@ export default function Knob ({
               >
                 <circle r='12' cx='13' cy='13' className='stroke-white/25 fill-transparent stroke-2' {...progressCircle} />
               </svg>
-              {progress}
             </div>
           </div>
         </div>
