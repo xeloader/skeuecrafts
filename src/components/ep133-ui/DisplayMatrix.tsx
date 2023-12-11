@@ -19,7 +19,24 @@ export default function DisplayMatrix ({
       <SegmentDisplay value={value} dotValue={dotValue} className='h-16 col-start-8 col-span-4 row-start-1 row-span-2 pr-2 -ml-2' />
       {/* {Array.from(Array((20 * 4) - (4 * 2))).map((_, i) => <div key={i} className='bg-[red] w-6 h-6'>{i}</div>)} */}
       <Symbol.BPMLabel className='col-start-12 col-span-1' />
+      {/* Second Row */}
+      <Symbol.MuteLabel className='col-start-1 col-span-1 row-start-2 row-span-1' />
+      <Symbol.HighFade className='col-start-2 col-span-1 row-start-2 row-span-1' />
+      <Symbol.BButton className='col-start-3 col-span-1 row-start-2 row-span-1' />
+      <Symbol.CopyLabel className='col-start-4 col-span-1 row-start-2 row-span-1' />
+      <Symbol.PasteLabel className='col-start-5 col-span-1 row-start-2 row-span-1' />
+      <Symbol.Diskette className='col-start-6 col-span-1 row-start-2 row-span-1' />
+      <Symbol.TicLabel className='col-start-7 col-span-1 row-start-2 row-span-1' />
+      <Symbol.Metronome className='col-start-[12] col-span-1 row-start-2 row-span-1' />
+      <Symbol.ScissorCut className='col-start-[13] col-span-1 row-start-2 row-span-1' />
+      <Symbol.Umbrella className='col-start-[14] col-span-1 row-start-2 row-span-1' />
       <Symbol.RecordPlayer className='col-start-[15] col-span-1 row-start-2 row-span-1' />
+      <Symbol.CirclePartBL className='col-start-[16] col-span-1 row-start-2 row-span-1' />
+      <Symbol.CirclePartBR className='col-start-[17] col-span-1 row-start-2 row-span-1' />
+      <Symbol.HighMidLevel className='col-start-[18] col-span-1 row-start-2 row-span-1' />
+      <Symbol.GridCirclePartBL className='col-start-[19] col-span-1 row-start-2 row-span-1' />
+      <Symbol.GridCirclePartBR className='col-start-[20] col-span-1 row-start-2 row-span-1' />
+
       {/* Third Row */}
       <Symbol.Keyboard className='col-start-1 row-start-3 col-span-1 row-span-1' />
       <Symbol.LowFade className='col-start-2 row-start-3 col-span-1 row-span-1' />
