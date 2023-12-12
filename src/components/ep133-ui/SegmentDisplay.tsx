@@ -203,7 +203,7 @@ export default function SegmentDisplay ({
   }, [value, displayLength])
   return (
     <div className={classNames(
-      'flex flex-row last-child',
+      'flex flex-row',
       className
     )}
     >
