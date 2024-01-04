@@ -111,7 +111,7 @@ export function SegmentNumber ({
 }: SegmentNumberProps): JSX.Element {
   const activeProps = {
     fill: activeColor,
-    filter: "url('#glow')"
+    filter: "url('#segment-glow')"
   }
   const inactiveProps = {
     fill: inactiveColor
@@ -132,13 +132,13 @@ export function SegmentNumber ({
         {!hideDot && <path {...(matrix.dot === true || dot === true) ? activeProps : inactiveProps} name='dot' d='M14.1883 132.669C14.1883 136.66 11.0107 139.897 7.09188 139.897C3.17756 139.897 0 136.66 0 132.669C0 128.677 3.17756 125.441 7.09188 125.441C11.0107 125.441 14.1883 128.677 14.1883 132.669Z' />}
       </g>
       <defs>
-        <filter id='glow'>
-          <feGaussianBlur stdDeviation='1' />
+        <filter id='segment-glow'>
+          <feGaussianBlur stdDeviation='2' />
           <feComponentTransfer result='coloredBlur'>
-            <feFuncA type='linear' slope='0.7' />
+            <feFuncA type='linear' slope='1' />
           </feComponentTransfer>
           <feMerge>
-            <feMergeNode in='coloredBlur' />
+            <feMergeNode in='blur' />
             <feMergeNode in='SourceGraphic' />
           </feMerge>
         </filter>

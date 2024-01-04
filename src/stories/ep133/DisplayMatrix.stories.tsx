@@ -22,6 +22,7 @@ type Story = StoryObj<typeof DisplayMatrix>
 
 export const Display: Story = {
   args: {
-    value: '123'
+    value: '123',
+    lightMatrix: [{ glow: 1 }, { glow: 0.5 }, { glow: 0 }, { glow: 0.25 }, { glow: 1 }, {}, {}, { glow: 0.3 }]
   }
 } satisfies Meta<DisplayMatrixProps>
