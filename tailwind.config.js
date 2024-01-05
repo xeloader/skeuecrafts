@@ -16,7 +16,11 @@ module.exports = {
         '2xs': '0 0.5px 0.2px rgba(0,0,0,0.2)'
       },
       gridTemplateColumns: {
-        20: 'repeat(20, minmax(0, 1fr)) '
+        20: 'repeat(20, minmax(0, 1fr))',
+        22: 'repeat(22, minmax(0, 1fr))'
+      },
+      gridTemplateRows: {
+        30: 'repeat(30, minmax(0, 1fr))'
       },
       backgroundImage: {
         'texture-grip-dark': 'url(static/textures/grip-dark.png)',

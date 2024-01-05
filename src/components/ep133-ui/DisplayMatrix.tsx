@@ -7,6 +7,7 @@ export interface DisplayMatrixProps {
   value?: string
   dotValue?: string
   lightMatrix?: DisplayIconState[]
+  className?: string
 }
 
 interface DisplayIconProps {
@@ -146,10 +147,11 @@ const ICON_GRID: GridIcon[] = [
 export default function DisplayMatrix ({
   value = '',
   dotValue,
+  className,
   lightMatrix = []
 }: DisplayMatrixProps): JSX.Element {
   return (
-    <div className='grid grid-cols-20 grid-rows-4 gap-2'>
+    <div className={classNames('grid grid-cols-subgrid grid-rows-4 gap-1', className)}>
 
       {ICON_GRID.map((icon, i) => {
         return (
@@ -163,7 +165,6 @@ export default function DisplayMatrix ({
               gridRowStart: icon.row,
               gridRowEnd: `span ${icon.height ?? 1}`
             }}
-            className='col-start-1 row-start-1 row-span-1 col-span-1'
           />
         )
       })}
@@ -171,7 +172,7 @@ export default function DisplayMatrix ({
       <SegmentDisplay
         value={value}
         dotValue={dotValue}
-        className='col-start-8 col-span-4 row-start-1 row-span-2 pr-1 -ml-1'
+        className='col-start-8 col-span-4 row-start-1 row-span-2'
       />
 
     </div>
