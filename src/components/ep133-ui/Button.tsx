@@ -286,10 +286,10 @@ export interface SquareButtonProps
   value: string
   symbol?: string
   lightIntensity?: number
-  Value: JSX.Element
-  Symbol: JSX.Element
+  Value?: JSX.Element
+  Symbol?: JSX.Element
   size?: Size
-  children: JSX.Element
+  children?: JSX.Element
 }
 
 export function SquareButton ({

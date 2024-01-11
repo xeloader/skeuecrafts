@@ -2,8 +2,8 @@ import classNames from 'classnames'
 import React from 'react'
 
 export interface IndicatorProps {
-  state: 'on' | 'off'
-  children: JSX.Element
+  state?: 'on' | 'off'
+  children?: JSX.Element
 }
 
 export default function Indicator ({

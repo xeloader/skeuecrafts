@@ -5,6 +5,7 @@ export interface KnobProps {
   step?: number
   max?: number
   min?: number
+  color: string
   onChange?: (value: number) => void
 }
 
@@ -12,6 +13,7 @@ export default function Knob ({
   step = 1,
   max = 100,
   min = -100,
+  color,
   onChange: handleChange
 }: KnobProps): JSX.Element {
   const prevValue = useRef<number>(0)
