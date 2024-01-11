@@ -292,7 +292,7 @@ export interface SquareButtonProps
   children?: JSX.Element
 }
 
-export function SquareButton ({
+export function SquareButtonFresh ({
   color = Colors.Dark,
   value,
   symbol,
@@ -329,5 +329,85 @@ export function SquareButton ({
         {children}
       </Hole>
     </div>
+  )
+}
+
+const colorStyles: {
+  [key in Colors]?: {
+    textColor: string
+    baseColor: string
+    baseColorLight: string
+    baseColorLighter: string
+  }
+} = {
+  [Colors.Orange]: {
+    textColor: 'white',
+    baseColor: '#FE4612',
+    baseColorLight: '#FF6C28',
+    baseColorLighter: '#FFC386'
+  },
+  [Colors.Dark]: {
+    textColor: '#EEF0F0',
+    baseColor: '#191919',
+    baseColorLight: '#3F3E3E',
+    baseColorLighter: '#908E8D'
+  },
+  [Colors.DarkGray]: {
+    textColor: '#EEF0F0',
+    baseColor: '#535150',
+    baseColorLight: '#858180',
+    baseColorLighter: '#C4C2C1'
+  },
+  [Colors.LightGray]: {
+    textColor: '#1C1B1B',
+    baseColor: '#D1CBC8',
+    baseColorLight: '#EAE7E6',
+    baseColorLighter: '#FFFFFF'
+  },
+  [Colors.Gray]: {
+    textColor: '#EEF0F0',
+    baseColor: '#ADA8A5',
+    baseColorLight: '#CAC3C1',
+    baseColorLighter: '#F9F7F6'
+  }
+}
+
+export function SquareButton ({
+  color = Colors.Dark,
+  value,
+  symbol,
+  lightIntensity = 0.9,
+  onClick,
+  type = Type.CapCenter,
+  Value,
+  Symbol,
+  children,
+  size = Size.Square
+}: SquareButtonProps): JSX.Element {
+  const styles = colorStyles?.[color] ?? colorStyles[Colors.Dark]
+  return (
+    <button className='size-full'>
+      <div
+        className='grid grid-cols-2 grid-rows-2 aspect-square'
+        style={{ backgroundColor: styles?.baseColor, color: styles?.textColor }}
+      >
+        {type === Type.CapDual && (
+          <>
+            <p>{value}</p>
+            <p className='row-start-2'>{symbol}</p>
+          </>
+        )}
+        {type === Type.CapCenter && (
+          <div className='flex items-center justify-center row-span-full col-span-full'>
+            <p>{value}</p>
+          </div>
+        )}
+        {type === Type.CapText && (
+          <div className='flex items-center justify-center col-span-full'>
+            <p>{value}</p>
+          </div>
+        )}
+      </div>
+    </button>
   )
 }
