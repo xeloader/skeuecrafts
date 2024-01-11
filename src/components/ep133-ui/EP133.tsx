@@ -219,6 +219,34 @@ export default function EP133 ({
         <p>-&gt; FX</p>
       </div>
 
+      <div className='row-start-[18] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.Orange}
+          size={Size.Small}
+          type={Type.CapText}
+          value='SAMPLE'
+        >
+          <Cap
+            color={Colors.LightGray}
+            value='CHOP'
+          />
+        </SquareButton>
+      </div>
+
+      <div className='row-start-[18] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.Dark}
+          size={Size.Small}
+          type={Type.CapText}
+          value='TIMING'
+        >
+          <Cap
+            color={Colors.LightGray}
+            value='CORRECT'
+          />
+        </SquareButton>
+      </div>
+
       <div className='row-start-[21] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
         <SquareButton
           color={Colors.Dark}
@@ -269,6 +297,79 @@ export default function EP133 ({
         <div className='flex-1'>
           <p>PAN</p>
         </div>
+      </div>
+
+      <div className='row-start-[21] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.Dark}
+          size={Size.Small}
+          type={Type.CapText}
+          value='FX'
+        >
+          <Cap
+            color={Colors.LightGray}
+            value='OUTPUT'
+          />
+        </SquareButton>
+      </div>
+
+      <div className='row-start-[21] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.LightGray}
+          size={Size.Small}
+          type={Type.CapText}
+          value='ERASE'
+        >
+          <Cap
+            color={Colors.LightGray}
+            value='SYSTEM'
+          />
+        </SquareButton>
+      </div>
+
+      <div className='row-start-[24] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.LightGray}
+          size={Size.Square}
+          type={Type.CapCenter}
+          value='-'
+        />
+      </div>
+
+      <div className='row-start-[24] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.LightGray}
+          size={Size.Square}
+          type={Type.CapCenter}
+          value='+'
+        />
+      </div>
+
+      <div className='row-start-[26] row-span-1 col-start-[17] col-span-2 flex items-center justify-center'>
+        <div className='w-1/2 flex justify-center'>
+          <Indicator state='off' />
+        </div>
+        <div className='w-1/2 flex justify-center'>
+          <Indicator state='on' />
+        </div>
+      </div>
+
+      <div className='row-start-[27] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.Orange}
+          size={Size.Square}
+          type={Type.CapText}
+          value='RECORD'
+        />
+      </div>
+
+      <div className='row-start-[27] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+        <SquareButton
+          color={Colors.DarkGray}
+          size={Size.Square}
+          type={Type.CapText}
+          value='PLAY'
+        />
       </div>
 
       <div className='row-start-[24] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
