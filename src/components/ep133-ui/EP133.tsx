@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import React, { CSSProperties, useCallback, useEffect, useRef, useState } from 'react'
 import DisplayMatrix from './DisplayMatrix'
-import Slider from './Slider'
-import Knob from './Knob'
+import { SliderFresh as Slider } from './Slider'
+import { KnobFresh as Knob } from './Knob'
 import Speaker from './Speaker'
-import { Size, SquareButton, Type } from './Button'
+import { Size, SquareButtonFresh as SquareButton, Type } from './Button'
 import Cap from './Cap'
 import { Colors } from '@/types'
-import Indicator from './Indicator'
+import { IndicatorFresh as Indicator } from './Indicator'
 
 export interface EP133Props {
 }
@@ -15,7 +15,7 @@ export interface EP133Props {
 export default function EP133 ({
 }: EP133Props): JSX.Element {
   return (
-    <div className='grid grid-rows-30 grid-cols-22 h-[100vh] w-[73vh] bg-ep133-gray'>
+    <div className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#C0BDBD]'>
       <div className='grid grid-cols-subgrid row-span-1 col-span-full bg-ep133-gray-light'>
         <div className='col-start-2 col-span-2 row-span-1 row-start-1'>
           <div className='size-full bg-white/50'>
@@ -81,16 +81,19 @@ export default function EP133 ({
           </div>
         </div>
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
-        <Knob color='orange' />
+      <div className='row-start-[15] row-span-2 col-start-[17] col-span-2'>
+        <Knob color={Colors.Orange} />
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
-        <Knob color='black' />
+      <div className='row-start-[15] row-span-2 col-start-[20] col-span-2'>
+        <Knob color={Colors.Dark} />
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[2] col-span-2 overflow-hidden'>
-        <Knob color='white' />
+      <div className='row-start-[14] col-start-[2] col-span-2 flex items-center justify-center'>
+        <p>VOLUME</p>
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[5] col-span-2 overflow-hidden'>
+      <div className='row-start-[15] row-span-2 col-start-[2] col-span-2'>
+        <Knob color={Colors.LightGray} />
+      </div>
+      <div className='row-start-[15] row-span-2 col-start-[5] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -103,7 +106,7 @@ export default function EP133 ({
           />
         </SquareButton>
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
+      <div className='row-start-[15] row-span-2 col-start-[8] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -116,7 +119,7 @@ export default function EP133 ({
           />
         </SquareButton>
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[11] col-span-2 overflow-hidden'>
+      <div className='row-start-[15] row-span-2 col-start-[11] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -129,7 +132,7 @@ export default function EP133 ({
           />
         </SquareButton>
       </div>
-      <div className='row-start-[18] row-span-1 col-start-[2] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-1 col-start-[2] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -137,10 +140,10 @@ export default function EP133 ({
           value='KEYS'
         />
       </div>
-      <div className='row-start-[17] row-span-1 col-start-[5] col-span-1 overflow-hidden items-center justify-center flex'>
-        <Indicator />
+      <div className='row-start-[17] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
+        <Indicator state='on' />
       </div>
-      <div className='row-start-[18] row-span-2 col-start-[5] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-2 col-start-[5] col-span-2'>
         <SquareButton
           color={Colors.Gray}
           size={Size.Square}
@@ -150,7 +153,7 @@ export default function EP133 ({
       </div>
 
       <div className='row-start-[17] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
         <div className='w-1/2'>
@@ -158,7 +161,7 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[18] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-2 col-start-[8] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -166,22 +169,22 @@ export default function EP133 ({
           value='7'
         />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[8] col-span-1 overflow-hidden flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[8] col-span-1 flex items-center justify-center'>
         <Indicator state='on' />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[9] col-span-1 overflow-hidden flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[9] col-span-1 flex items-center justify-center'>
         <p>LPF</p>
       </div>
 
       <div className='row-start-[17] row-span-1 col-start-[11] col-span-2 flex items-center justify-center'>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
         <div className='w-1/2'>
           <p>PITCH</p>
         </div>
       </div>
-      <div className='row-start-[18] row-span-2 col-start-[11] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-2 col-start-[11] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -189,22 +192,22 @@ export default function EP133 ({
           value='8'
         />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[11] col-span-1 overflow-hidden flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[11] col-span-1 flex items-center justify-center'>
         <Indicator state='on' />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[12] col-span-1 overflow-hidden flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[12] col-span-1 flex items-center justify-center'>
         <p>HPF</p>
       </div>
 
       <div className='row-start-[17] row-span-1 col-start-[14] col-span-2 flex items-center justify-center'>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='on' />
         </div>
         <div className='w-1/2'>
           <p>TIME</p>
         </div>
       </div>
-      <div className='row-start-[18] row-span-2 col-start-[14] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-2 col-start-[14] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -212,14 +215,14 @@ export default function EP133 ({
           value='9'
         />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[14] col-span-1 overflow-hidden flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[14] col-span-1 flex items-center justify-center'>
         <Indicator state='off' />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[15] col-span-1 overflow-hidden flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[15] col-span-1 flex items-center justify-center'>
         <p>-&gt; FX</p>
       </div>
 
-      <div className='row-start-[18] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-2 col-start-[17] col-span-2'>
         <SquareButton
           color={Colors.Orange}
           size={Size.Small}
@@ -233,7 +236,7 @@ export default function EP133 ({
         </SquareButton>
       </div>
 
-      <div className='row-start-[18] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+      <div className='row-start-[18] row-span-2 col-start-[20] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -247,7 +250,7 @@ export default function EP133 ({
         </SquareButton>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
+      <div className='row-start-[21] row-span-2 col-start-[8] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -257,15 +260,15 @@ export default function EP133 ({
       </div>
 
       <div className='row-start-[23] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
-        <div className='flex-1 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
-        <div className='flex-1'>
+        <div className='w-1/2'>
           <p>ATK</p>
         </div>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[11] col-span-2 overflow-hidden'>
+      <div className='row-start-[21] row-span-2 col-start-[11] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -274,15 +277,15 @@ export default function EP133 ({
         />
       </div>
       <div className='row-start-[23] row-span-1 col-start-[11] col-span-2 flex items-center justify-center'>
-        <div className='flex-1 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
-        <div className='flex-1'>
+        <div className='w-1/2'>
           <p>REL</p>
         </div>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[14] col-span-2 overflow-hidden'>
+      <div className='row-start-[21] row-span-2 col-start-[14] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -291,15 +294,15 @@ export default function EP133 ({
         />
       </div>
       <div className='row-start-[23] row-span-1 col-start-[14] col-span-2 flex items-center justify-center'>
-        <div className='flex-1 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
-        <div className='flex-1'>
+        <div className='w-1/2'>
           <p>PAN</p>
         </div>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+      <div className='row-start-[21] row-span-2 col-start-[17] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -313,7 +316,7 @@ export default function EP133 ({
         </SquareButton>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+      <div className='row-start-[21] row-span-2 col-start-[20] col-span-2'>
         <SquareButton
           color={Colors.LightGray}
           size={Size.Small}
@@ -327,7 +330,7 @@ export default function EP133 ({
         </SquareButton>
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+      <div className='row-start-[24] row-span-2 col-start-[17] col-span-2'>
         <SquareButton
           color={Colors.LightGray}
           size={Size.Square}
@@ -336,7 +339,7 @@ export default function EP133 ({
         />
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+      <div className='row-start-[24] row-span-2 col-start-[20] col-span-2'>
         <SquareButton
           color={Colors.LightGray}
           size={Size.Square}
@@ -346,15 +349,15 @@ export default function EP133 ({
       </div>
 
       <div className='row-start-[26] row-span-1 col-start-[17] col-span-2 flex items-center justify-center'>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='on' />
         </div>
       </div>
 
-      <div className='row-start-[27] row-span-2 col-start-[17] col-span-2 overflow-hidden'>
+      <div className='row-start-[27] row-span-2 col-start-[17] col-span-2'>
         <SquareButton
           color={Colors.Orange}
           size={Size.Square}
@@ -363,7 +366,7 @@ export default function EP133 ({
         />
       </div>
 
-      <div className='row-start-[27] row-span-2 col-start-[20] col-span-2 overflow-hidden'>
+      <div className='row-start-[27] row-span-2 col-start-[20] col-span-2'>
         <SquareButton
           color={Colors.DarkGray}
           size={Size.Square}
@@ -372,7 +375,7 @@ export default function EP133 ({
         />
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
+      <div className='row-start-[24] row-span-2 col-start-[8] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -381,7 +384,7 @@ export default function EP133 ({
         />
       </div>
       <div className='row-start-[26] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
         <div className='w-1/2'>
@@ -389,7 +392,7 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[11] col-span-2 overflow-hidden'>
+      <div className='row-start-[24] row-span-2 col-start-[11] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -398,15 +401,15 @@ export default function EP133 ({
         />
       </div>
       <div className='row-start-[26] row-span-1 col-start-[11] col-span-2 flex items-center justify-center'>
-        <div className='flex-1 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='on' />
         </div>
-        <div className='flex-1'>
+        <div className='w-1/2'>
           <p>VEL</p>
         </div>
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[14] col-span-2 overflow-hidden'>
+      <div className='row-start-[24] row-span-2 col-start-[14] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -415,7 +418,7 @@ export default function EP133 ({
         />
       </div>
       <div className='row-start-[26] row-span-1 col-start-[14] col-span-2 flex items-center justify-center'>
-        <div className='w-1/2 flex justify-center'>
+        <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state='off' />
         </div>
         <div className='w-1/2'>
@@ -423,7 +426,7 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[27] row-span-2 col-start-[8] col-span-2 overflow-hidden'>
+      <div className='row-start-[27] row-span-2 col-start-[8] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -431,7 +434,7 @@ export default function EP133 ({
           value='·'
         />
       </div>
-      <div className='row-start-[27] row-span-2 col-start-[11] col-span-2 overflow-hidden'>
+      <div className='row-start-[27] row-span-2 col-start-[11] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -439,7 +442,7 @@ export default function EP133 ({
           value='0'
         />
       </div>
-      <div className='row-start-[27] row-span-2 col-start-[14] col-span-2 overflow-hidden'>
+      <div className='row-start-[27] row-span-2 col-start-[14] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Square}
@@ -448,10 +451,10 @@ export default function EP133 ({
         />
       </div>
 
-      <div className='row-start-[20] row-span-1 col-start-[5] col-span-1 overflow-hidden items-center justify-center flex'>
+      <div className='row-start-[20] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator />
       </div>
-      <div className='row-start-[21] row-span-2 col-start-[5] col-span-2 overflow-hidden'>
+      <div className='row-start-[21] row-span-2 col-start-[5] col-span-2'>
         <SquareButton
           color={Colors.Gray}
           size={Size.Square}
@@ -459,10 +462,10 @@ export default function EP133 ({
           value='B'
         />
       </div>
-      <div className='row-start-[23] row-span-1 col-start-[5] col-span-1 overflow-hidden items-center justify-center flex'>
+      <div className='row-start-[23] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator />
       </div>
-      <div className='row-start-[24] row-span-2 col-start-[5] col-span-2 overflow-hidden'>
+      <div className='row-start-[24] row-span-2 col-start-[5] col-span-2'>
         <SquareButton
           color={Colors.Gray}
           size={Size.Square}
@@ -470,10 +473,10 @@ export default function EP133 ({
           value='C'
         />
       </div>
-      <div className='row-start-[26] row-span-1 col-start-[5] col-span-1 overflow-hidden items-center justify-center flex'>
+      <div className='row-start-[26] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator />
       </div>
-      <div className='row-start-[27] row-span-2 col-start-[5] col-span-2 overflow-hidden'>
+      <div className='row-start-[27] row-span-2 col-start-[5] col-span-2'>
         <SquareButton
           color={Colors.Gray}
           size={Size.Square}
@@ -481,7 +484,7 @@ export default function EP133 ({
           value='D'
         />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[2] col-span-2 overflow-hidden'>
+      <div className='row-start-[20] row-span-1 col-start-[2] col-span-2'>
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
@@ -489,10 +492,10 @@ export default function EP133 ({
           value='FADER'
         />
       </div>
-      <div className='row-start-[22] row-span-5 col-start-[2] col-span-2 overflow-hidden'>
+      <div className='row-start-[22] row-span-5 col-start-[2] col-span-2'>
         <Slider />
       </div>
-      <div className='row-start-[28] row-span-1 col-start-[2] col-span-2 overflow-hidden'>
+      <div className='row-start-[28] row-span-1 col-start-[2] col-span-2'>
         <SquareButton
           color={Colors.Gray}
           size={Size.Small}
