@@ -12,10 +12,14 @@ import { IndicatorFresh as Indicator } from './Indicator'
 export interface EP133Props {
 }
 
+const CornerCircle = (): JSX.Element => (
+  <div className='rounded-full size-2/3 bg-gradient-to-b from-[#E6E1DF] to-[#EEEBE9] shadow-[inset_1px_1px_0px_rgba(0,0,0,0.25),inset_-1px_-1px_0px_rgba(255,255,255,0.5)]' />
+)
+
 export default function EP133 ({
 }: EP133Props): JSX.Element {
   return (
-    <div className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#C0BDBD]'>
+    <div className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#B7B4B3] font-ep133'>
       <div className='grid grid-cols-subgrid row-span-1 col-span-full bg-ep133-gray-light'>
         <div className='col-start-2 col-span-2 row-span-1 row-start-1'>
           <div className='size-full bg-white/50'>
@@ -42,27 +46,27 @@ export default function EP133 ({
           <p>POWER</p>
         </div>
       </div>
-      <div className='grid grid-rows-subgrid grid-cols-subgrid row-span-6 row-start-2 col-[1/-8] bg-ep133-gray-light shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]'>
+      <div className='grid grid-rows-subgrid grid-cols-subgrid row-span-6 row-start-2 col-[1/-8] bg-[#EBE7E5] shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]'>
         <div className='col-start-1 row-start-1 flex items-center justify-center'>
-          <div className='rounded-full size-2/3 bg-white/25' />
+          <CornerCircle />
         </div>
         <div className='col-[-2/-1] row-start-1 flex items-center justify-center'>
-          <div className='rounded-full size-2/3 bg-white/25' />
+          <CornerCircle />
         </div>
         <div className='col-[-2/-1] row-[-1/-2] flex items-center justify-center'>
-          <div className='rounded-full size-2/3 bg-white/25' />
+          <CornerCircle />
         </div>
         <div className='col-start-1 row-[-1/-2] flex items-center justify-center'>
-          <div className='rounded-full size-2/3 bg-white/25' />
+          <CornerCircle />
         </div>
-        <div className='col-start-2 row-start-2 col-span-full'>
-          <p className='text-2xl leading-none'>K.O.II</p>
+        <div className='col-start-2 row-start-2 col-span-full flex items-center'>
+          <p className='text-6xl leading-none'>K.O.II</p>
         </div>
-        <div className='col-start-2 row-start-3 col-span-full'>
-          <p className='text-ep133-orange'>サンプラー</p>
+        <div className='col-start-2 row-start-3 col-span-full flex items-center'>
+          <p className='text-ep133-orange text-3xl'>サンプラー</p>
         </div>
-        <div className='col-start-2 row-[-1/-2] col-span-full'>
-          <p>64 MB SAMPLER COMPOSER</p>
+        <div className='col-start-2 row-[-1/-2] col-span-full flex items-center'>
+          <p className='text-3xl'>64 MB SAMPLER COMPOSER</p>
         </div>
       </div>
       <div className='col-[-8/-1] row-span-6 row-start-2'>
@@ -81,8 +85,30 @@ export default function EP133 ({
           </div>
         </div>
       </div>
+
+      <div className='row-start-[16] col-start-[16] row-span-3 col-span-1'>
+        <div className='grid grid-rows-6 h-full'>
+          <div className='row-start-2 row-span-3 flex items-center justify-center'>
+            <p className='-rotate-90 text-ep133-orange'>GAIN</p>
+          </div>
+        </div>
+      </div>
+
+      <div className='row-start-[14] col-start-[17] col-span-2 flex items-center justify-center'>
+        <p>BPM</p>
+      </div>
       <div className='row-start-[15] row-span-2 col-start-[17] col-span-2'>
         <Knob color={Colors.Orange} />
+      </div>
+      <div className='row-start-[14] col-start-[20] col-span-2 flex items-center justify-center'>
+        <p>METRONOME</p>
+      </div>
+      <div className='row-start-[16] col-start-[22] row-span-3 col-span-1'>
+        <div className='grid grid-rows-6 h-full'>
+          <div className='row-start-2 row-span-3 flex items-center justify-center'>
+            <p className='-rotate-90 text-plastic-black'>SWING</p>
+          </div>
+        </div>
       </div>
       <div className='row-start-[15] row-span-2 col-start-[20] col-span-2'>
         <Knob color={Colors.Dark} />
@@ -98,6 +124,7 @@ export default function EP133 ({
           color={Colors.Dark}
           size={Size.Small}
           type={Type.CapText}
+          holeProps={{ fullShadow: true }}
           value='SOUND'
         >
           <Cap
@@ -111,6 +138,7 @@ export default function EP133 ({
           color={Colors.Dark}
           size={Size.Small}
           type={Type.CapText}
+          holeProps={{ fullShadow: true }}
           value='MAIN'
         >
           <Cap
@@ -124,6 +152,7 @@ export default function EP133 ({
           color={Colors.Dark}
           size={Size.Small}
           type={Type.CapText}
+          holeProps={{ fullShadow: true }}
           value='TEMPO'
         >
           <Cap
@@ -227,6 +256,7 @@ export default function EP133 ({
           color={Colors.Orange}
           size={Size.Small}
           type={Type.CapText}
+          holeProps={{ fullShadow: true }}
           value='SAMPLE'
         >
           <Cap
@@ -241,6 +271,7 @@ export default function EP133 ({
           color={Colors.Dark}
           size={Size.Small}
           type={Type.CapText}
+          holeProps={{ fullShadow: true }}
           value='TIMING'
         >
           <Cap
@@ -306,6 +337,7 @@ export default function EP133 ({
         <SquareButton
           color={Colors.Dark}
           size={Size.Small}
+          holeProps={{ fullShadow: true }}
           type={Type.CapText}
           value='FX'
         >
@@ -320,6 +352,7 @@ export default function EP133 ({
         <SquareButton
           color={Colors.LightGray}
           size={Size.Small}
+          holeProps={{ fullShadow: true }}
           type={Type.CapText}
           value='ERASE'
         >

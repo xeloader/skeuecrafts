@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react'
 
 import classNames from 'classnames'
 import { Colors } from '@/types'
-import Hole from './Hole'
+import Hole, { HoleProps } from './Hole'
 import { colorStyles } from '@/constants/ep133'
 
 export enum Type {
@@ -290,6 +290,7 @@ export interface SquareButtonProps
   Value?: JSX.Element
   Symbol?: JSX.Element
   size?: Size
+  holeProps?: HoleProps
   children?: JSX.Element
 }
 
@@ -298,6 +299,7 @@ export function SquareButtonFresh ({
   value,
   symbol,
   lightIntensity = 0.9,
+  holeProps = {},
   onClick,
   type = Type.CapCenter,
   Value,
@@ -316,7 +318,7 @@ export function SquareButtonFresh ({
       style={style}
       className='relative ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
     >
-      <Hole>
+      <Hole {...holeProps}>
         <div className='p-[2px]'>
           <ButtonWrapper
             type={type}
