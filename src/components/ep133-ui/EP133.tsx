@@ -114,7 +114,7 @@ export default function EP133 ({
           value='MAIN'
         >
           <Cap
-            color={Colors.LightGray}
+            color={Colors.Orange}
             value='COMMIT'
           />
         </SquareButton>
@@ -127,7 +127,7 @@ export default function EP133 ({
           value='TEMPO'
         >
           <Cap
-            color={Colors.Gray}
+            color={Colors.DarkGray}
             value='LOOP'
           />
         </SquareButton>
