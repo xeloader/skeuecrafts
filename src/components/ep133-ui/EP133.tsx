@@ -87,26 +87,52 @@ export default function EP133 ({
       </div>
 
       <div className='row-start-[16] col-start-[16] row-span-3 col-span-1'>
-        <div className='grid grid-rows-6 h-full'>
-          <div className='row-start-2 row-span-3 flex items-center justify-center'>
-            <p className='-rotate-90 text-ep133-orange'>GAIN</p>
+        <div className='grid grid-rows-12 grid-cols-4 h-full'>
+          <div className='row-start-1 row-span-3 flex col-[2/-2]'>
+            <div className='w-1/2' />
+            <div className='w-1/2 border-l border-t border-l-ep133-orange border-t-ep133-orange border-l-1 border-t-1' />
+          </div>
+          <div className='row-start-3 col-span-full row-span-6 flex items-center justify-center'>
+            <p className=' -rotate-90 text-ep133-orange'>GAIN</p>
+          </div>
+          <div className='row-start-8 row-span-3 flex col-[2/-2]'>
+            <div className='w-1/2' />
+            <div className='w-1/2 border-l border-b border-l-ep133-orange border-b-ep133-orange border-l-1 border-b-1' />
           </div>
         </div>
       </div>
 
-      <div className='row-start-[14] col-start-[17] col-span-2 flex items-center justify-center'>
-        <p>BPM</p>
+      <div className='row-start-[14] col-start-[12] grid-rows-4 col-span-10 grid grid-cols-44'>
+        <div className='flex flex-col col-[1/25] row-[2/-2]'>
+          <div className='flex-1' />
+          <div className='flex-1 border-l border-t border-l-plastic-black border-t-plastic-black border-l-1 border-t-1' />
+        </div>
+        <div className='col-start-[25] col-span-4 row-span-full flex items-center justify-center'>
+          <p>BPM</p>
+        </div>
+        <div className='flex flex-col col-[29/36] row-[2/-2]'>
+          <div className='flex-1' />
+          <div className='flex-1 border-t border-t-plastic-black border-t-1' />
+        </div>
+        <div className='col-start-[36] col-span-10 row-span-full flex items-center justify-center'>
+          <p>METRONOME</p>
+        </div>
       </div>
       <div className='row-start-[15] row-span-2 col-start-[17] col-span-2'>
         <Knob color={Colors.Orange} />
       </div>
-      <div className='row-start-[14] col-start-[20] col-span-2 flex items-center justify-center'>
-        <p>METRONOME</p>
-      </div>
       <div className='row-start-[16] col-start-[22] row-span-3 col-span-1'>
-        <div className='grid grid-rows-6 h-full'>
-          <div className='row-start-2 row-span-3 flex items-center justify-center'>
+        <div className='grid grid-rows-12 h-full grid-cols-4'>
+          <div className='row-start-1 row-span-3 flex col-[2/-2]'>
+            <div className='w-1/2 border-r border-t border-r-plastic-black border-t-plastic-black border-r-1 border-t-1' />
+            <div className='w-1/2' />
+          </div>
+          <div className='row-start-3 col-span-full row-span-6 flex items-center justify-center'>
             <p className='-rotate-90 text-plastic-black'>SWING</p>
+          </div>
+          <div className='row-start-8 row-span-3 flex col-[2/-2]'>
+            <div className='w-1/2 border-r border-b border-r-plastic-black border-b-plastic-black border-r-1 border-b-1' />
+            <div className='w-1/2' />
           </div>
         </div>
       </div>
