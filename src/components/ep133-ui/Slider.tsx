@@ -35,7 +35,7 @@ export function SliderFresh ({
         orient='vertical'
         type='range'
         list='values'
-        className='w-12 opacity-0 z-20'
+        className='w-12 opacity-0 z-20 h-[125%]'
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChange={handleProgressChange}
@@ -48,17 +48,22 @@ export function SliderFresh ({
           style={{ top: `${100 - value}%` }}
           className='absolute -translate-y-[50%] -translate-x-[50%]'
         >
-          <div
-            className={classNames(
-              'w-11 h-11 bg-[#747272] rounded-full',
-              focused && 'outline-[blue] outline-1 outline'
-            )}
-          />
+          <div className='relative flex items-center justify-center'>
+            <div className='absolute bg-[black]/55 z-100 h-[135%] w-3/4 rounded-full -rotate-60 origin-center blur-[0.5rem] translate-x-3 translate-y-5' />
+            <div
+              className={classNames(
+                'size-12 z-10 relative bg-[#747272] rounded-full shadow-[inset_1px_1px_0px_rgba(255,255,255,0.65),-1px_-1px_1px_rgba(0,0,0,0.1),inset_-1px_-1px_1px_rgba(255,255,255,0.50),inset_-2px_-2px_3px_rgba(0,0,0,0.75),inset_2px_2px_3px_rgba(255,255,255,0.25),2px_2px_2px_rgba(0,0,0,0.15),1px_1px_1px_rgba(0,0,0,0.25)]',
+                focused && 'outline-[black]/50 outline-1 outline'
+              )}
+            >
+              <div className='size-full -translate-x-[1px] -translate-y-[1px] rounded-full shadow-[inset_-1px_-1px_0px_rgba(0,0,0,0.25)]' />
+            </div>
+          </div>
         </div>
       </div>
       <div className='absolute z-0 h-full flex flex-col items-center justify-center'>
-        <div className='w-[4.5rem] h-[1px] bg-plastic-black' />
-        <div className='absolute rounded-full bg-plastic-black shadow-[1px_1px_1px_0.5px_rgba(255,255,255,0.75),inset_0px_30px_30px_rgba(0,0,0,1)] w-3 h-full' />
+        <div className='w-[5rem] h-[1px] bg-plastic-black' />
+        <div className='absolute rounded-full bg-plastic-black shadow-[1px_1px_1px_0.5px_rgba(255,255,255,0.75),inset_0px_30px_30px_rgba(0,0,0,1)] w-4 h-full' />
       </div>
     </div>
   )

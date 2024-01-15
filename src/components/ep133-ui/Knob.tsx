@@ -73,7 +73,7 @@ export function KnobFresh ({
     >
       <div className='relative w-24 h-24 flex flex-col items-center justify-center'>
         <div className='absolute w-full h-full rounded-full bg-black/50 translate-x-1 translate-y-1 blur-[0.25rem]' />
-        <div className='absolute w-full h-full rounded-full bg-ep133-orange/10 -translate-x-1 -translate-y-1 blur-[0.25rem]' />
+        <div className='absolute w-full h-full rounded-full opacity-15 bg-ep133-orange -translate-x-1 -translate-y-1 blur-[0.2rem] mix-blend-plus-lighter' />
         <div className='absolute w-full h-full rounded-full z-10 mix-blend-plus-lighter shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_3px_3px_3px_rgba(255,255,255,0.2),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] bg-gradient-to-br from-white/10' />
         <div className='absolute rounded-full w-full h-full bg-ep133-orange flex flex-col items-center justify-center'>
           <div className='absolute translate-x-3 translate-y-3 rounded-[100%] rotate-45 w-16 h-10 bg-black/25 blur-sm' />

@@ -19,7 +19,7 @@ export function IndicatorFresh ({
           state === 'off' && 'bg-[linear-gradient(135deg,#2D2D2D_0%,#504E4D_100%)]',
           // 'before:bg-[linear-gradient(rgba(0,0,0,0.04)_-38.76%,rgba(0,0,0,0)_100%)]',
           'w-4 h-4 rounded-full',
-          'shadow-[1px_1px_0px_rgba(255,255,255,0.3),-1px_-1px_0px_rgba(0,0,0,0.1)]'
+          'shadow-[1px_1px_0px_rgba(255,255,255,0.3),-1px_-1px_0px_rgba(0,0,0,0.1),inset_1px_1px_0px_rgba(0,0,0,0.15)]'
         )}
       />
       {children != null && <div>{children}</div>}
