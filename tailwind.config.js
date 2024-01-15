@@ -16,6 +16,7 @@ module.exports = {
         '2xs': '0 0.5px 0.2px rgba(0,0,0,0.2)'
       },
       gridTemplateColumns: {
+        14: 'repeat(14, minmax(0, 1fr))',
         20: 'repeat(20, minmax(0, 1fr))',
         22: 'repeat(22, minmax(0, 1fr))'
       },
