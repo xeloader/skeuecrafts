@@ -19,8 +19,14 @@ const CornerCircle = (): JSX.Element => (
 export default function EP133 ({
 }: EP133Props): JSX.Element {
   return (
-    <div className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#B7B4B3] font-ep133'>
-      <div className='grid grid-cols-subgrid row-span-1 col-span-full bg-ep133-gray-light'>
+    <div className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#B7B4B3] font-ep133 pt-4'>
+      <div className='grid grid-cols-4 col-[-4/-2] row-start-1 -translate-y-full h-2/6'>
+        <div
+          style={{ transform: 'translateX(100%)' }}
+          className='col-start-2 col-span-2 w-1/2 h-full rounded-t-1 bg-gradient-to-r from-[#FEA459] via-[#FFC385] via-10% to-ep133-orange to-50% shadow-[inset_0px_-1px_1px_rgba(0,0,0,0.25)]'
+        />
+      </div>
+      <div className='grid grid-cols-subgrid row-start-1 row-span-1 col-span-full bg-ep133-gray-light'>
         <div className='col-start-2 col-span-2 row-span-1 row-start-1'>
           <div className='size-full bg-white/50 text-plastic-black pb-[1px]'>
             <div className='h-full flex items-center justify-center shadow-[inset_-1px_-1px_0_rgba(0,0,0,0.05),0_1px_0_1px_rgba(0,0,0,0.15),inset_1px_1px_1px_rgba(255,255,255,0.5),3px_2px_8px_rgba(0,0,0,0.25)]'>
@@ -93,12 +99,12 @@ export default function EP133 ({
         <Speaker />
       </div>
       <div className='grid grid-cols-subgrid grid-rows-subgrid col-start-1 row-span-6 row-start-8 col-span-full'>
-        <div className='grid grid-cols-subgrid grid-rows-subgrid bg-ep133-dark col-span-full row-span-full shadow-[inset_0px_0.5px_0px_rgba(255,255,255,0.1),0px_-0.5px_0.5px_rgba(0,0,0,0.15),0px_3px_3px_rgba(0,0,0,0.4)]'>
+        <div className='grid grid-cols-subgrid grid-rows-subgrid bg-ep133-dark col-span-full row-span-full shadow-[inset_0px_0.5px_0px_rgba(255,255,255,0.1),0px_-0.5px_0.5px_rgba(0,0,0,0.15),0px_9px_12px_rgba(0,0,0,0.4)]'>
           <div className='col-start-1 row-span-full row-start-1'>
-            <div className='bg-white/5 h-full w-1 shadow-[0.5px_0px_0px_rgba(255,255,255,0.1)]' />
+            <div className='bg-white/5 h-full w-4 shadow-[1px_0px_0px_rgba(255,255,255,0.1)]' />
           </div>
           <div className='-col-start-1 row-span-full flex justify-end'>
-            <div className='bg-white/5 h-full w-1 shadow-[-0.5px_0px_0px_rgba(255,255,255,0.1)]' />
+            <div className='bg-white/5 h-full w-4 shadow-[-1px_0px_0px_rgba(255,255,255,0.1)]' />
           </div>
           <div className='col-[2/-2] row-[2/-2]'>
             <DisplayMatrix className='h-full' />
