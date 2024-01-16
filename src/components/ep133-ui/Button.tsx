@@ -167,11 +167,12 @@ export function BaseButton ({
 }
 
 export function DarkSquareButton ({
+  className,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-ep133-dark from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10'
+      className={classNames(className, 'bg-ep133-dark from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10')}
       frontClassName='bg-ep133-dark'
       valueClassName='text-plastic-white'
       Texture={<div className='group-active/button:bg-[-1px_-1px] w-full h-full bg-texture-noise-dark bg-[length:80%] opacity-10 mix-blend-screen' />}
@@ -181,12 +182,13 @@ export function DarkSquareButton ({
 }
 
 export function OrangeSquareButton ({
+  className,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-ep133-orange from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50'
-      frontClassName='bg-ep133-orange shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_8px_8px_16px_rgba(255,145,0,0.5)] group-active/button:shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_4px_4px_8px_rgba(255,145,0,0.25)]'
+      className={classNames('bg-ep133-orange from-white/25 to-60% to-black/25 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50', className)}
+      frontClassName='bg-ep133-orange shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_1px_1px_2px_rgba(255,255,255,0.25),inset_8px_8px_16px_rgba(255,145,0,0.5)] group-active/button:shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_4px_4px_8px_rgba(255,145,0,0.25)]'
       reflectClassName='bg-ep133-orange'
       valueClassName='text-plastic-white'
       reflected
@@ -198,11 +200,12 @@ export function OrangeSquareButton ({
 const TextureLightButton = <div className='mix-blend-multiply group-active/button:bg-[-1px_-1px] w-full h-full bg-texture-grip-dark bg-[length:50%] opacity-5' />
 
 export function CheeseDoodledButton ({
+  className,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-ep133-gray from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50'
+      className={classNames(className, 'bg-ep133-gray from-white/50 to-60% to-black/50 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.1)] group-active/button:from-white/10 group-active/button:to-black/50')}
       frontClassName='bg-ep133-gray shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.06),inset_0_0_3px_rgba(255,255,255,0.7),inset_8px_8px_16px_rgba(255,145,0,0.5)]'
       valueClassName='text-plastic-white'
       Texture={TextureLightButton}
@@ -212,11 +215,12 @@ export function CheeseDoodledButton ({
 }
 
 export function GraySquareButton ({
+  className,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-ep133-gray from-white from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)]'
+      className={classNames(className, 'bg-ep133-gray from-white from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)]')}
       frontClassName='bg-ep133-gray shadow-[inset_0px_0px_2px_rgba(255,255,255,0.2)]'
       valueClassName='text-plastic-white'
       Texture={TextureLightButton}
@@ -226,11 +230,12 @@ export function GraySquareButton ({
 }
 
 export function DarkGraySquareButton ({
+  className,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-ep133-gray-dark from-white/50 from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)] group-active/button:from-white/30'
+      className={classNames(className, 'bg-ep133-gray-dark from-white/50 from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)] group-active/button:from-white/30')}
       frontClassName='bg-ep133-gray-dark shadow-[inset_-1px_-1px_1px_rgba(0,0,0,0.1),inset_1px_1px_1px_rgba(255,255,255,0.2)]'
       valueClassName='text-plastic-white'
       Texture={<div className='mix-blend-multiply group-active/button:bg-[-1px_-1px] w-full h-full bg-texture-noise-dark bg-[length:50%] opacity-5' />}
@@ -240,11 +245,12 @@ export function DarkGraySquareButton ({
 }
 
 export function LightGraySquareButton ({
+  className,
   ...rootProps
 }: BaseButtonProps): JSX.Element {
   return (
     <BaseButton
-      className='bg-ep133-gray-light from-white from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)]'
+      className={classNames(className, 'bg-ep133-gray-light from-white from-45% to-50% to-black/30 shadow-[inset_2px_2px_2px_rgba(255,255,255,0.25)]')}
       frontClassName='bg-ep133-gray-light shadow-[inset_0px_0px_2px_rgba(255,255,255,0.2)]'
       valueClassName='text-plastic-black'
       Texture={TextureLightButton}
@@ -291,6 +297,7 @@ export interface SquareButtonProps
   Symbol?: JSX.Element
   size?: Size
   holeProps?: HoleProps
+  className?: string
   children?: JSX.Element
 }
 
@@ -304,6 +311,7 @@ export function SquareButtonFresh ({
   type = Type.CapCenter,
   Value,
   Symbol,
+  className,
   children,
   size = Size.Square
 }: SquareButtonProps): JSX.Element {
@@ -323,6 +331,7 @@ export function SquareButtonFresh ({
           <ButtonWrapper
             type={type}
             rootClassName='group/button'
+            className={className}
             sizeClassName={sizeClassName}
             value={_value}
             symbol={_symbol}
