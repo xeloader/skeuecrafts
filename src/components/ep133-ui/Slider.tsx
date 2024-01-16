@@ -26,7 +26,7 @@ export function SliderFresh ({
     }
   }, [userValue])
   return (
-    <div className='relative flex flex-col items-center justify-center h-full'>
+    <div className='relative flex flex-col items-center justify-center h-full group/slider'>
       <datalist id='values' className='opacity-0'>
         <option value='50' label='middle' />
       </datalist>
@@ -35,7 +35,10 @@ export function SliderFresh ({
         orient='vertical'
         type='range'
         list='values'
-        className='w-12 opacity-0 z-20 h-[125%]'
+        className={classNames(
+          'w-12 opacity-0 z-20 h-[125%]',
+          'cursor-grab active:cursor-grabbing'
+        )}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChange={handleProgressChange}
@@ -49,7 +52,12 @@ export function SliderFresh ({
           className='absolute -translate-y-[50%] -translate-x-[50%]'
         >
           <div className='relative flex items-center justify-center'>
-            <div className='absolute bg-[black]/55 z-100 h-[135%] w-3/4 rounded-full -rotate-60 origin-center blur-[0.5rem] translate-x-3 translate-y-5' />
+            <div className={classNames(
+              'absolute bg-[black]/55 z-100 h-[135%] w-3/4 rounded-full -rotate-60 origin-center blur-[0.5rem] translate-x-3 translate-y-5',
+              'transition-all',
+              'group-hover/slider:h-[130%] group-hover/slider:bg-[black]/45'
+            )}
+            />
             <div
               className={classNames(
                 'size-12 z-10 relative bg-[#747272] rounded-full shadow-[inset_1px_1px_0px_rgba(255,255,255,0.65),-1px_-1px_1px_rgba(0,0,0,0.1),inset_-1px_-1px_1px_rgba(255,255,255,0.50),inset_-2px_-2px_3px_rgba(0,0,0,0.75),inset_2px_2px_3px_rgba(255,255,255,0.25),2px_2px_2px_rgba(0,0,0,0.15),1px_1px_1px_rgba(0,0,0,0.25)]',
