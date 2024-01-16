@@ -203,6 +203,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
+          className='cursor-cell'
           value='A'
         />
       </div>
@@ -275,6 +276,18 @@ export default function EP133 ({
       </div>
       <div className='row-start-[20] row-span-1 col-start-[15] col-span-1 flex items-center justify-center'>
         <p>-&gt; FX</p>
+      </div>
+
+      <div className='row-start-[17] col-start-[17] col-span-2'>
+        <div className='flex h-full items-center justify-center text-center text-md'>
+          <p className='bg-ep133-orange rounded-md text-ep133-gray size-5 shadow-[inset_0.5px_0.5px_0px_rgba(255,255,255,0.1),inset_-1px_-1px_0px_rgba(0,0,0,0.05)]'>X</p>
+        </div>
+      </div>
+
+      <div className='row-start-[17] col-start-[20] col-span-2'>
+        <div className='flex h-full items-center justify-center text-center text-md'>
+          <p className='bg-ep133-dark rounded-md text-ep133-gray size-5 shadow-[inset_0.5px_0.5px_0px_rgba(255,255,255,0.1),inset_-1px_-1px_0px_rgba(0,0,0,0.05)]'>Y</p>
+        </div>
       </div>
 
       <div className='row-start-[18] row-span-2 col-start-[17] col-span-2'>

@@ -93,7 +93,7 @@ function DarkKnob (props: KnobProps): JSX.Element {
   return (
     <BaseKnob
       reflectClassName='bg-ep133-dark'
-      baseClassName='bg-ep133-dark'
+      baseClassName='bg-ep133-dark outline outline-1 outline-black/50'
       knobClassName='bg-ep133-dark'
       baseShadowClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] from-white/5'
       knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_-3px_-3px_3px_rgba(0,0,0,0.1),inset_-1px_-1px_0px_rgba(255,255,255,0.1)]'

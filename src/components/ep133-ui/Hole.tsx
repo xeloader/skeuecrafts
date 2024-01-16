@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 
 export interface HoleProps {
-  children?: JSX.Element | JSX.Element[]
+  children?: JSX.Element | JSX.Element[] | Array<JSX.Element | undefined>
   fullShadow?: boolean
 }
 
