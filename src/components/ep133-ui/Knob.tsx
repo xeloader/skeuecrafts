@@ -42,7 +42,7 @@ export function BaseKnob ({
         />
       )}
       <div className={classNames(
-        'absolute w-full h-full rounded-full z-10 mix-blend-plus-lighter bg-gradient-to-br',
+        'absolute w-full h-full rounded-full z-10 bg-gradient-to-br',
         baseShadowClassName
       )}
       />
@@ -58,7 +58,7 @@ export function BaseKnob ({
         />
         <div className='relative w-12 h-12'>
           <div className={classNames(
-            'absolute h-full w-full rounded-full mix-blend-plus-lighter z-10',
+            'absolute h-full w-full rounded-full z-10',
             knobReflectClassName
           )}
           />
@@ -81,8 +81,8 @@ function OrangeKnob (props: KnobProps): JSX.Element {
       reflectClassName='bg-ep133-orange'
       baseClassName='bg-ep133-orange'
       knobClassName='bg-ep133-orange'
-      baseShadowClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_3px_3px_3px_rgba(255,255,255,0.2),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] from-white/10'
-      knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.5),inset_3px_3px_3px_rgba(255,255,255,0.2),inset_-3px_-3px_3px_rgba(0,0,0,0.1),inset_-1px_-1px_0px_rgba(255,255,255,0.1)] bg-gradient-to-br from-white/10'
+      baseShadowClassName='mix-blend-plus-lighter shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_3px_3px_3px_rgba(255,255,255,0.2),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] from-white/10'
+      knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.5),inset_3px_3px_3px_rgba(255,255,255,0.2),inset_-2px_-2px_0px_rgba(0,0,0,0.1),inset_-1px_-1px_0px_rgba(255,255,255,0.1)] bg-gradient-to-br from-white/10'
       reflected
       {...props}
     />
@@ -96,7 +96,7 @@ function DarkKnob (props: KnobProps): JSX.Element {
       baseClassName='bg-ep133-dark outline outline-1 outline-black/50'
       knobClassName='bg-ep133-dark'
       baseShadowClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] from-white/5'
-      knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_-3px_-3px_3px_rgba(0,0,0,0.1),inset_-1px_-1px_0px_rgba(255,255,255,0.1)]'
+      knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.3),inset_-2px_-2px_0px_rgba(0,0,0,0.25),inset_-1px_-1px_0px_rgba(255,255,255,0.1)]'
       {...props}
     />
   )
@@ -108,8 +108,8 @@ function LightKnob (props: KnobProps): JSX.Element {
       reflectClassName='bg-ep133-gray-light'
       baseClassName='bg-ep133-gray-light'
       knobClassName='bg-ep133-gray-light'
-      baseShadowClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.2),inset_3px_3px_3px_rgba(255,255,255,0.05),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] from-white/5'
-      knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.25),inset_3px_3px_3px_rgba(255,255,255,0.05),inset_-3px_-3px_3px_rgba(0,0,0,0.1),inset_-1px_-1px_0px_rgba(255,255,255,0.1)] bg-gradient-to-br from-white/5'
+      baseShadowClassName='shadow-[inset_2px_2px_0px_rgba(255,255,255,0.2),inset_3px_3px_3px_rgba(255,255,255,0.05),inset_-1px_-1px_0px_rgba(255,255,255,0.2)] from-white/5'
+      knobReflectClassName='shadow-[inset_1px_1px_0px_rgba(255,255,255,0.25),inset_3px_3px_3px_rgba(255,255,255,0.05),inset_-2px_-2px_0px_rgba(0,0,0,0.1),inset_-1px_-1px_0px_rgba(255,255,255,0.1)] bg-gradient-to-br from-white/5'
       {...props}
     />
   )
