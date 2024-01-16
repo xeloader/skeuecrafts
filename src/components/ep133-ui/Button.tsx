@@ -70,12 +70,14 @@ export const CapDual = ({
         )}
         >{value}
         </p>
-        <p className={classNames(
-          'self-start leading-none',
-          symbolClassName
-        )}
-        >{symbol}
-        </p>
+        <div className='self-center'>
+          <p className={classNames(
+            'self-start leading-none',
+            symbolClassName
+          )}
+          >{symbol}
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -290,7 +292,7 @@ export interface SquareButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   color?: Colors
   type?: Type
-  value: string
+  value?: string
   symbol?: string
   lightIntensity?: number
   Value?: JSX.Element

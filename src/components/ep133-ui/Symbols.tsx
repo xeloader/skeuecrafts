@@ -28,6 +28,85 @@ const SVGWrapper = ({
   )
 }
 
+interface CustomIconProps {
+  className: string
+}
+
+export const Asterisk = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} fillRule='evenodd' clipRule='evenodd' d='M16.5667 2C16.5667 1.17157 15.8951 0.5 15.0667 0.5C14.2382 0.5 13.5667 1.17157 13.5667 2V11.4453L7.27763 5.15631C6.69185 4.57053 5.7421 4.57053 5.15631 5.15631C4.57053 5.7421 4.57053 6.69185 5.15631 7.27763L11.4453 13.5667H2C1.17157 13.5667 0.5 14.2382 0.5 15.0667C0.5 15.8951 1.17157 16.5667 2 16.5667H11.4453L4.85567 23.1563C4.26988 23.7421 4.26988 24.6918 4.85567 25.2776C5.44145 25.8634 6.3912 25.8634 6.97699 25.2776L13.5667 18.688V28.1333C13.5667 28.9618 14.2382 29.6333 15.0667 29.6333C15.8951 29.6333 16.5667 28.9618 16.5667 28.1333V18.688L23.1563 25.2776C23.7421 25.8634 24.6918 25.8634 25.2776 25.2776C25.8634 24.6918 25.8634 23.7421 25.2776 23.1563L18.688 16.5667H28.1333C28.9618 16.5667 29.6333 15.8951 29.6333 15.0667C29.6333 14.2382 28.9618 13.5667 28.1333 13.5667H18.688L24.977 7.27763C25.5628 6.69185 25.5628 5.7421 24.977 5.15631C24.3912 4.57053 23.4415 4.57053 22.8557 5.15631L16.5667 11.4453V2Z' />
+    </SVGWrapper>
+  )
+}
+
+export const CirclingArrow = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='34' height='30' viewBox='0 0 34 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} d='M19 0.5C18.1716 0.5 17.5 1.17157 17.5 2C17.5 2.82843 18.1716 3.5 19 3.5V0.5ZM2.5 19L1.40948 17.9701L0.436764 19L1.40948 20.0299L2.5 19ZM19 3.5H23.5V0.5H19V3.5ZM23.5 17.5H18V20.5H23.5V17.5ZM18 17.5H2.5V20.5H18V17.5ZM3.59052 20.0299L12.0905 11.0299L9.90948 8.97006L1.40948 17.9701L3.59052 20.0299ZM1.40948 20.0299L9.90948 29.0299L12.0905 26.9701L3.59052 17.9701L1.40948 20.0299ZM30.5 10.5C30.5 14.366 27.366 17.5 23.5 17.5V20.5C29.0228 20.5 33.5 16.0228 33.5 10.5H30.5ZM23.5 3.5C27.366 3.5 30.5 6.63401 30.5 10.5H33.5C33.5 4.97715 29.0228 0.5 23.5 0.5V3.5Z' />
+    </SVGWrapper>
+
+  )
+}
+
+export const OutArrow = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='25' height='31' viewBox='0 0 25 31' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} fillRule='evenodd' clipRule='evenodd' d='M3.00901 14.1099L11.5 6.39083L11.5 18.5V23.5C11.5 24.3284 12.1716 25 13 25C13.8284 25 14.5 24.3284 14.5 23.5V18.5L14.5 6.39083L22.991 14.1099L25.009 11.8901L14.009 1.89009L13 0.972808L11.991 1.89009L0.990991 11.8901L3.00901 14.1099ZM1.5 28C0.671573 28 0 28.6716 0 29.5C0 30.3284 0.671573 31 1.5 31H23.5C24.3284 31 25 30.3284 25 29.5C25 28.6716 24.3284 28 23.5 28H1.5Z' />
+    </SVGWrapper>
+
+  )
+}
+
+export const InArrow = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='25' height='30' viewBox='0 0 25 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} fillRule='evenodd' clipRule='evenodd' d='M3.00901 10.8901L11.5 18.6092L11.5 6.5V1.5C11.5 0.671574 12.1716 5.96046e-08 13 0C13.8284 -5.96046e-08 14.5 0.671574 14.5 1.5V6.5L14.5 18.6092L22.991 10.8901L25.009 13.1099L14.009 23.1099L13 24.0272L11.991 23.1099L0.990991 13.1099L3.00901 10.8901ZM1.5 26.5C0.671573 26.5 0 27.1716 0 28C0 28.8284 0.671573 29.5 1.5 29.5H23.5C24.3284 29.5 25 28.8284 25 28C25 27.1716 24.3284 26.5 23.5 26.5H1.5Z' />
+    </SVGWrapper>
+
+  )
+}
+
+export const RightArrow = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='23' height='24' viewBox='0 0 23 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} fillRule='evenodd' clipRule='evenodd' d='M18.7394 13.0107L10.2601 22.338L11.7399 23.6833L21.7399 12.6833L22.3515 12.0107L21.7399 11.338L11.7399 0.338004L10.2601 1.68335L18.7394 11.0107L5.5 11.0107L0.499999 11.0107L0.5 13.0107L5.5 13.0107L18.7394 13.0107Z' fill='black' />
+    </SVGWrapper>
+
+  )
+}
+
+export const MinusSymbol = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='48' height='4' viewBox='0 0 48 4' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} d='M48 2.14186e-06L48 4L0 4L1.71277e-07 0L48 2.14186e-06Z' />
+    </SVGWrapper>
+  )
+}
+
+export const PlusSymbol = ({
+  className
+}: CustomIconProps): JSX.Element => {
+  return (
+    <SVGWrapper width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <path className={className} fillRule='evenodd' clipRule='evenodd' d='M26 0H22V22H0V26H22V48H26V26H48V22H26V0Z' />
+    </SVGWrapper>
+
+  )
+}
+
 export const Timer = (
   <SVGWrapper width='64' height='64' viewBox='0 0 64 64' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <circle cx='32.5' cy='39.5' r='22' fill='black' />

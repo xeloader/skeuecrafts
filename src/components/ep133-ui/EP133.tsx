@@ -8,6 +8,7 @@ import { Size, SquareButtonFresh as SquareButton, Type } from './Button'
 import Cap from './Cap'
 import { Colors } from '@/types'
 import { IndicatorFresh as Indicator } from './Indicator'
+import { Asterisk, CirclingArrow, InArrow, MinusSymbol, OutArrow, PlusSymbol, RightArrow } from './Symbols'
 
 export interface EP133Props {
 }
@@ -229,6 +230,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
+          Symbol={<div className='size-4'><Asterisk className='fill-plastic-white' /></div>}
           className='cursor-cell'
           value='A'
         />
@@ -277,7 +279,7 @@ export default function EP133 ({
       <div className='row-start-[20] row-span-1 col-start-[11] col-span-1 flex items-center justify-center'>
         <Indicator state='on' />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[12] col-span-1 flex items-center justify-center'>
+      <div className='row-start-[20] row-span-1 col-start-[12] col-span-1 flex items-center justify-start'>
         <p>HPF</p>
       </div>
 
@@ -300,8 +302,13 @@ export default function EP133 ({
       <div className='row-start-[20] row-span-1 col-start-[14] col-span-1 flex items-center justify-center'>
         <Indicator state='off' />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[15] col-span-1 flex items-center justify-center'>
-        <p>-&gt; FX</p>
+      <div className='row-start-[20] row-span-1 col-start-[15] col-span-1 flex items-center justify-start'>
+        <div className='flex items-baseline gap-1'>
+          <div className='h-3'>
+            <RightArrow className='fill-plastic-black' />
+          </div>
+          <p className='leading-none'>FX</p>
+        </div>
       </div>
 
       <div className='row-start-[17] col-start-[17] col-span-2'>
@@ -433,7 +440,7 @@ export default function EP133 ({
           color={Colors.LightGray}
           size={Size.Square}
           type={Type.CapCenter}
-          value='-'
+          Value={<div className='size-6'><MinusSymbol className='fill-plastic-black' /></div>}
         />
       </div>
 
@@ -442,7 +449,7 @@ export default function EP133 ({
           color={Colors.LightGray}
           size={Size.Square}
           type={Type.CapCenter}
-          value='+'
+          Value={<div className='size-7'><PlusSymbol className='fill-plastic-black' /></div>}
         />
       </div>
 
@@ -529,7 +536,7 @@ export default function EP133 ({
           color={Colors.Dark}
           size={Size.Square}
           type={Type.CapDual}
-          value='·'
+          Value={<div className='bg-white/90 rounded-full size-[0.4rem] mt-2' />}
         />
       </div>
       <div className='row-start-[27] row-span-2 col-start-[11] col-span-2'>
@@ -557,6 +564,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
+          Symbol={<div className='w-4'><CirclingArrow className='fill-plastic-white' /></div>}
           value='B'
         />
       </div>
@@ -568,6 +576,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
+          Symbol={<div className='w-4'><OutArrow className='fill-plastic-white' /></div>}
           value='C'
         />
       </div>
@@ -579,6 +588,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
+          Symbol={<div className='w-4'><InArrow className='fill-plastic-white' /></div>}
           value='D'
         />
       </div>

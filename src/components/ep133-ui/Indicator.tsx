@@ -7,22 +7,20 @@ export interface IndicatorFreshProps {
 }
 
 export function IndicatorFresh ({
-  state = 'off',
-  children
+  state = 'off'
 }: IndicatorFreshProps): JSX.Element {
   return (
-    <div className='flex flex-row gap-6 items-center text-xl font-ep133'>
+    <div className='flex flex-row items-center text-xl font-ep133'>
       <div
         className={classNames(
           'transition-all',
           state === 'on' && 'bg-[radial-gradient(circle_at_60%_60%,rgb(255,119,47)_0%,rgb(234,43,7)_65%)]',
           state === 'off' && 'bg-[linear-gradient(135deg,#2D2D2D_0%,#504E4D_100%)]',
           // 'before:bg-[linear-gradient(rgba(0,0,0,0.04)_-38.76%,rgba(0,0,0,0)_100%)]',
-          'w-4 h-4 rounded-full',
+          'size-4 rounded-full',
           'shadow-[1px_1px_0px_rgba(255,255,255,0.3),-1px_-1px_0px_rgba(0,0,0,0.1),inset_1px_1px_0px_rgba(0,0,0,0.15)]'
         )}
       />
-      {children != null && <div>{children}</div>}
     </div>
   )
 }
