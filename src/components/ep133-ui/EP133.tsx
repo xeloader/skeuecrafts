@@ -22,28 +22,48 @@ export default function EP133 ({
     <div className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#B7B4B3] font-ep133'>
       <div className='grid grid-cols-subgrid row-span-1 col-span-full bg-ep133-gray-light'>
         <div className='col-start-2 col-span-2 row-span-1 row-start-1'>
-          <div className='size-full bg-white/50'>
-            <p>OUTPUT</p>
+          <div className='size-full bg-white/50 text-plastic-black pb-[1px]'>
+            <div className='h-full flex items-center justify-center shadow-[inset_-1px_-1px_0_rgba(0,0,0,0.05),0_1px_0_1px_rgba(0,0,0,0.15),inset_1px_1px_1px_rgba(255,255,255,0.5),3px_2px_8px_rgba(0,0,0,0.25)]'>
+              <p>OUTPUT</p>
+            </div>
           </div>
         </div>
-        <div className='col-start-6 col-span-2 row-span-1 row-start-1'>
-          <div className='size-full text-white bg-ep133-orange'>
-            <p>INPUT</p>
+        <div className='col-start-6 col-span-2 row-span-1 row-start-1]'>
+          <div className='size-full bg-ep133-orange text-plastic-white pb-[1px]'>
+            <div className='h-full flex items-center justify-center shadow-[inset_8px_8px_16px_rgba(255,145,0,0.5),inset_-1px_-1px_0_rgba(0,0,0,0.05),0_1px_0_1px_rgba(0,0,0,0.15),inset_1px_1px_1px_rgba(255,255,255,0.5),3px_2px_8px_rgba(0,0,0,0.25)]'>
+              <p>INPUT</p>
+            </div>
           </div>
         </div>
-        <div className='col-start-9 col-span-5 row-span-1 row-start-1 grid grid-cols-subgrid bg-black text-white'>
-          <div className='col-start-2'>
-            <p>SYNC</p>
-          </div>
-          <div className='col-start-4'>
-            <p>MIDI</p>
+        <div className='col-start-9 col-span-5 grid grid-cols-subgrid grid-rows-subgrid row-span-1 row-start-1'>
+          <div className='col-span-full grid grid-cols-subgrid grid-rows-subgrid bg-gradient-to-b bg-black from-white/10 to-100% text-white shadow-[inset_-1px_-1px_0_rgba(0,0,0,0.05),0_1px_0_1px_rgba(0,0,0,0.15),inset_1px_1px_1px_rgba(255,255,255,0.5),3px_2px_8px_rgba(0,0,0,0.25)]'>
+            <div className='col-span-2 flex items-start justify-center text-[0.5rem] pt-1'>I</div>
+            <div className='col-start-2 col-span-2 flex items-start justify-center text-[0.5rem] pt-1'>O</div>
+            <div className='col-start-2'>
+              <div className='h-full flex items-center justify-center'>
+                <p>SYNC</p>
+              </div>
+            </div>
+            <div className='col-start-3 col-span-2 flex items-start justify-center text-[0.5rem] pt-1'>I</div>
+            <div className='col-start-4 col-span-2 flex items-start justify-center text-[0.5rem] pt-1'>O</div>
+            <div className='col-start-4'>
+              <div className='h-full flex items-center justify-center'>
+                <p>MIDI</p>
+              </div>
+            </div>
           </div>
         </div>
-        <div className='col-start-[17] col-span-2 row-span-1 row-start-1 bg-black/50 text-white'>
-          <p>USB</p>
+        <div className='col-start-[17] col-span-2 row-span-1 row-start-1'>
+          <div className='size-full bg-ep133-gray-dark text-plastic-white pb-[1px]'>
+            <div className='h-full flex items-center justify-center shadow-[inset_-1px_-1px_0_rgba(0,0,0,0.05),0_1px_0_1px_rgba(0,0,0,0.25),inset_1px_1px_1px_rgba(255,255,255,0.5),3px_2px_8px_rgba(0,0,0,0.25)]'>
+              <p>USB</p>
+            </div>
+          </div>
         </div>
         <div className='col-start-[20] col-span-2 row-span-1 row-start-1'>
-          <p>POWER</p>
+          <div className='h-full flex items-center justify-center'>
+            <p>POWER</p>
+          </div>
         </div>
       </div>
       <div className='grid grid-rows-subgrid grid-cols-subgrid row-span-6 row-start-2 col-[1/-8] bg-[#EBE7E5] shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]'>
