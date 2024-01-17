@@ -14,8 +14,8 @@ export function SliderFresh ({
   const [value, setValue] = useState<number>(50)
   const [focused, setFocused] = useState<boolean>(false)
   const handleProgressChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value)
     if (userValue == null) {
-      const value = Number(event.target.value)
       setValue(value)
     }
     onChange?.(value)
@@ -34,6 +34,7 @@ export function SliderFresh ({
         ref={inputRef}
         orient='vertical'
         type='range'
+        value={value}
         list='values'
         className={classNames(
           'w-12 opacity-0 z-20 h-[125%]',
