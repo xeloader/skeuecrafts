@@ -3,12 +3,13 @@ import SegmentDisplay from './SegmentDisplay'
 import classNames from 'classnames'
 import { SVGWrapperProps } from './Symbols'
 
+export interface IconStates { [key: number]: DisplayIconState }
 export interface IconSet { [key: number]: GridIcon }
 export interface DisplayMatrixProps {
   value?: string
   dotValue?: string
   iconSet: IconSet
-  iconMeta?: { [key: number]: DisplayIconState }
+  iconMeta?: IconStates
   className?: string
 }
 

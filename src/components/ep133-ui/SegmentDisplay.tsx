@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 
 enum SegmentValue {
   One = '1',

@@ -1,9 +1,8 @@
 import React, { FunctionComponent } from 'react'
 
 import classNames from 'classnames'
-import { Colors } from '@/types'
+import { Colors } from '../../types'
 import Hole, { HoleProps } from './Hole'
-import { colorStyles } from '@/constants/ep133'
 
 export enum Type {
   CapDual = 'cap-dual',

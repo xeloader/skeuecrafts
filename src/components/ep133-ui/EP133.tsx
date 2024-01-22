@@ -5,7 +5,7 @@ import Knob from './Knob'
 import Speaker from './Speaker'
 import { Size, SquareButtonFresh as SquareButton, Type } from './Button'
 import Cap from './Cap'
-import { Colors } from '@/types'
+import { Colors } from '../../types'
 import { IndicatorFresh as Indicator } from './Indicator'
 import { Asterisk, CirclingArrow, InArrow, MinusSymbol, OutArrow, PlusSymbol, RightArrow } from './Symbols'
 import * as Symbol from './Symbols'
@@ -147,7 +147,7 @@ export enum Icon {
   Boxer
 }
 
-const Icons: IconSet = {
+export const EP133Icons: IconSet = {
   [Icon.Battery]: { Symbol: Symbol.Battery, col: 1, row: 1 },
   [Icon.HighestFade]: { Symbol: Symbol.HighestFade, col: 2, row: 1 },
   [Icon.AButton]: { Symbol: Symbol.AButton, col: 3, row: 1 },
@@ -264,7 +264,10 @@ export default function EP133 ({
   displayValue,
   displayDotValue,
   onButtonClick,
-  onBrickClick
+  onBrickClick,
+  title,
+  subtitle,
+  bottomTitle
 }: EP133Props): JSX.Element {
   const handleButtonClick = useCallback((button: ButtonId) => {
     return () => {
@@ -350,13 +353,13 @@ export default function EP133 ({
           <CornerCircle />
         </div>
         <div className='col-start-2 row-start-2 col-span-full flex items-center'>
-          <p className='text-6xl leading-none'>K.O.II</p>
+          <p className='text-6xl leading-none'>{title ?? 'K.O.II'}</p>
         </div>
         <div className='col-start-2 row-start-3 col-span-full flex items-center'>
-          <p className='text-ep133-orange text-3xl'>サンプラー</p>
+          <p className='text-ep133-orange text-3xl'>{subtitle ?? 'サンプラー'}</p>
         </div>
         <div className='col-start-2 row-[-1/-2] col-span-full flex items-center'>
-          <p className='text-3xl'>64 MB SAMPLER COMPOSER</p>
+          <p className='text-3xl'>{bottomTitle ?? '64 MB SAMPLER COMPOSER'}</p>
         </div>
       </div>
       <div className='col-[-8/-1] row-span-6 row-start-2' onClick={handleBrickClick(BrickId.SpeakerGrid)}>
@@ -374,7 +377,7 @@ export default function EP133 ({
             <DisplayMatrix
               value={displayValue}
               dotValue={displayDotValue}
-              iconSet={Icons}
+              iconSet={EP133Icons}
               iconMeta={icons}
               className='h-full'
             />

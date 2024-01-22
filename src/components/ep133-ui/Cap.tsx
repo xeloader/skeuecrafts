@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { Colors } from '@/types'
+import { Colors } from '../../types'
 import classNames from 'classnames'
 
 interface CapProps {
