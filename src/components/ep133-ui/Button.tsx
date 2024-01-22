@@ -345,39 +345,3 @@ export function SquareButtonFresh ({
     </div>
   )
 }
-
-export function SquareButton ({
-  color = Colors.Dark,
-  value,
-  symbol,
-  lightIntensity = 0.9,
-  onClick,
-  type = Type.CapCenter,
-  children,
-  size = Size.Square
-}: SquareButtonProps): JSX.Element {
-  const styles = colorStyles?.[color] ?? colorStyles[Colors.Dark]
-  return (
-    <button
-      className='size-full aspect-square grid grid-cols-2 grid-rows-2'
-      style={{ backgroundColor: styles?.baseColor, color: styles?.textColor }}
-    >
-      {type === Type.CapDual && (
-        <>
-          <p>{value}</p>
-          <p className='row-start-2'>{symbol}</p>
-        </>
-      )}
-      {type === Type.CapCenter && (
-        <div className='flex items-center justify-center row-span-full col-span-full'>
-          <p>{value}</p>
-        </div>
-      )}
-      {type === Type.CapText && (
-        <div className='flex items-center justify-center col-span-full'>
-          <p>{value}</p>
-        </div>
-      )}
-    </button>
-  )
-}
