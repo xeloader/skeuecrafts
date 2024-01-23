@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react'
 import classNames from 'classnames'
 import { Colors } from '../../types'
 import Hole, { HoleProps } from './Hole'
+import useHoldButton from '../../hooks/useHoldButton'
 
 export enum Type {
   CapDual = 'cap-dual',
@@ -85,6 +86,7 @@ export const CapDual = ({
 interface BaseButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   shadow?: boolean
+  onHold?: () => void
   reflected?: boolean
   className?: string
   frontClassName?: string
@@ -111,13 +113,19 @@ export function BaseButton ({
   frontClassName,
   valueClassName,
   sizeClassName = 'h-24 w-24',
-  onClick
+  onClick,
+  onHold
 }: BaseButtonProps): JSX.Element {
+  const { onMouseUp, onMouseDown } = useHoldButton(() => onHold?.(), 500)
+
   return (
-    <div className={classNames(
-      'relative [&_*]:transition-all [&_*]:duration-100',
-      rootClassName
-    )}
+    <div
+      className={classNames(
+        'relative [&_*]:transition-all [&_*]:duration-100',
+        rootClassName
+      )}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
     >
       {shadow && <div className='absolute w-full h-full bg-black z-0 rounded-2 opacity-50 group-hover/button:opacity-30 group-hover/button:-bottom-1.5 group-hover/button:-right-1.5 group-hover/button:blur-[0.4rem] -bottom-2 -right-2 blur-[0.3rem] group-active/button:opacity-0 group-active/button:blur-[0.1rem]' />}
       {reflected && (
@@ -289,6 +297,7 @@ function classNameForSize (size: Size): string {
 
 export interface SquareButtonProps
   extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
+  onHold?: () => void
   color?: Colors
   type?: Type
   value?: string
@@ -309,6 +318,7 @@ export function SquareButtonFresh ({
   lightIntensity = 0.9,
   holeProps = {},
   onClick,
+  onHold,
   type = Type.CapCenter,
   Value,
   Symbol,
@@ -331,6 +341,7 @@ export function SquareButtonFresh ({
         <div className='p-[2px]'>
           <ButtonWrapper
             type={type}
+            onHold={onHold}
             rootClassName='group/button'
             className={className}
             sizeClassName={sizeClassName}

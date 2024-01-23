@@ -14,7 +14,7 @@ interface ButtonState {
   active: boolean
 }
 
-enum BrickId {
+export enum BrickId {
   Output,
   Input,
   Sync,
@@ -24,7 +24,7 @@ enum BrickId {
   BatteryCover
 }
 
-enum ButtonId {
+export enum ButtonId {
   Sound,
   Main,
   Tempo,
@@ -245,6 +245,7 @@ export interface EP133Props {
   displayValue: string
   displayDotValue: string
   onBrickClick?: (brick: BrickId) => void
+  onButtonHold: (button: ButtonId) => void
 }
 
 const CornerCircle = (): JSX.Element => (
@@ -267,11 +268,17 @@ export default function EP133 ({
   onBrickClick,
   title,
   subtitle,
-  bottomTitle
+  bottomTitle,
+  onButtonHold
 }: EP133Props): JSX.Element {
   const handleButtonClick = useCallback((button: ButtonId) => {
     return () => {
       onButtonClick?.(button)
+    }
+  }, [onButtonClick])
+  const handleButtonHold = useCallback((button: ButtonId) => {
+    return () => {
+      onButtonHold?.(button)
     }
   }, [onButtonClick])
   const handleBrickClick = useCallback((brick: BrickId) => {
@@ -281,8 +288,9 @@ export default function EP133 ({
   }, [onBrickClick])
   return (
     <div
-      className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] bg-[#B7B4B3] font-ep133 pt-4'
+      className='grid grid-rows-30 grid-cols-22 h-[1520px] w-[1100px] font-ep133 pt-4'
     >
+      <div className='col-span-full row-span-full bg-[#B7B4B3]' />
       <div className='grid grid-cols-4 col-[-4/-2] row-start-1 -translate-y-full h-2/6'>
         <div
           onClick={() => onPowerClick?.(!poweredOn)}
@@ -462,6 +470,7 @@ export default function EP133 ({
           type={Type.CapText}
           holeProps={{ fullShadow: true }}
           onClick={handleButtonClick(ButtonId.Sound)}
+          onHold={handleButtonHold(ButtonId.Sound)}
           value='SOUND'
         >
           <Cap
@@ -477,6 +486,7 @@ export default function EP133 ({
           type={Type.CapText}
           holeProps={{ fullShadow: true }}
           onClick={handleButtonClick(ButtonId.Main)}
+          onHold={handleButtonHold(ButtonId.Main)}
           value='MAIN'
         >
           <Cap
@@ -492,6 +502,7 @@ export default function EP133 ({
           type={Type.CapText}
           holeProps={{ fullShadow: true }}
           onClick={handleButtonClick(ButtonId.Tempo)}
+          onHold={handleButtonHold(ButtonId.Tempo)}
           value='TEMPO'
         >
           <Cap
