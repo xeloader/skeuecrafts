@@ -1,5 +1,6 @@
+import useInterval from '../../../hooks/useInterval'
 import { IconStates } from '../../../components/ep133-ui/DisplayMatrix'
-import EP133, { ButtonId, Icon } from '../../../components/ep133-ui/EP133'
+import EP133, { ButtonId, Icon, IndicatorId, IndicatorStates } from '../../../components/ep133-ui/EP133'
 import React, { useCallback, useMemo, useReducer, useState } from 'react'
 interface Sound {
   id: number
@@ -8,6 +9,9 @@ interface Sound {
 interface SoundBank {
   [key: number]: Sound
 }
+
+type DisplayType = string |
+((frame: number, { state }: { state: EP133State }) => string)
 
 interface EP133State {
   gridMode: 'quantised' | 'tics'
@@ -20,28 +24,87 @@ interface EP133State {
   poweredOn: boolean
   project: number
   projectSounds: { [key: number]: SoundBank }
-  displayValue: string
-  displayDots: string
+  displayValue: DisplayType
+  displayDots: DisplayType
   buttonHistory: ButtonId[]
   inputBuffer: string
   expectingInput: boolean
+  indicators: IndicatorStates
+  currentBank: 0 | 1 | 2 | 3
 }
 
 enum View {
   BPM,
   Sound,
+  SoundEdit,
+  EditSound,
   Edit,
   Main,
-  Timing,
+  Time,
   FX,
-  Tempo
+  Tempo,
+  Trim,
+  Envelope,
+  MIDI,
+  Group,
+  Erase
 }
+
+enum Parameter {
+  Pan,
+  PlayMode,
+  StartingPoint,
+  EndPoint,
+  TimeStretchMode
+}
+
+enum Value {
+  OneShot,
+  Key,
+  Legato
+}
+
+const parameters = [
+  { id: Parameter.Pan, title: 'PAN', values: [-100, 100] },
+  { id: Parameter.PlayMode, options: [{ title: 'ONE' }, { title: 'KEY' }, { title: 'LEG' }] },
+  { id: Parameter.TimeStretchMode, options: [{ title: 'BPM' }, { title: 'BAR' }] }
+]
+
+const Views = [
+  { id: View.Sound },
+  {
+    id: View.SoundEdit,
+    title: 'SND',
+    icons: { [Icon.Sound]: { glow: 1 } },
+    children: [
+      View.EditSound,
+      View.Trim,
+      View.Envelope,
+      View.Time,
+      View.MIDI,
+      View.Group
+    ]
+  },
+  {
+    id: View.Main,
+    icons: { [Icon.Main]: { glow: 1 } }
+  },
+  { id: View.EditSound, title: 'SND', icons: { [Icon.Note]: { glow: 1 } } },
+  { id: View.Trim, title: 'TRI', icons: { [Icon.Trim]: { glow: 1 } } },
+  { id: View.Envelope, title: 'ENV', icons: { [Icon.Envelope]: { glow: 1 } } },
+  { id: View.Time, title: 'TIM', icons: { [Icon.Rabbit]: { glow: 1 } } },
+  { id: View.MIDI, title: 'MID', icons: { [Icon.MIDI]: { glow: 1 } } },
+  { id: View.Group, title: 'GRP', icons: { [Icon.Mute]: { glow: 1 } } },
+  { id: View.Erase, icons: { [Icon.Erase]: { glow: 1 } } }
+]
 
 enum EP133ActionKind {
   BPM,
   SET_VIEW,
   ADD_BUTTON,
-  SET_STATE
+  SET_STATE,
+  POWER,
+  SET_INDICATOR
 }
 
 interface EP133Action {
@@ -63,6 +126,17 @@ interface AddButtonAction extends EP133Action {
   button: ButtonId
 }
 
+interface ManagePowerAction extends EP133Action {
+  type: EP133ActionKind.POWER
+  state: boolean
+}
+
+interface SetIndicatorAction extends EP133Action {
+  type: EP133ActionKind.SET_INDICATOR
+  indicator: IndicatorId
+  state: boolean
+}
+
 interface SetStateAction extends EP133Action {
   type: EP133ActionKind.SET_STATE
   state: Partial<EP133State>
@@ -70,10 +144,12 @@ interface SetStateAction extends EP133Action {
 
 const initState: EP133State = {
   view: View.Main,
+  indicators: { [IndicatorId.ABank]: { state: true } },
   gridMode: 'quantised',
   displayValue: '111',
   buttonHistory: [],
   displayDots: '..',
+  currentBank: 0,
   project: 1,
   shift: false,
   userInput: false,
@@ -87,6 +163,7 @@ const initState: EP133State = {
 }
 
 const reducer = (state: EP133State, action: EP133Action): EP133State => {
+  let _action
   switch (action.type) {
     case EP133ActionKind.BPM:
       return {
@@ -111,41 +188,48 @@ const reducer = (state: EP133State, action: EP133Action): EP133State => {
         ...state,
         ...(action as SetStateAction).state
       }
+    case EP133ActionKind.SET_INDICATOR:
+      _action = action as SetIndicatorAction
+      return {
+        ...state,
+        indicators: {
+          ...state.indicators,
+          [_action.indicator]: { state: _action.state }
+        }
+      }
+    case EP133ActionKind.POWER:
+      _action = action as ManagePowerAction
+      if (_action.state) {
+        return initState
+      } else {
+        return {
+          ...state,
+          poweredOn: _action.state,
+          displayValue: '',
+          displayDots: '',
+          indicators: {}
+        }
+      }
     default:
       return state
   }
 }
 
-const SubViews = {
-  BPM: []
+const soundPads = [ButtonId.Digit0, ButtonId.Digit1, ButtonId.Digit2, ButtonId.Digit3, ButtonId.Digit4, ButtonId.Digit5, ButtonId.Digit6, ButtonId.Digit7, ButtonId.Digit8, ButtonId.Digit9, ButtonId.Dot, ButtonId.Enter]
+const numberPads = [ButtonId.Digit0, ButtonId.Digit1, ButtonId.Digit2, ButtonId.Digit3, ButtonId.Digit4, ButtonId.Digit5, ButtonId.Digit6, ButtonId.Digit7, ButtonId.Digit8, ButtonId.Digit9]
+const bankButtons = [ButtonId.ABank, ButtonId.BBank, ButtonId.CBank, ButtonId.DBank]
+const bankToIndicator: { [key in ButtonId]?: IndicatorId } = {
+  [ButtonId.ABank]: IndicatorId.ABank,
+  [ButtonId.BBank]: IndicatorId.BBank,
+  [ButtonId.CBank]: IndicatorId.CBank,
+  [ButtonId.DBank]: IndicatorId.DBank
 }
 
 function isSoundPad (button: ButtonId): boolean {
-  return button === ButtonId.Digit0 ||
-    button === ButtonId.Digit1 ||
-    button === ButtonId.Digit2 ||
-    button === ButtonId.Digit3 ||
-    button === ButtonId.Digit4 ||
-    button === ButtonId.Digit5 ||
-    button === ButtonId.Digit6 ||
-    button === ButtonId.Digit7 ||
-    button === ButtonId.Digit8 ||
-    button === ButtonId.Digit9 ||
-    button === ButtonId.Dot ||
-    button === ButtonId.Enter
+  return soundPads.includes(button)
 }
-
 function isInputButton (button: ButtonId, includeDot: boolean = false): boolean {
-  return button === ButtonId.Digit0 ||
-    button === ButtonId.Digit1 ||
-    button === ButtonId.Digit2 ||
-    button === ButtonId.Digit3 ||
-    button === ButtonId.Digit4 ||
-    button === ButtonId.Digit5 ||
-    button === ButtonId.Digit6 ||
-    button === ButtonId.Digit7 ||
-    button === ButtonId.Digit8 ||
-    button === ButtonId.Digit9 ||
+  return numberPads.includes(button) ||
     (includeDot && button === ButtonId.Dot)
 }
 
@@ -166,10 +250,40 @@ function valueOfButton (button: ButtonId): string {
   }
 }
 
+function isBankButton (button: ButtonId): boolean {
+  return bankButtons.includes(button)
+}
+
+function indicatorForButton (button: ButtonId): IndicatorId {
+  if (bankToIndicator[button] != null) {
+    return bankToIndicator[button] as IndicatorId
+  }
+  throw Error('NO BANK MAPPED')
+}
+
+const bankToIcon: { [key: number]: Icon } = {
+  0: Icon.AButton,
+  1: Icon.BButton,
+  2: Icon.CButton,
+  3: Icon.DButton
+}
+
+const buttonToBank: { [key: number]: number } = {
+  [ButtonId.ABank]: 0,
+  [ButtonId.BBank]: 1,
+  [ButtonId.CBank]: 2,
+  [ButtonId.DBank]: 3
+}
+
 export default function EP133Page (): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initState)
+  const [frame, setFrame] = useState<number>(0)
+  useInterval(() => {
+    setFrame(frame => frame + 1)
+  }, 250)
   const icons = useMemo<IconStates>(() => {
     const display: IconStates = {}
+    if (!state.poweredOn) return display
     if (state.view === View.Main) {
       display[Icon.Tic] = { glow: state.gridMode === 'tics' ? 1 : 0 }
       display[Icon.Bar] = { glow: state.gridMode === 'quantised' ? 1 : 0 }
@@ -179,12 +293,16 @@ export default function EP133Page (): JSX.Element {
     } else if (state.view === View.Tempo) {
       display[Icon.Tempo] = { glow: 1 }
     }
+    for (let i = 0; i < 4; i++) {
+      display[bankToIcon[i]] = { glow: state.currentBank === i ? 1 : 0 }
+    }
     if (state.userInput) {
       display[Icon.Finger] = { glow: 1 }
     }
     return display
   }, [state])
   const handleButtonClick = useCallback((button: ButtonId) => {
+    if (!state.poweredOn) return
     if (state.userInput && isInputButton(button)) {
       const value = valueOfButton(button)
       const action: SetStateAction = {
@@ -203,6 +321,22 @@ export default function EP133Page (): JSX.Element {
         dispatch(action)
       }
     }
+    if (isBankButton(button)) {
+      dispatch({ // eslint-disable-line
+        type: EP133ActionKind.SET_STATE,
+        state: {
+          currentBank: buttonToBank[button]
+        }
+      } as SetStateAction)
+      for (let i = 0; i < bankButtons.length; i++) {
+        const bankButton = bankButtons[i]
+        dispatch({ // eslint-disable-line
+          type: EP133ActionKind.SET_INDICATOR,
+          indicator: indicatorForButton(bankButton),
+          state: bankButton === button
+        } as SetIndicatorAction)
+      }
+    }
     if (button === ButtonId.Sound) {
       const action: SetViewAction = { type: EP133ActionKind.SET_VIEW, view: View.Sound }
       dispatch(action)
@@ -217,12 +351,22 @@ export default function EP133Page (): JSX.Element {
     dispatch(action)
   }, [state])
 
+  const handlePower = useCallback((newState: boolean) => {
+    const action: ManagePowerAction = {
+      type: EP133ActionKind.POWER,
+      state: newState
+    }
+    dispatch(action)
+  }, [])
+
   const handleButtonHold = useCallback((button: ButtonId) => {
+    if (!state.poweredOn) return
     if (button === ButtonId.Sound) {
       const action: SetStateAction = {
         type: EP133ActionKind.SET_STATE,
         state: {
           userInput: true,
+          displayValue: (idx, { state }) => ('___' + state.inputBuffer).slice(-3),
           view: View.Sound
         }
       }
@@ -230,15 +374,18 @@ export default function EP133Page (): JSX.Element {
     }
     const action: AddButtonAction = { type: EP133ActionKind.ADD_BUTTON, button }
     dispatch(action)
-  }, [])
+  }, [state])
 
   const [displayValue, displayDots] = useMemo<[string, string]>(() => {
-    if (state.userInput) {
-      return [state.inputBuffer, '']
-    } else {
-      return [state.displayValue, state.displayDots]
-    }
-  }, [state])
+    if (!state.poweredOn) return ['', '']
+    const displayValue = typeof (state.displayValue) === 'function'
+      ? state.displayValue(frame, { state })
+      : state.displayValue
+    const displayDots = typeof (state.displayDots) === 'function'
+      ? state.displayDots(frame, { state })
+      : state.displayDots
+    return [displayValue, displayDots]
+  }, [state, frame])
   return (
     <div className='p-4'>
       <div className='flex flex-row justify-center items-center'>
@@ -250,6 +397,8 @@ export default function EP133Page (): JSX.Element {
             onButtonClick={handleButtonClick}
             onButtonHold={handleButtonHold}
             poweredOn={state.poweredOn}
+            onPowerClick={handlePower}
+            indicators={state.poweredOn ? state.indicators : {}}
           />
         </div>
       </div>

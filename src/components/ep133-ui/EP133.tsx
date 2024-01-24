@@ -57,7 +57,7 @@ export enum ButtonId {
   Digit9
 }
 
-enum IndicatorId {
+export enum IndicatorId {
   ABank,
   BBank,
   CBank,
@@ -216,7 +216,7 @@ export const EP133Icons: IconSet = {
   [Icon.Boxer]: { Symbol: Symbol.Boxer, col: 19, row: 4, width: 2 }
 }
 
-type ButtonStates = {
+export type ButtonStates = {
   [key in ButtonId]?: ButtonState
 }
 
@@ -224,7 +224,7 @@ interface IndicatorState {
   state?: boolean
 }
 
-type IndicatorStates = {
+export type IndicatorStates = {
   [key in IndicatorId]?: IndicatorState
 }
 
@@ -338,7 +338,10 @@ export default function EP133 ({
             </div>
           </div>
         </div>
-        <div className='col-start-[20] col-span-2 row-span-1 row-start-1'>
+        <div
+          onClick={() => onPowerClick?.(!poweredOn)}
+          className='col-start-[20] col-span-2 row-span-1 row-start-1'
+        >
           <div className='h-full flex items-center justify-center'>
             <p>POWER</p>
           </div>
