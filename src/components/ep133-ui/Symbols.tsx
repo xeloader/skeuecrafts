@@ -4,6 +4,10 @@ import React, { SVGAttributes } from 'react'
 export type SVGWrapperProps = {
   children: JSX.Element | JSX.Element[]
   Inject?: JSX.Element | JSX.Element[]
+  Render?: (
+    SVGContent: JSX.Element | JSX.Element[] | false,
+    props: Partial<SVGWrapperProps>
+  ) => JSX.Element | JSX.Element[]
   svgProps?: SVGAttributes<SVGElement>
 } & SVGAttributes<SVGElement>
 
@@ -11,10 +15,21 @@ const SVGWrapper = ({
   children,
   Inject,
   className,
+  Render,
   svgProps = {},
   ...rootProps
 }: SVGWrapperProps
-): JSX.Element => {
+): JSX.Element | JSX.Element[] => {
+  if (Render != null && typeof (Render) === 'function') {
+    return (
+      <svg
+        {...rootProps}
+        className={classNames(className, 'w-full h-full')}
+      >
+        {Render(children, rootProps)}
+      </svg>
+    )
+  }
   return (
     <svg
       {...rootProps}

@@ -1,7 +1,8 @@
 import useInterval from '../../../hooks/useInterval'
 import { IconStates } from '../../../components/ep133-ui/DisplayMatrix'
-import EP133, { ButtonId, Icon, IndicatorId, IndicatorStates } from '../../../components/ep133-ui/EP133'
+import EP133, { BrickId, ButtonId, Icon, IndicatorId, IndicatorStates } from '../../../components/ep133-ui/EP133'
 import React, { useCallback, useMemo, useReducer, useState } from 'react'
+import USBCable from '../../../components/te/USBCable'
 interface Sound {
   id: number
   type: 'stereo' | 'mono'
@@ -29,6 +30,7 @@ interface EP133State {
   buttonHistory: ButtonId[]
   inputBuffer: string
   expectingInput: boolean
+  usbConnected: boolean
   indicators: IndicatorStates
   currentBank: 0 | 1 | 2 | 3
 }
@@ -149,6 +151,7 @@ const initState: EP133State = {
   displayValue: '111',
   buttonHistory: [],
   displayDots: '..',
+  usbConnected: false,
   currentBank: 0,
   project: 1,
   shift: false,
@@ -200,7 +203,10 @@ const reducer = (state: EP133State, action: EP133Action): EP133State => {
     case EP133ActionKind.POWER:
       _action = action as ManagePowerAction
       if (_action.state) {
-        return initState
+        return {
+          ...initState,
+          usbConnected: state.usbConnected
+        }
       } else {
         return {
           ...state,
@@ -277,10 +283,10 @@ const buttonToBank: { [key: number]: number } = {
 
 export default function EP133Page (): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initState)
-  const [frame, setFrame] = useState<number>(0)
-  useInterval(() => {
-    setFrame(frame => frame + 1)
-  }, 250)
+  // const [frame, setFrame] = useState<number>(0)
+  // useInterval(() => {
+  //   setFrame(frame => frame + 1)
+  // }, 250)
   const icons = useMemo<IconStates>(() => {
     const display: IconStates = {}
     if (!state.poweredOn) return display
@@ -293,6 +299,7 @@ export default function EP133Page (): JSX.Element {
     } else if (state.view === View.Tempo) {
       display[Icon.Tempo] = { glow: 1 }
     }
+    display[Icon.Battery] = { glow: state.usbConnected ? 0 : 1 }
     for (let i = 0; i < 4; i++) {
       display[bankToIcon[i]] = { glow: state.currentBank === i ? 1 : 0 }
     }
@@ -376,20 +383,42 @@ export default function EP133Page (): JSX.Element {
     dispatch(action)
   }, [state])
 
-  const [displayValue, displayDots] = useMemo<[string, string]>(() => {
-    if (!state.poweredOn) return ['', '']
-    const displayValue = typeof (state.displayValue) === 'function'
-      ? state.displayValue(frame, { state })
-      : state.displayValue
-    const displayDots = typeof (state.displayDots) === 'function'
-      ? state.displayDots(frame, { state })
-      : state.displayDots
-    return [displayValue, displayDots]
-  }, [state, frame])
+  const handleBrickClick = useCallback((brick: BrickId) => {
+    if (brick === BrickId.USB) {
+      dispatch({ // eslint-disable-line
+        type: EP133ActionKind.SET_STATE,
+        state: {
+          usbConnected: !state.usbConnected
+        }
+      } as SetStateAction)
+    }
+  }, [state])
+
+  const [displayValue, displayDots] = useMemo(() => [state.displayValue.toString(), state.displayDots], [state])
+
+  // const [displayValue, displayDots] = useMemo<[string, string]>(() => {
+  //   if (!state.poweredOn) return ['', '']
+  //   const displayValue = typeof (state.displayValue) === 'function'
+  //     ? state.displayValue(frame, { state })
+  //     : state.displayValue
+  //   const displayDots = typeof (state.displayDots) === 'function'
+  //     ? state.displayDots(frame, { state })
+  //     : state.displayDots
+  //   return [displayValue, displayDots]
+  // }, [state])
   return (
-    <div className='p-4'>
-      <div className='flex flex-row justify-center items-center'>
-        <div className='scale-50 origin-top'>
+    <div className='p-4 flex flex-col items-center justify-start'>
+      <div className='flex flex-col scale-50 origin-top'>
+        <div className='grid grid-cols-22 z-0 h-8 relative'>
+          <div className='col-start-[17] col-span-2 flex justify-center translate-y-4 absolute bottom-0'>
+            <div className='transition-all' style={{ transform: `translateY(${state.usbConnected ? '11%' : '-100%'})` }}>
+              <div className='rotate-180'>
+                <USBCable />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='z-10'>
           <EP133
             displayValue={displayValue}
             displayDotValue={displayDots}
@@ -399,6 +428,7 @@ export default function EP133Page (): JSX.Element {
             poweredOn={state.poweredOn}
             onPowerClick={handlePower}
             indicators={state.poweredOn ? state.indicators : {}}
+            onBrickClick={handleBrickClick}
           />
         </div>
       </div>
