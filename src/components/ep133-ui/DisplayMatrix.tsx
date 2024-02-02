@@ -3,16 +3,19 @@ import SegmentDisplay from './SegmentDisplay'
 import classNames from 'classnames'
 import { SVGWrapperProps } from './Symbols'
 
-import { renderToString } from 'react-dom/server'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { normalize } from '../../utils/numbers'
 
 export interface IconStates { [key: number]: DisplayIconState }
 export interface IconSet { [key: number]: GridIcon }
 export interface DisplayMatrixProps {
   value?: string
   dotValue?: string
+  backgroundColor?: string
   iconSet: IconSet
   iconMeta?: IconStates
   className?: string
+  translucentIcons: boolean
 }
 
 interface GridIcon {
@@ -33,46 +36,49 @@ interface DisplayIconProps {
 
 interface LedBasedIconProps extends DisplayIconProps {
   uuid: string
+  backgroundColor?: string
 }
+
+const inlineSVG = (markup: string): string => {
+  return `data:image/svg+xml;base64,${window.btoa(markup)}`
+}
+
+// minGlow + ((1 - minGlow) * glow)
 
 const LedBasedIcon = ({
   Symbol,
   className,
   uuid,
   style,
+  backgroundColor = 'black',
   glow = 1,
   minGlow = 0.1
 }: LedBasedIconProps): JSX.Element => {
-  console.log('rendering')
   const tag = useCallback((str: string): string => `${str}_${uuid}`, [uuid])
+  const normGlow = normalize(glow, minGlow, 1, 0.15, 1)
   return (
     <div className={classNames(className, '')} style={style}>
-      <div
-        style={{
-          opacity: minGlow + ((1 - minGlow) * glow)
-        }}
-      >
+      <div>
         {React.cloneElement<SVGWrapperProps>(
           Symbol,
           {
             // data:image/svg+xml;utf8,
             Render: (SVGContent, { width, height, ...props }) => {
-              // const svgBase = renderToString(<svg {...props} width={width} height={height} />)
-              // const cutoutBase = `${svgBase.replace('</svg>', `<rect id='${tag('overlay')}' fill='red' width='${width as string}' height='${height as string}' x='0' y='0' /></svg>`)}`
-              // const cutout = svgBase.replace('</svg>', renderToString(SVGContent as ReactElement) + '</svg>')
+              const svgBase = renderToStaticMarkup(<svg width={width} height={height} {...props} />)
+              const cutoutBase = `${svgBase.replace('</svg>', renderToStaticMarkup(<rect id={tag('overlay')} fill={backgroundColor} width={width as string} height={height as string} x='0' y='0' />) + '</svg>')}`
+              const cutout = svgBase.replace('</svg>', renderToStaticMarkup(SVGContent as ReactElement) + '</svg>')
               return (
                 <>
                   <g>
-                    <g filter={`url(#${tag('exclude')})`}>
-                      <rect id={tag('overlay')} fill='red' width={width} height={height} x='0' y='0' />
-                      <use id={tag('cutout')} href={`#${tag('icon')}`} />
-                    </g>
-                    <use href={`#${tag('icon')}`} />
+                    {/* <rect fill='black' width={width} height={height} /> */}
+                    {/* <rect x='1' y='1' fill='white' width={width} height={height} style={{ opacity: normGlow }} /> */}
+                    <rect filter={`url(#${tag('exclude')})`} fill='black' width={width} height={height} />
+                    <use href={`#${tag('icon')}`} style={{ mixBlendMode: 'multiply' }} />
                   </g>
                   <defs>
                     <filter id={`${tag('exclude')}`}>
-                      <feImage href={`#${tag('overlay')}`} x='0' y='0' width={width} height={height} result={tag('keep')} />
-                      <feImage href={`#${tag('cutout')}`} x='0' y='0' width={width} height={height} result={tag('cut')} />
+                      <feImage href={`${inlineSVG(cutoutBase)}`} x='0' y='0' width={width} height={height} result={tag('keep')} />
+                      <feImage href={`${inlineSVG(cutout)}`} x='0' y='0' width={width} height={height} result={tag('cut')} />
                       <feComposite in={tag('keep')} in2={tag('cut')} operator='out' />
                     </filter>
                     <g id={tag('icon')}>
@@ -136,6 +142,7 @@ const DisplayIcon = ({
 
 interface DisplayIconState {
   glow?: number
+  translucent?: boolean
 }
 
 export default function DisplayMatrix ({
@@ -143,6 +150,8 @@ export default function DisplayMatrix ({
   dotValue,
   className,
   iconSet,
+  backgroundColor,
+  translucentIcons,
   iconMeta = {}
 }: DisplayMatrixProps): JSX.Element {
   return (
@@ -150,12 +159,15 @@ export default function DisplayMatrix ({
 
       {Object.entries(iconSet).map(([key, icon], i) => {
         const name = Number(key)
+        const meta = iconMeta?.[name] ?? { glow: 0, translucent: false }
+        const Wrapper = (meta.translucent === true || translucentIcons) ? LedBasedIcon : DisplayIcon
         return (
-          <LedBasedIcon
+          <Wrapper
             key={key}
             uuid={key}
+            backgroundColor={backgroundColor}
             Symbol={icon.Symbol}
-            {...iconMeta?.[name] ?? { glow: 0 }}
+            {...meta}
             style={{
               gridColumnStart: icon.col,
               gridColumnEnd: `span ${icon.width ?? 1}`,
