@@ -1,7 +1,7 @@
 import useInterval from '../../../hooks/useInterval'
 import { IconStates } from '../../../components/ep133-ui/DisplayMatrix'
 import EP133, { BrickId, ButtonId, Icon, IndicatorId, IndicatorStates } from '../../../components/ep133-ui/EP133'
-import React, { useCallback, useMemo, useReducer, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import USBCable from '../../../components/te/USBCable'
 interface Sound {
   id: number
@@ -33,6 +33,7 @@ interface EP133State {
   usbConnected: boolean
   indicators: IndicatorStates
   currentBank: 0 | 1 | 2 | 3
+  displayAnimation: string
 }
 
 enum View {
@@ -148,7 +149,7 @@ const initState: EP133State = {
   view: View.Main,
   indicators: { [IndicatorId.ABank]: { state: true } },
   gridMode: 'quantised',
-  displayValue: '111',
+  displayValue: ' Lo',
   buttonHistory: [],
   displayDots: '..',
   usbConnected: false,
@@ -162,7 +163,8 @@ const initState: EP133State = {
   poweredOn: true,
   projectSounds: {},
   inputBuffer: '',
-  expectingInput: false
+  expectingInput: false,
+  displayAnimation: 'startup'
 }
 
 const reducer = (state: EP133State, action: EP133Action): EP133State => {
@@ -287,6 +289,20 @@ export default function EP133Page (): JSX.Element {
   // useInterval(() => {
   //   setFrame(frame => frame + 1)
   // }, 250)
+  useEffect(() => {
+    if (state.poweredOn) {
+      dispatch({
+        type: EP133ActionKind.SET_STATE,
+        state: { displayAnimation: 'startup' }
+      })
+      setTimeout(() => {
+        dispatch({
+          type: EP133ActionKind.SET_STATE,
+          state: { displayAnimation: null }
+        })
+      }, 500)
+    }
+  }, [state.poweredOn])
   const icons = useMemo<IconStates>(() => {
     const display: IconStates = {}
     if (!state.poweredOn) return display
@@ -429,6 +445,7 @@ export default function EP133Page (): JSX.Element {
             onPowerClick={handlePower}
             indicators={state.poweredOn ? state.indicators : {}}
             onBrickClick={handleBrickClick}
+            displayAnimation={state.displayAnimation}
           />
         </div>
       </div>

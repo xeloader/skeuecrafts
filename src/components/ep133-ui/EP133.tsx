@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react'
-import DisplayMatrix, { IconSet } from './DisplayMatrix'
+import React, { useCallback, useEffect } from 'react'
 import { SliderFresh as Slider } from './Slider'
 import Knob from './Knob'
 import Speaker from './Speaker'
@@ -9,6 +8,7 @@ import { Colors } from '../../types'
 import { IndicatorFresh as Indicator } from './Indicator'
 import { Asterisk, CirclingArrow, InArrow, MinusSymbol, OutArrow, PlusSymbol, RightArrow } from './Symbols'
 import * as Symbol from './Symbols'
+import Display from './Display'
 
 interface ButtonState {
   active: boolean
@@ -147,73 +147,93 @@ export enum Icon {
   Boxer
 }
 
+export interface IconSet { [key: number]: GridIcon }
+export interface DisplayMatrixProps {
+  value?: string
+  dotValue?: string
+  backgroundColor?: string
+  iconSet: IconSet
+  iconMeta?: IconStates
+  className?: string
+  translucentIcons: boolean
+}
+
+interface GridIcon {
+  id: string
+  Symbol: JSX.Element
+  col: number
+  row: number
+  width?: number
+  height?: number
+}
+
 export const EP133Icons: IconSet = {
-  [Icon.Battery]: { Symbol: Symbol.Battery, col: 1, row: 1 },
-  [Icon.HighestFade]: { Symbol: Symbol.HighestFade, col: 2, row: 1 },
-  [Icon.AButton]: { Symbol: Symbol.AButton, col: 3, row: 1 },
-  [Icon.Sync]: { Symbol: Symbol.SyncLabel, col: 4, row: 1 },
-  [Icon.MIDI]: { Symbol: Symbol.MIDIConnector, col: 5, row: 1 },
-  [Icon.USB]: { Symbol: Symbol.USBCable, col: 6, row: 1 },
-  [Icon.Bar]: { Symbol: Symbol.BarLabel, col: 7, row: 1 },
-  [Icon.BPM]: { Symbol: Symbol.BPMLabel, col: 12, row: 1 },
-  [Icon.AudioGram]: { Symbol: Symbol.AudioGram, col: 13, row: 1 },
-  [Icon.Timer]: { Symbol: Symbol.Timer, col: 14, row: 1 },
-  [Icon.Stereo]: { Symbol: Symbol.StereoLabel, col: 15, row: 1 },
-  [Icon.CircleTL]: { Symbol: Symbol.CirclePartTL, col: 16, row: 1 },
-  [Icon.CircleTR]: { Symbol: Symbol.CirclePartTR, col: 17, row: 1 },
-  [Icon.HighLevel]: { Symbol: Symbol.HighLevel, col: 18, row: 1 },
-  [Icon.GridCircleTL]: { Symbol: Symbol.GridCirclePartTL, col: 19, row: 1 },
-  [Icon.GridCircleTR]: { Symbol: Symbol.GridCirclePartTR, col: 20, row: 1 },
-  [Icon.Mute]: { Symbol: Symbol.MuteLabel, col: 1, row: 2 },
-  [Icon.HighFade]: { Symbol: Symbol.HighFade, col: 2, row: 2 },
-  [Icon.BButton]: { Symbol: Symbol.BButton, col: 3, row: 2 },
-  [Icon.Copy]: { Symbol: Symbol.CopyLabel, col: 4, row: 2 },
-  [Icon.Paste]: { Symbol: Symbol.PasteLabel, col: 5, row: 2 },
-  [Icon.Diskette]: { Symbol: Symbol.Diskette, col: 6, row: 2 },
-  [Icon.Tic]: { Symbol: Symbol.TicLabel, col: 7, row: 2 },
-  [Icon.Metronome]: { Symbol: Symbol.Metronome, col: 12, row: 2 },
-  [Icon.Scissor]: { Symbol: Symbol.ScissorCut, col: 13, row: 2 },
-  [Icon.Umbrella]: { Symbol: Symbol.Umbrella, col: 14, row: 2 },
-  [Icon.RecordPlayer]: { Symbol: Symbol.RecordPlayer, col: 15, row: 2 },
-  [Icon.CircleBL]: { Symbol: Symbol.CirclePartBL, col: 16, row: 2 },
-  [Icon.CircleBR]: { Symbol: Symbol.CirclePartBR, col: 17, row: 2 },
-  [Icon.HighMidLevel]: { Symbol: Symbol.HighMidLevel, col: 18, row: 2 },
-  [Icon.GridCircleBL]: { Symbol: Symbol.GridCirclePartBL, col: 19, row: 2 },
-  [Icon.GridCircleBR]: { Symbol: Symbol.GridCirclePartBR, col: 20, row: 2 },
-  [Icon.Keyboard]: { Symbol: Symbol.Keyboard, col: 1, row: 3 },
-  [Icon.LowFade]: { Symbol: Symbol.LowFade, col: 2, row: 3 },
-  [Icon.CButton]: { Symbol: Symbol.CButton, col: 3, row: 3 },
-  [Icon.Note]: { Symbol: Symbol.SampleNote, col: 4, row: 3 },
-  [Icon.Trim]: { Symbol: Symbol.SampleTrim, col: 5, row: 3 },
-  [Icon.Envelope]: { Symbol: Symbol.SampleEnvelope, col: 6, row: 3 },
-  [Icon.Rabbit]: { Symbol: Symbol.Rabbit, col: 7, row: 3 },
-  [Icon.Record]: { Symbol: Symbol.RecordSymbol, col: 8, row: 3 },
-  [Icon.Play]: { Symbol: Symbol.PlaySymbol, col: 9, row: 3 },
-  [Icon.Repeat]: { Symbol: Symbol.RepeatSymbol, col: 10, row: 3 },
-  [Icon.Finger]: { Symbol: Symbol.PointingFinger, col: 11, row: 3 },
-  [Icon.FXLeft]: { Symbol: Symbol.FXLeft, col: 12, row: 3 },
-  [Icon.FX]: { Symbol: Symbol.FXLabel, col: 13, row: 3 },
-  [Icon.FXRight]: { Symbol: Symbol.FXRight, col: 14, row: 3 },
-  [Icon.VacuumTube]: { Symbol: Symbol.VacuumTube, col: 15, row: 3 },
-  [Icon.Microphone]: { Symbol: Symbol.Microphone, col: 16, row: 3 },
-  [Icon.LineIn]: { Symbol: Symbol.LineIn, col: 17, row: 3 },
-  [Icon.LowMidLevel]: { Symbol: Symbol.LowMidLevel, col: 18, row: 3 },
-  [Icon.Q]: { Symbol: Symbol.QLabel, col: 19, row: 3 },
-  [Icon.Swing]: { Symbol: Symbol.FreeSwing, col: 20, row: 3 },
-  [Icon.Slider]: { Symbol: Symbol.Slider, col: 1, row: 4 },
-  [Icon.LowestFade]: { Symbol: Symbol.LowestFade, col: 2, row: 4 },
-  [Icon.DButton]: { Symbol: Symbol.DButton, col: 3, row: 4 },
-  [Icon.Sound]: { Symbol: Symbol.SoundSign, col: 4, row: 4, width: 2 },
-  [Icon.BrainPerson]: { Symbol: Symbol.BrainPerson, col: 6, row: 4 },
-  [Icon.Main]: { Symbol: Symbol.MainSign, col: 7, row: 4, width: 2 },
-  [Icon.SpinWheel]: { Symbol: Symbol.SpinWheel, col: 9, row: 4 },
-  [Icon.Tempo]: { Symbol: Symbol.TempoSign, col: 10, row: 4, width: 2 },
-  [Icon.Erase]: { Symbol: Symbol.EraseSign, col: 12, row: 4, width: 2 },
-  [Icon.System]: { Symbol: Symbol.SystemSign, col: 14, row: 4, width: 2 },
-  [Icon.Laptop]: { Symbol: Symbol.Laptop, col: 16, row: 4 },
-  [Icon.Clip]: { Symbol: Symbol.ClipWarning, col: 17, row: 4 },
-  [Icon.LowLevel]: { Symbol: Symbol.LowLevel, col: 18, row: 4 },
-  [Icon.Boxer]: { Symbol: Symbol.Boxer, col: 19, row: 4, width: 2 }
+  [Icon.Battery]: { Symbol: Symbol.Battery, id: 'battery', col: 1, row: 1 },
+  [Icon.HighestFade]: { Symbol: Symbol.HighestFade, id: 'highest-fade', col: 2, row: 1 },
+  [Icon.AButton]: { Symbol: Symbol.AButton, id: 'a-button', col: 3, row: 1 },
+  [Icon.Sync]: { Symbol: Symbol.SyncLabel, id: 'sync-label', col: 4, row: 1 },
+  [Icon.MIDI]: { Symbol: Symbol.MIDIConnector, id: 'midi-connector', col: 5, row: 1 },
+  [Icon.USB]: { Symbol: Symbol.USBCable, id: 'usb-cable', col: 6, row: 1 },
+  [Icon.Bar]: { Symbol: Symbol.BarLabel, id: 'bar-label', col: 7, row: 1 },
+  [Icon.BPM]: { Symbol: Symbol.BPMLabel, id: 'bpm-label', col: 12, row: 1 },
+  [Icon.AudioGram]: { Symbol: Symbol.AudioGram, id: 'audiogram', col: 13, row: 1 },
+  [Icon.Timer]: { Symbol: Symbol.Timer, id: 'timer', col: 14, row: 1 },
+  [Icon.Stereo]: { Symbol: Symbol.StereoLabel, id: 'stereo-label', col: 15, row: 1 },
+  [Icon.CircleTL]: { Symbol: Symbol.CirclePartTL, id: 'circle-part-tl', col: 16, row: 1 },
+  [Icon.CircleTR]: { Symbol: Symbol.CirclePartTR, id: 'circle-part-tr', col: 17, row: 1 },
+  [Icon.HighLevel]: { Symbol: Symbol.HighLevel, id: 'high-level', col: 18, row: 1 },
+  [Icon.GridCircleTL]: { Symbol: Symbol.GridCirclePartTL, id: 'grid-circle-part-tl', col: 19, row: 1 },
+  [Icon.GridCircleTR]: { Symbol: Symbol.GridCirclePartTR, id: 'grid-circle-part-tr', col: 20, row: 1 },
+  [Icon.Mute]: { Symbol: Symbol.MuteLabel, id: 'mute-label', col: 1, row: 2 },
+  [Icon.HighFade]: { Symbol: Symbol.HighFade, id: 'high-fade', col: 2, row: 2 },
+  [Icon.BButton]: { Symbol: Symbol.BButton, id: 'b-button', col: 3, row: 2 },
+  [Icon.Copy]: { Symbol: Symbol.CopyLabel, id: 'copy-label', col: 4, row: 2 },
+  [Icon.Paste]: { Symbol: Symbol.PasteLabel, id: 'paste-label', col: 5, row: 2 },
+  [Icon.Diskette]: { Symbol: Symbol.Diskette, id: 'diskette', col: 6, row: 2 },
+  [Icon.Tic]: { Symbol: Symbol.TicLabel, id: 'tic-label', col: 7, row: 2 },
+  [Icon.Metronome]: { Symbol: Symbol.Metronome, id: 'metronome', col: 12, row: 2 },
+  [Icon.Scissor]: { Symbol: Symbol.ScissorCut, id: 'scissor-cut', col: 13, row: 2 },
+  [Icon.Umbrella]: { Symbol: Symbol.Umbrella, id: 'umbrella', col: 14, row: 2 },
+  [Icon.RecordPlayer]: { Symbol: Symbol.RecordPlayer, id: 'record-player', col: 15, row: 2 },
+  [Icon.CircleBL]: { Symbol: Symbol.CirclePartBL, id: 'circle-part-bl', col: 16, row: 2 },
+  [Icon.CircleBR]: { Symbol: Symbol.CirclePartBR, id: 'circle-part-br', col: 17, row: 2 },
+  [Icon.HighMidLevel]: { Symbol: Symbol.HighMidLevel, id: 'high-mid-level', col: 18, row: 2 },
+  [Icon.GridCircleBL]: { Symbol: Symbol.GridCirclePartBL, id: 'grid-circle-part-bl', col: 19, row: 2 },
+  [Icon.GridCircleBR]: { Symbol: Symbol.GridCirclePartBR, id: 'grid-circle-part-br', col: 20, row: 2 },
+  [Icon.Keyboard]: { Symbol: Symbol.Keyboard, id: 'keyboard', col: 1, row: 3 },
+  [Icon.LowFade]: { Symbol: Symbol.LowFade, id: 'low-fade', col: 2, row: 3 },
+  [Icon.CButton]: { Symbol: Symbol.CButton, id: 'c-button', col: 3, row: 3 },
+  [Icon.Note]: { Symbol: Symbol.SampleNote, id: 'sample-note', col: 4, row: 3 },
+  [Icon.Trim]: { Symbol: Symbol.SampleTrim, id: 'sample-trim', col: 5, row: 3 },
+  [Icon.Envelope]: { Symbol: Symbol.SampleEnvelope, id: 'sample-envelope', col: 6, row: 3 },
+  [Icon.Rabbit]: { Symbol: Symbol.Rabbit, col: 7, id: 'rabbit', row: 3 },
+  [Icon.Record]: { Symbol: Symbol.RecordSymbol, id: 'record-symbol', col: 8, row: 3 },
+  [Icon.Play]: { Symbol: Symbol.PlaySymbol, id: 'play-symbol', col: 9, row: 3 },
+  [Icon.Repeat]: { Symbol: Symbol.RepeatSymbol, id: 'repeat-symbol', col: 10, row: 3 },
+  [Icon.Finger]: { Symbol: Symbol.PointingFinger, id: 'pointing-finger', col: 11, row: 3 },
+  [Icon.FXLeft]: { Symbol: Symbol.FXLeft, col: 12, id: 'fx-left', row: 3 },
+  [Icon.FX]: { Symbol: Symbol.FXLabel, col: 13, id: 'fx-label', row: 3 },
+  [Icon.FXRight]: { Symbol: Symbol.FXRight, id: 'fx-right', col: 14, row: 3 },
+  [Icon.VacuumTube]: { Symbol: Symbol.VacuumTube, id: 'vacuum-tube', col: 15, row: 3 },
+  [Icon.Microphone]: { Symbol: Symbol.Microphone, id: 'microphone', col: 16, row: 3 },
+  [Icon.LineIn]: { Symbol: Symbol.LineIn, col: 17, id: 'line-in', row: 3 },
+  [Icon.LowMidLevel]: { Symbol: Symbol.LowMidLevel, id: 'low-mid-level', col: 18, row: 3 },
+  [Icon.Q]: { Symbol: Symbol.QLabel, id: 'q-label', col: 19, row: 3 },
+  [Icon.Swing]: { Symbol: Symbol.FreeSwing, id: 'free-swing', col: 20, row: 3 },
+  [Icon.Slider]: { Symbol: Symbol.Slider, id: 'slider', col: 1, row: 4 },
+  [Icon.LowestFade]: { Symbol: Symbol.LowestFade, id: 'lowest-fade', col: 2, row: 4 },
+  [Icon.DButton]: { Symbol: Symbol.DButton, id: 'd-button', col: 3, row: 4 },
+  [Icon.Sound]: { Symbol: Symbol.SoundSign, id: 'sound-sign', col: 4, row: 4, width: 2 },
+  [Icon.BrainPerson]: { Symbol: Symbol.BrainPerson, id: 'brain-person', col: 6, row: 4 },
+  [Icon.Main]: { Symbol: Symbol.MainSign, id: 'main-sign', col: 7, row: 4, width: 2 },
+  [Icon.SpinWheel]: { Symbol: Symbol.SpinWheel, id: 'spin-wheel', col: 9, row: 4 },
+  [Icon.Tempo]: { Symbol: Symbol.TempoSign, id: 'tempo-sign', col: 10, row: 4, width: 2 },
+  [Icon.Erase]: { Symbol: Symbol.EraseSign, id: 'erase-sign', col: 12, row: 4, width: 2 },
+  [Icon.System]: { Symbol: Symbol.SystemSign, id: 'system-sign', col: 14, row: 4, width: 2 },
+  [Icon.Laptop]: { Symbol: Symbol.Laptop, id: 'laptop', col: 16, row: 4 },
+  [Icon.Clip]: { Symbol: Symbol.ClipWarning, id: 'clip-warning', col: 17, row: 4 },
+  [Icon.LowLevel]: { Symbol: Symbol.LowLevel, id: 'low-level', col: 18, row: 4 },
+  [Icon.Boxer]: { Symbol: Symbol.Boxer, id: 'boxer', col: 19, row: 4, width: 2 }
 }
 
 export type ButtonStates = {
@@ -246,6 +266,7 @@ export interface EP133Props {
   displayDotValue: string
   onBrickClick?: (brick: BrickId) => void
   onButtonHold: (button: ButtonId) => void
+  displayAnimation: string
 }
 
 const CornerCircle = (): JSX.Element => (
@@ -269,7 +290,8 @@ export default function EP133 ({
   title,
   subtitle,
   bottomTitle,
-  onButtonHold
+  onButtonHold,
+  displayAnimation
 }: EP133Props): JSX.Element {
   const handleButtonClick = useCallback((button: ButtonId) => {
     return () => {
@@ -384,13 +406,24 @@ export default function EP133 ({
           <div className='-col-start-1 row-span-full flex justify-end'>
             <div className='bg-white/5 h-full w-4 shadow-[-1px_0px_0px_rgba(255,255,255,0.1)]' />
           </div>
-          <div className='col-[2/-2] row-[2/-2]'>
-            <DisplayMatrix
+          {/* <div className='col-[2/-2] row-[2/-2] bg-ep133-dark z-0' /> */}
+          <div className='col-[2/-2] row-[2/-2] z-10'>
+            {/* <DisplayMatrix
+              translucentIcons={false}
               value={displayValue}
+              backgroundColor='#1A1A1A'
               dotValue={displayDotValue}
               iconSet={EP133Icons}
               iconMeta={icons}
               className='h-full'
+            /> */}
+            <Display
+              animation={displayAnimation}
+              displayValue={displayValue}
+              dotValue={displayDotValue}
+              iconMeta={icons}
+              iconSet={EP133Icons}
+              backgroundColor='#1A1A1A'
             />
           </div>
         </div>
@@ -532,7 +565,7 @@ export default function EP133 ({
           size={Size.Square}
           type={Type.CapDual}
           onClick={handleButtonClick(ButtonId.ABank)}
-          Symbol={<div className='size-4'><Asterisk className='fill-plastic-white' /></div>}
+          Symbol={<div className='size-4 *:size-full'><Asterisk className='fill-plastic-white' /></div>}
           className='cursor-cell'
           value='A'
         />
@@ -609,7 +642,7 @@ export default function EP133 ({
       </div>
       <div className='row-start-[20] row-span-1 col-start-[15] col-span-1 flex items-center justify-start'>
         <div className='flex items-baseline gap-1'>
-          <div className='h-3'>
+          <div className='h-3 *:size-full'>
             <RightArrow className='fill-plastic-black' />
           </div>
           <p className='leading-none'>FX</p>
@@ -753,7 +786,7 @@ export default function EP133 ({
           size={Size.Square}
           type={Type.CapCenter}
           onClick={handleButtonClick(ButtonId.Minus)}
-          Value={<div className='size-6'><MinusSymbol className='fill-plastic-black' /></div>}
+          Value={<div className='size-6 *:size-full'><MinusSymbol className='fill-plastic-black' /></div>}
         />
       </div>
 
@@ -763,7 +796,7 @@ export default function EP133 ({
           onClick={handleButtonClick(ButtonId.Plus)}
           size={Size.Square}
           type={Type.CapCenter}
-          Value={<div className='size-7'><PlusSymbol className='fill-plastic-black' /></div>}
+          Value={<div className='size-7 *:size-full'><PlusSymbol className='fill-plastic-black' /></div>}
         />
       </div>
 
@@ -886,7 +919,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
-          Symbol={<div className='w-4'><CirclingArrow className='fill-plastic-white' /></div>}
+          Symbol={<div className='w-4 *:size-full'><CirclingArrow className='fill-plastic-white' /></div>}
           onClick={handleButtonClick(ButtonId.BBank)}
           value='B'
         />
@@ -899,7 +932,7 @@ export default function EP133 ({
           color={Colors.Gray}
           size={Size.Square}
           type={Type.CapDual}
-          Symbol={<div className='w-4'><OutArrow className='fill-plastic-white' /></div>}
+          Symbol={<div className='w-4 *:size-full'><OutArrow className='fill-plastic-white' /></div>}
           onClick={handleButtonClick(ButtonId.CBank)}
           value='C'
         />
@@ -913,7 +946,7 @@ export default function EP133 ({
           size={Size.Square}
           type={Type.CapDual}
           onClick={handleButtonClick(ButtonId.DBank)}
-          Symbol={<div className='w-4'><InArrow className='fill-plastic-white' /></div>}
+          Symbol={<div className='w-4 *:size-full'><InArrow className='fill-plastic-white' /></div>}
           value='D'
         />
       </div>
