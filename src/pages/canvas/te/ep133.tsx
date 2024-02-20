@@ -295,12 +295,19 @@ export default function EP133Page (): JSX.Element {
         type: EP133ActionKind.SET_STATE,
         state: { displayAnimation: 'startup' }
       })
-      setTimeout(() => {
+      const stopAnimation = () => {
         dispatch({
           type: EP133ActionKind.SET_STATE,
           state: { displayAnimation: null }
         })
+      }
+      const timer = setTimeout(() => {
+        stopAnimation()
       }, 650)
+      return () => {
+        clearTimeout(timer)
+        stopAnimation()
+      }
     }
   }, [state.poweredOn])
   const icons = useMemo<IconStates>(() => {

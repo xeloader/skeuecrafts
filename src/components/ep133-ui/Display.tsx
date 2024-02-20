@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react'
+import React, { SVGProps, useEffect, useRef } from 'react'
 import * as Symbol from './Symbols'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { normalize } from '../../utils/numbers'
@@ -286,6 +286,7 @@ export default function Display ({
   animation,
   iconMeta
 }: DisplayProps): JSX.Element {
+  const startAnimation = useRef<SVGAnimateElement>()
   const activeProps = {
     fill: "url('#lit-segment')",
     filter: "url('#segment-glow')"
@@ -297,6 +298,11 @@ export default function Display ({
     ? `url(#${animation})`
     : 'url(#standby)'
   const gradientStopOpacity = 0.9
+  useEffect(() => {
+    if (animation === 'startup' && startAnimation?.current != null) {
+      startAnimation.current.beginElement()
+    }
+  }, [animation])
   return (
     <div>
       <svg width='100%' height='100%' viewBox='0 0 1752 343' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -355,12 +361,14 @@ export default function Display ({
 
           <linearGradient id='startup' y1='-0.25' y2='-0.75'>
             <animateTransform
+              ref={startAnimation}
               attributeName='gradientTransform'
               attributeType='XML'
               type='translate'
               from='-2'
               to='1.5'
-              // fill='freeze'
+              fill='freeze'
+              restart='always'
               dur={`${(animations.startup.durationMs / 1000).toFixed(2)}s`}
               repeatCount='indefinite'
             />
