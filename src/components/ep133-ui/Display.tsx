@@ -1,6 +1,7 @@
 import React, { SVGProps } from 'react'
 import * as Symbol from './Symbols'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { normalize } from '../../utils/numbers'
 
 const markupToB64 = (markup: string): string => {
   return `data:image/svg+xml;base64,${window.btoa(markup)}`
@@ -23,6 +24,27 @@ const inlineSVG = ({
     </svg>
   ))
 )
+
+const CutoutFilter = (
+  {
+    id,
+    width,
+    height,
+    backgroundColor
+  }: {
+    id: string
+    backgroundColor: string
+    width: number
+    height: number
+  }
+): JSX.Element => {
+  return (
+    <filter id={id}>
+      <feImage href={inlineSVG({ width, height, backgroundColor })} x='-2' y='-2' width={width + 4} height={height + 4} result='background' />
+      <feComposite in='background' in2='SourceGraphic' operator='out' />
+    </filter>
+  )
+}
 
 interface GlowFilterProps extends InlineSVGProps {
   id: string
@@ -183,24 +205,32 @@ interface LedIconProps extends DisplayIconState, SVGProps<SVGElement> {
   ledColor?: string
 }
 
+// remove pollution filter from mixBlendMode
+
 const LedIcon = ({
   glow = 0,
   filter,
   translucent,
-  ledColor = 'white',
+  ledColor,
   ...rootProps
 }: LedIconProps): JSX.Element => {
+  const _glow = normalize(glow, 0, 1, 0.15, 1)
   return (
     <g>
       <rect
         fill={ledColor}
-        fillOpacity={translucent !== true
+        opacity={translucent !== true
           ? glow
           : 0}
-        className='transition-all duration-1000'
+        className='transition-opacity duration-100'
         {...rootProps}
       />
-      <use {...rootProps} style={{ mixBlendMode: 'darken' }} filter={filter} />
+      <use
+        {...rootProps}
+        filter={filter}
+        className='duration-200 '
+        style={{ mixBlendMode: 'darken' }}
+      />
     </g>
   )
 }
@@ -208,12 +238,13 @@ const LedIcon = ({
 const animations = {
   startup: {
     fill: 'url(#startup)',
-    durationMs: 5000,
+    durationMs: 650,
     repeatCount: 'infinite'
   }
 }
 
 interface DisplayProps {
+  ledColor?: string
   displayValue?: string
   displayDots?: string
   backgroundColor?: string
@@ -251,6 +282,7 @@ export default function Display ({
   iconSet,
   displayValue = '',
   displayDots = '',
+  ledColor = 'white',
   animation,
   iconMeta
 }: DisplayProps): JSX.Element {
@@ -261,11 +293,15 @@ export default function Display ({
   const inactiveProps = {
     fill: "url('#unlit-segment')"
   }
+  const screenFill = animation != null
+    ? `url(#${animation})`
+    : 'url(#standby)'
+  const gradientStopOpacity = 0.9
   return (
     <div>
       <svg width='100%' height='100%' viewBox='0 0 1752 343' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <g id='screen'>
-          <rect id='base' x='2' y='2' width='1748' height='339' fill='url(#startup)' />
+          <rect id='base' x='2' y='2' width='1748' height='339' fill={screenFill} />
           <path id='pollution-filter' fill={backgroundColor} fill-rule='evenodd' clip-rule='evenodd' d='M0 0H1752V343H0V0ZM5 7H69V71H5V7ZM1040 7H976V71H1040V7ZM94 7H158V71H94V7ZM1128 7H1064V71H1128V7ZM182 7H246V71H182V7ZM1216 7H1152V71H1216V7ZM271 7H335V71H271V7ZM1305 7H1241V71H1305V7ZM359 7H423V71H359V7ZM1394 7H1330V71H1394V7ZM447 7H511V71H447V7ZM1483 7H1419V71H1483V7ZM535 7H599V71H535V7ZM1570 7H1506V71H1570V7ZM1595 7H1659V71H1595V7ZM1747 7H1683V71H1747V7ZM5 95H69V159H5V95ZM1040 95H976V159H1040V95ZM94 95H158V159H94V95ZM1128 95H1064V159H1128V95ZM182 95H246V159H182V95ZM1216 95H1152V159H1216V95ZM271 95H335V159H271V95ZM1305 95H1241V159H1305V95ZM359 95H423V159H359V95ZM1394 95H1330V159H1394V95ZM447 95H511V159H447V95ZM1483 95H1419V159H1483V95ZM535 95H599V159H535V95ZM1570 95H1506V159H1570V95ZM1595 95H1659V159H1595V95ZM1747 95H1683V159H1747V95ZM5 184H69V248H5V184ZM1040 184H976V248H1040V184ZM94 184H158V248H94V184ZM1128 184H1064V248H1128V184ZM182 184H246V248H182V184ZM1216 184H1152V248H1216V184ZM271 184H335V248H271V184ZM1305 184H1241V248H1305V184ZM359 184H423V248H359V184ZM1394 184H1330V248H1394V184ZM447 184H511V248H447V184ZM1483 184H1419V248H1483V184ZM535 184H599V248H535V184ZM687 184H623V248H687V184ZM710 184H774V248H710V184ZM863 184H799V248H863V184ZM888 184H952V248H888V184ZM1570 184H1506V248H1570V184ZM1595 184H1659V248H1595V184ZM1747 184H1683V248H1747V184ZM5 272H69V336H5V272ZM1126 280H978V328H1126V280ZM94 272H158V336H94V272ZM246 272H182V336H246V272ZM1154 280H1302V328H1154V280ZM421 280H273V328H421V280ZM1330 272H1394V336H1330V272ZM511 272H447V336H511V272ZM1419 272H1483V336H1419V272ZM685 280H537V328H685V280ZM710 272H774V336H710V272ZM950 280H802V328H950V280ZM1506 272H1570V336H1506V272ZM1747 271H1595V336H1747V271Z' />
           <g id='matrix'>
             <use href='#first-number' x='621' y='13' />
@@ -275,11 +311,12 @@ export default function Display ({
           <g id='icons'>
             {Object.entries(iconSet)
               .map(([name, meta]) => {
-                const lightMeta = iconMeta[Number(name)] ?? { glow: 0, translucent: false }
+                const lightMeta = iconMeta[Number(name)] ?? { glow: 0 }
                 const width = meta.width ?? 1
-                const height = meta.height ?? 1
-                const widthPx = (meta.width ?? 1) * blockWidth
-                const heightPx = (meta.height ?? 1) * blockHeight
+                const widthPx = meta.widthPx ??
+                  (meta.width ?? 1) * blockWidth
+                const heightPx = meta.heightPx ??
+                  (meta.height ?? 1) * blockHeight
                 return (
                   <LedIcon
                     key={name}
@@ -287,12 +324,11 @@ export default function Display ({
                     x={GridX[meta.col - 1]}
                     y={GridY[meta.row - 1]}
                     width={widthPx}
+                    ledColor={ledColor}
                     height={heightPx}
                     filter={`url(#cutout-${width}b)`}
+                    translucent={animation != null}
                     glow={lightMeta.glow}
-                    translucent={animation == null
-                      ? lightMeta.translucent
-                      : false}
                   />
                 )
               })}
@@ -312,6 +348,11 @@ export default function Display ({
             <stop offset='95%' stop-color='red' />
           </radialGradient>
 
+          <linearGradient id='standby'>
+            <stop offset='0' stopColor={backgroundColor} stopOpacity={gradientStopOpacity} />
+            <stop offset='1' stopColor={backgroundColor} stopOpacity={gradientStopOpacity} />
+          </linearGradient>
+
           <linearGradient id='startup' y1='-0.25' y2='-0.75'>
             <animateTransform
               attributeName='gradientTransform'
@@ -319,17 +360,17 @@ export default function Display ({
               type='translate'
               from='-2'
               to='1.5'
-              fill='freeze'
+              // fill='freeze'
               dur={`${(animations.startup.durationMs / 1000).toFixed(2)}s`}
-              repeatCount={animations.startup.repeatCount}
+              repeatCount='indefinite'
             />
-            <stop offset='0' stopColor={backgroundColor} stopOpacity={0.7} />
-            <stop offset='0.05' stopColor={backgroundColor} stopOpacity={0.7} />
-            <stop offset='0.25' stopColor='white' />
-            <stop offset='0.5' stopColor='white' />
-            <stop offset='0.55' stopColor='white' />
-            <stop offset='0.95' stopColor={backgroundColor} stopOpacity={0.7} />
-            <stop offset='1' stopColor={backgroundColor} stopOpacity={0.7} />
+            <stop offset='0' stopColor={backgroundColor} stopOpacity={gradientStopOpacity} />
+            <stop offset='0.05' stopColor={backgroundColor} stopOpacity={gradientStopOpacity} />
+            <stop offset='0.25' stopColor={ledColor} />
+            <stop offset='0.5' stopColor={ledColor} />
+            <stop offset='0.55' stopColor={ledColor} />
+            <stop offset='0.95' stopColor={backgroundColor} stopOpacity={gradientStopOpacity} />
+            <stop offset='1' stopColor={backgroundColor} stopOpacity={gradientStopOpacity} />
           </linearGradient>
 
           <filter id='segment-glow'>
@@ -355,9 +396,7 @@ export default function Display ({
           {Object.entries(iconSet)
             .map(([name, meta]: [string, GridIcon]) => {
               return (
-                <g id={meta.id} key={name}>
-                  {React.cloneElement(meta.Symbol, { contentOnly: true })}
-                </g>
+                React.cloneElement(meta.Symbol, { contentOnly: false, id: meta.id })
               )
             })}
         </defs>

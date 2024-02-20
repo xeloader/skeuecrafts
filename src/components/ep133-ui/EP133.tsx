@@ -165,6 +165,8 @@ interface GridIcon {
   row: number
   width?: number
   height?: number
+  widthPx?: number
+  heightPx?: number
 }
 
 export const EP133Icons: IconSet = {
@@ -223,17 +225,17 @@ export const EP133Icons: IconSet = {
   [Icon.Slider]: { Symbol: Symbol.Slider, id: 'slider', col: 1, row: 4 },
   [Icon.LowestFade]: { Symbol: Symbol.LowestFade, id: 'lowest-fade', col: 2, row: 4 },
   [Icon.DButton]: { Symbol: Symbol.DButton, id: 'd-button', col: 3, row: 4 },
-  [Icon.Sound]: { Symbol: Symbol.SoundSign, id: 'sound-sign', col: 4, row: 4, width: 2 },
+  [Icon.Sound]: { Symbol: Symbol.SoundSign, id: 'sound-sign', col: 4, row: 4, width: 2, widthPx: 152, heightPx: 72 },
   [Icon.BrainPerson]: { Symbol: Symbol.BrainPerson, id: 'brain-person', col: 6, row: 4 },
-  [Icon.Main]: { Symbol: Symbol.MainSign, id: 'main-sign', col: 7, row: 4, width: 2 },
+  [Icon.Main]: { Symbol: Symbol.MainSign, id: 'main-sign', col: 7, row: 4, width: 2, widthPx: 152, heightPx: 72 },
   [Icon.SpinWheel]: { Symbol: Symbol.SpinWheel, id: 'spin-wheel', col: 9, row: 4 },
-  [Icon.Tempo]: { Symbol: Symbol.TempoSign, id: 'tempo-sign', col: 10, row: 4, width: 2 },
-  [Icon.Erase]: { Symbol: Symbol.EraseSign, id: 'erase-sign', col: 12, row: 4, width: 2 },
-  [Icon.System]: { Symbol: Symbol.SystemSign, id: 'system-sign', col: 14, row: 4, width: 2 },
+  [Icon.Tempo]: { Symbol: Symbol.TempoSign, id: 'tempo-sign', col: 10, row: 4, width: 2, widthPx: 152, heightPx: 72 },
+  [Icon.Erase]: { Symbol: Symbol.EraseSign, id: 'erase-sign', col: 12, row: 4, width: 2, widthPx: 152, heightPx: 72 },
+  [Icon.System]: { Symbol: Symbol.SystemSign, id: 'system-sign', col: 14, row: 4, width: 2, widthPx: 152, heightPx: 72 },
   [Icon.Laptop]: { Symbol: Symbol.Laptop, id: 'laptop', col: 16, row: 4 },
   [Icon.Clip]: { Symbol: Symbol.ClipWarning, id: 'clip-warning', col: 17, row: 4 },
   [Icon.LowLevel]: { Symbol: Symbol.LowLevel, id: 'low-level', col: 18, row: 4 },
-  [Icon.Boxer]: { Symbol: Symbol.Boxer, id: 'boxer', col: 19, row: 4, width: 2 }
+  [Icon.Boxer]: { Symbol: Symbol.Boxer, id: 'boxer', col: 19, row: 4, width: 2, widthPx: 152, heightPx: 64 }
 }
 
 export type ButtonStates = {

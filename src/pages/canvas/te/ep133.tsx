@@ -300,7 +300,7 @@ export default function EP133Page (): JSX.Element {
           type: EP133ActionKind.SET_STATE,
           state: { displayAnimation: null }
         })
-      }, 500)
+      }, 650)
     }
   }, [state.poweredOn])
   const icons = useMemo<IconStates>(() => {
@@ -411,17 +411,6 @@ export default function EP133Page (): JSX.Element {
   }, [state])
 
   const [displayValue, displayDots] = useMemo(() => [state.displayValue.toString(), state.displayDots], [state])
-
-  // const [displayValue, displayDots] = useMemo<[string, string]>(() => {
-  //   if (!state.poweredOn) return ['', '']
-  //   const displayValue = typeof (state.displayValue) === 'function'
-  //     ? state.displayValue(frame, { state })
-  //     : state.displayValue
-  //   const displayDots = typeof (state.displayDots) === 'function'
-  //     ? state.displayDots(frame, { state })
-  //     : state.displayDots
-  //   return [displayValue, displayDots]
-  // }, [state])
   return (
     <div className='p-4 flex flex-col items-center justify-start'>
       <div className='flex flex-col scale-50 origin-top'>
@@ -437,7 +426,7 @@ export default function EP133Page (): JSX.Element {
         <div className='z-10'>
           <EP133
             displayValue={displayValue}
-            displayDotValue={displayDots}
+            displayDotValue={displayDots as string}
             icons={icons}
             onButtonClick={handleButtonClick}
             onButtonHold={handleButtonHold}
