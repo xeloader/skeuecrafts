@@ -224,6 +224,10 @@ const LedIcon = ({
           : 0}
         className='transition-opacity duration-100'
         {...rootProps}
+        height={rootProps.height - 4}
+        width={rootProps.width - 4}
+        x={rootProps.x + 2}
+        y={rootProps.y + 2}
       />
       <use
         {...rootProps}
@@ -243,6 +247,11 @@ const animations = {
   }
 }
 
+export type AnimationCallback = (i: number, col: number, row: number) => {
+  animateProps: any
+  elementProps: any
+}
+
 interface DisplayProps {
   ledColor?: string
   displayValue?: string
@@ -251,6 +260,8 @@ interface DisplayProps {
   animation?: string
   iconMeta: IconStates
   iconSet: IconSet
+  gridAnimate: boolean
+  onAnimateGrid?: AnimationCallback
 }
 
 export interface IconStates { [key: number]: DisplayIconState }
@@ -277,12 +288,16 @@ interface GridIcon {
   height?: number
 }
 
+const COLS_PER_ROW = 20
+
 export default function Display ({
   backgroundColor = 'black',
   iconSet,
   displayValue = '',
   displayDots = '',
   ledColor = 'white',
+  gridAnimate = false,
+  onAnimateGrid,
   animation,
   iconMeta
 }: DisplayProps): JSX.Element {
@@ -303,11 +318,44 @@ export default function Display ({
       startAnimation.current.beginElement()
     }
   }, [animation])
+  const isAnimating = animation != null || (
+    gridAnimate &&
+    onAnimateGrid != null
+  )
   return (
     <div>
       <svg width='100%' height='100%' viewBox='0 0 1752 343' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <g id='screen'>
           <rect id='base' x='2' y='2' width='1748' height='339' fill={screenFill} />
+          {gridAnimate && (onAnimateGrid != null) && (
+            <g id='dot-grid'>
+              {Object.entries(iconSet)
+                .map(([name, meta], i) => {
+                  const row = Math.floor(i / COLS_PER_ROW)
+                  const col = i - (row * COLS_PER_ROW)
+                  const {
+                    animateProps = {},
+                    elementProps = {}
+                  } = onAnimateGrid(i, col, row)
+                  const widthPx = meta.widthPx ??
+                  (meta.width ?? 1) * blockWidth
+                  const heightPx = meta.heightPx ??
+                  (meta.height ?? 1) * blockHeight
+                  return (
+                    <rect
+                      key={i}
+                      x={GridX[meta.col - 1]}
+                      y={GridY[meta.row - 1]}
+                      width={widthPx}
+                      height={heightPx}
+                      {...elementProps}
+                    >
+                      <animate {...animateProps} />
+                    </rect>
+                  )
+                })}
+            </g>
+          )}
           <path id='pollution-filter' fill={backgroundColor} fill-rule='evenodd' clip-rule='evenodd' d='M0 0H1752V343H0V0ZM5 7H69V71H5V7ZM1040 7H976V71H1040V7ZM94 7H158V71H94V7ZM1128 7H1064V71H1128V7ZM182 7H246V71H182V7ZM1216 7H1152V71H1216V7ZM271 7H335V71H271V7ZM1305 7H1241V71H1305V7ZM359 7H423V71H359V7ZM1394 7H1330V71H1394V7ZM447 7H511V71H447V7ZM1483 7H1419V71H1483V7ZM535 7H599V71H535V7ZM1570 7H1506V71H1570V7ZM1595 7H1659V71H1595V7ZM1747 7H1683V71H1747V7ZM5 95H69V159H5V95ZM1040 95H976V159H1040V95ZM94 95H158V159H94V95ZM1128 95H1064V159H1128V95ZM182 95H246V159H182V95ZM1216 95H1152V159H1216V95ZM271 95H335V159H271V95ZM1305 95H1241V159H1305V95ZM359 95H423V159H359V95ZM1394 95H1330V159H1394V95ZM447 95H511V159H447V95ZM1483 95H1419V159H1483V95ZM535 95H599V159H535V95ZM1570 95H1506V159H1570V95ZM1595 95H1659V159H1595V95ZM1747 95H1683V159H1747V95ZM5 184H69V248H5V184ZM1040 184H976V248H1040V184ZM94 184H158V248H94V184ZM1128 184H1064V248H1128V184ZM182 184H246V248H182V184ZM1216 184H1152V248H1216V184ZM271 184H335V248H271V184ZM1305 184H1241V248H1305V184ZM359 184H423V248H359V184ZM1394 184H1330V248H1394V184ZM447 184H511V248H447V184ZM1483 184H1419V248H1483V184ZM535 184H599V248H535V184ZM687 184H623V248H687V184ZM710 184H774V248H710V184ZM863 184H799V248H863V184ZM888 184H952V248H888V184ZM1570 184H1506V248H1570V184ZM1595 184H1659V248H1595V184ZM1747 184H1683V248H1747V184ZM5 272H69V336H5V272ZM1126 280H978V328H1126V280ZM94 272H158V336H94V272ZM246 272H182V336H246V272ZM1154 280H1302V328H1154V280ZM421 280H273V328H421V280ZM1330 272H1394V336H1330V272ZM511 272H447V336H511V272ZM1419 272H1483V336H1419V272ZM685 280H537V328H685V280ZM710 272H774V336H710V272ZM950 280H802V328H950V280ZM1506 272H1570V336H1506V272ZM1747 271H1595V336H1747V271Z' />
           <g id='matrix'>
             <use href='#first-number' x='621' y='13' />
@@ -330,10 +378,10 @@ export default function Display ({
                     x={GridX[meta.col - 1]}
                     y={GridY[meta.row - 1]}
                     width={widthPx}
-                    ledColor={ledColor}
                     height={heightPx}
+                    ledColor={ledColor}
                     filter={`url(#cutout-${width}b)`}
-                    translucent={animation != null}
+                    translucent={isAnimating}
                     glow={lightMeta.glow}
                   />
                 )

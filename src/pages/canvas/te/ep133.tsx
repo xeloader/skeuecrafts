@@ -285,10 +285,6 @@ const buttonToBank: { [key: number]: number } = {
 
 export default function EP133Page (): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initState)
-  // const [frame, setFrame] = useState<number>(0)
-  // useInterval(() => {
-  //   setFrame(frame => frame + 1)
-  // }, 250)
   useEffect(() => {
     if (state.poweredOn) {
       dispatch({
@@ -401,6 +397,11 @@ export default function EP133Page (): JSX.Element {
         }
       }
       dispatch(action)
+    } else if (button === ButtonId.FX) {
+      dispatch({
+        type: EP133ActionKind.SET_STATE,
+        state: { displayAnimation: 'odd-even' }
+      })
     }
     const action: AddButtonAction = { type: EP133ActionKind.ADD_BUTTON, button }
     dispatch(action)

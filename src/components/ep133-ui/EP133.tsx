@@ -8,7 +8,7 @@ import { Colors } from '../../types'
 import { IndicatorFresh as Indicator } from './Indicator'
 import { Asterisk, CirclingArrow, InArrow, MinusSymbol, OutArrow, PlusSymbol, RightArrow } from './Symbols'
 import * as Symbol from './Symbols'
-import Display from './Display'
+import Display, { AnimationCallback } from './Display'
 
 interface ButtonState {
   active: boolean
@@ -275,6 +275,41 @@ const CornerCircle = (): JSX.Element => (
   <div className='rounded-full size-2/3 bg-gradient-to-b from-[#E6E1DF] to-[#EEEBE9] shadow-[inset_1px_1px_0px_rgba(0,0,0,0.25),inset_-1px_-1px_0px_rgba(255,255,255,0.5)]' />
 )
 
+function animateDisplay (animationId: string): {
+  animation?: string
+  gridAnimate: boolean
+  onAnimateGrid: AnimationCallback
+} {
+  switch (animationId) {
+    case 'odd-even':
+      return {
+        gridAnimate: true,
+        onAnimateGrid: (i) => {
+          const lengthMs = 400
+          const begin = i % 2 === 0
+            ? (((lengthMs / 1000) / 2).toString() + 's')
+            : '0s'
+          const dur = (lengthMs / 1000).toString() + 's'
+          return {
+            animateProps: {
+              begin,
+              dur,
+              attributeName: 'opacity',
+              repeatCount: 'indefinite',
+              from: '1',
+              to: '0'
+            },
+            elementProps: {
+              fill: 'yellow'
+            }
+          }
+        }
+      }
+    default:
+      return { animation: animationId }
+  }
+}
+
 export default function EP133 ({
   poweredOn = true,
   onPowerClick,
@@ -420,12 +455,12 @@ export default function EP133 ({
               className='h-full'
             /> */}
             <Display
-              animation={displayAnimation}
               displayValue={displayValue}
               dotValue={displayDotValue}
               iconMeta={icons}
               iconSet={EP133Icons}
               backgroundColor='#1A1A1A'
+              {...animateDisplay(displayAnimation)}
             />
           </div>
         </div>
@@ -757,6 +792,7 @@ export default function EP133 ({
           holeProps={{ fullShadow: true }}
           type={Type.CapText}
           onClick={handleButtonClick(ButtonId.FX)}
+          onHold={handleButtonHold(ButtonId.FX)}
           value='FX'
         >
           <Cap
