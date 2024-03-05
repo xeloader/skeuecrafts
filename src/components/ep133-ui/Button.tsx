@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useCallback, useState } from 'react'
 
 import classNames from 'classnames'
 import { Colors } from '../../types'
@@ -326,23 +326,51 @@ export function SquareButtonFresh ({
   children,
   size = Size.Square
 }: SquareButtonProps): JSX.Element {
+  const [isHovering, setHovering] = useState(false)
+  const [isActive, setActive] = useState(false)
+
   const style = { '--light-intensity': lightIntensity } as React.CSSProperties // eslint-disable-line
   const _value = Value != null ? Value : value
   const _symbol = Symbol != null ? Symbol : symbol
   const ButtonWrapper = buttonWrapperForColor(color)
   const sizeClassName = classNameForSize(size)
 
+  const handleHover = useCallback((isHovering: boolean) =>
+    () => setHovering(isHovering)
+  , [])
+
+  const handleActive = useCallback((isActive: boolean) =>
+    () => setActive(isActive)
+  , [])
+
   return (
     <div
       style={style}
-      className='relative ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
+      className={classNames(
+        'relative ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
+      )}
+      onMouseEnter={handleHover(true)}
+      onMouseDown={handleActive(true)}
+      onMouseUp={handleActive(false)}
+      onMouseLeave={() => {
+        handleActive(false)()
+        handleHover(false)()
+      }}
     >
-      <Hole {...holeProps}>
+      <Hole
+        isHovered={isHovering && !isActive}
+        isActive={isActive}
+        {...holeProps}
+      >
         <div className='p-[2px]'>
           <ButtonWrapper
             type={type}
             onHold={onHold}
-            rootClassName='group/button'
+            rootClassName={classNames(
+              'group/button',
+              isHovering && !isActive && 'is-hovered',
+              isActive && 'is-activated'
+            )}
             className={className}
             sizeClassName={sizeClassName}
             value={_value}

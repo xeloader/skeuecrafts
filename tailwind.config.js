@@ -62,79 +62,78 @@ module.exports = {
         },
         { values: theme('textShadow') }
       )
+    }),
+    plugin(function ({ addVariant, matchVariant, prefix }) {
+      const pseudoVariants = [
+        ['active', '&.is-activated'],
+        ['hover', '&.is-hovered']
+      ].map((variant) => (Array.isArray(variant) ? variant : [variant, `&:${variant}`]))
+
+      for (const [variantName, ...states] of pseudoVariants) {
+        for (const state of states) {
+          addVariant(variantName, (ctx) => {
+            const result = typeof state === 'function' ? state(ctx) : state
+
+            return result
+          })
+        }
+      }
+
+      const variants = {
+        group: (_, { modifier }) =>
+          modifier
+            ? [`:merge(${prefix('.group')}\\/${escapeClassName(modifier)})`, ' &']
+            : [`:merge(${prefix('.group')})`, ' &'],
+        peer: (_, { modifier }) =>
+          modifier
+            ? [`:merge(${prefix('.peer')}\\/${escapeClassName(modifier)})`, ' ~ &']
+            : [`:merge(${prefix('.peer')})`, ' ~ &']
+      }
+
+      for (const [name, fn] of Object.entries(variants)) {
+        matchVariant(
+          name,
+          (value = '', extra) => {
+            let result = normalize(typeof value === 'function' ? value(extra) : value)
+            console.log('result', result, 'modifier', extra?.modifier, 'name', name)
+            if (!result.includes('&')) result = '&' + result
+
+            const [a, b] = fn('', extra)
+
+            let start = null
+            let end = null
+            let quotes = 0
+
+            for (let i = 0; i < result.length; ++i) {
+              const c = result[i]
+              if (c === '&') {
+                start = i
+              } else if (c === "'" || c === '"') {
+                quotes += 1
+              } else if (start !== null && c === ' ' && !quotes) {
+                end = i
+              }
+            }
+
+            if (start !== null && end === null) {
+              end = result.length
+            }
+
+            // Basically this but can handle quotes:
+            // result.replace(/&(\S+)?/g, (_, pseudo = '') => a + pseudo + b)
+            const cut = result.slice(0, start) + a + result.slice(start + 1, end) + b + result.slice(end)
+            console.log('return', cut)
+            console.log()
+            return cut
+          },
+          {
+            values: Object.fromEntries(pseudoVariants),
+            [INTERNAL_FEATURES]: {
+              respectPrefix: false
+            }
+          }
+        )
+      }
     })
   ]
 }
-
-const WIPForcePseudo = plugin(function ({ addVariant, matchVariant, prefix }) {
-  const pseudoVariants = [
-    ['active', '&.is-activated', '&:active'],
-    ['hover', '&.is-hovered']
-  ].map((variant) => (Array.isArray(variant) ? variant : [variant, `&:${variant}`]))
-
-  for (const [variantName, ...states] of pseudoVariants) {
-    for (const state of states) {
-      addVariant(variantName, (ctx) => {
-        const result = typeof state === 'function' ? state(ctx) : state
-
-        return result
-      })
-    }
-  }
-
-  const variants = {
-    group: (_, { modifier }) =>
-      modifier
-        ? [`:merge(${prefix('.group')}\\/${escapeClassName(modifier)})`, ' &']
-        : [`:merge(${prefix('.group')})`, ' &'],
-    peer: (_, { modifier }) =>
-      modifier
-        ? [`:merge(${prefix('.peer')}\\/${escapeClassName(modifier)})`, ' ~ &']
-        : [`:merge(${prefix('.peer')})`, ' ~ &']
-  }
-
-  for (const [name, fn] of Object.entries(variants)) {
-    matchVariant(
-      name,
-      (value = '', extra) => {
-        let result = normalize(typeof value === 'function' ? value(extra) : value)
-        console.log('result', result, 'modifier', extra?.modifier, 'name', name)
-        if (!result.includes('&')) result = '&' + result
-
-        const [a, b] = fn('', extra)
-
-        let start = null
-        let end = null
-        let quotes = 0
-
-        for (let i = 0; i < result.length; ++i) {
-          const c = result[i]
-          if (c === '&') {
-            start = i
-          } else if (c === "'" || c === '"') {
-            quotes += 1
-          } else if (start !== null && c === ' ' && !quotes) {
-            end = i
-          }
-        }
-
-        if (start !== null && end === null) {
-          end = result.length
-        }
-
-        // Basically this but can handle quotes:
-        // result.replace(/&(\S+)?/g, (_, pseudo = '') => a + pseudo + b)
-        const cut = result.slice(0, start) + a + result.slice(start + 1, end) + b + result.slice(end)
-        console.log('return', cut)
-        console.log()
-        return cut
-      },
-      {
-        values: Object.fromEntries(pseudoVariants),
-        [INTERNAL_FEATURES]: {
-          respectPrefix: false
-        }
-      }
-    )
-  }
-})
