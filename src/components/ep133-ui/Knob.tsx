@@ -1,6 +1,6 @@
 import { Colors } from '../../types'
 import classNames from 'classnames'
-import React, { FC, SVGAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, KeyboardEvent, SVGAttributes, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 export interface KnobProps {
   step?: number
@@ -53,6 +53,11 @@ export function BaseKnob ({
       >
         <div className={classNames(
           'absolute translate-x-3 translate-y-3 rounded-[100%] rotate-45 w-16 h-10 bg-black/25 blur-sm',
+          knobShadowClassName
+        )}
+        />
+        <div className={classNames(
+          'absolute translate-x-3 translate-y-3 rounded-[100%] rotate-45 w-8 h-8 bg-black/25 blur-sm',
           knobShadowClassName
         )}
         />
@@ -131,6 +136,8 @@ export default function Knob ({
   color,
   onChange: handleChange
 }: KnobProps): JSX.Element {
+  const timeout = useRef<any>()
+
   const prevValue = useRef<number>(0)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [value, setValue] = useState<number>(0)
@@ -164,6 +171,24 @@ export default function Knob ({
     setIsDragging(false)
   }, [])
 
+  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
+    const keyedStep = e.shiftKey
+      ? step * 10
+      : step
+    if (e.key === 'ArrowLeft') {
+      setValue(val => val - keyedStep)
+    } else if (e.key === 'ArrowRight') {
+      setValue(val => val + keyedStep)
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { // not activating on tab
+      if (timeout.current != null) {
+        clearTimeout(timeout.current)
+      }
+      setIsDragging(true)
+      timeout.current = setTimeout(() => setIsDragging(false), 1000)
+    }
+  }, [])
+
   useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
@@ -179,8 +204,13 @@ export default function Knob ({
     strokeDasharray: (2 * Math.PI * progressRadius) / 4
   }
   return (
-
     <div
+      role='spinbutton'
+      aria-valuemax={max}
+      aria-valuemin={min}
+      aria-valuenow={value}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
       className={classNames(
         'relative cursor-ew-resize select-none',
         isDragging && 'opacity-80',

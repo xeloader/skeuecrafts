@@ -21,7 +21,7 @@ export default function Speaker (): JSX.Element {
                       gridRowStart: row
                     }}
                   >
-                    <div className='relative flex items-center justify-center'>
+                    <div className='relative flex items-center justify-center' aria-hidden>
                       <svg width='26px' height='26px' preserveAspectRatio='none' viewBox='0 0 38 38' fill='none' xmlns='http://www.w3.org/2000/svg'>
                         <path className='fill-[#858382]' fill-rule='evenodd' clip-rule='evenodd' d='M38 0H0V38H38V0ZM19 33C26.732 33 33 26.732 33 19C33 11.268 26.732 5 19 5C11.268 5 5 11.268 5 19C5 26.732 11.268 33 19 33Z' />
                       </svg>
