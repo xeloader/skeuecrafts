@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
-import { SliderFresh as Slider } from './Slider'
+import Slider from './Slider'
 import Knob from './Knob'
 import Speaker from './Speaker'
 import { Size, SquareButtonFresh as SquareButton, Type } from './Button'
@@ -9,6 +9,7 @@ import { IndicatorFresh as Indicator } from './Indicator'
 import { Asterisk, CirclingArrow, InArrow, MinusSymbol, OutArrow, PlusSymbol, RightArrow } from './Symbols'
 import * as Symbol from './Symbols'
 import Display, { AnimationCallback } from './Display'
+import classNames from 'classnames'
 
 interface ButtonState {
   active: boolean
@@ -391,19 +392,25 @@ export default function EP133 ({
           </div>
         </div>
         <div className='col-start-[17] col-span-2 row-span-1 row-start-1'>
-          <div className='size-full bg-ep133-gray-dark text-plastic-white pb-[1px]' onClick={handleBrickClick(BrickId.USB)}>
+          <button
+            className={classNames(
+              handleBrickClick != null && 'cursor-pointer',
+              'size-full bg-ep133-gray-dark text-plastic-white pb-[1px]'
+            )}
+            onClick={handleBrickClick?.(BrickId.USB)}
+          >
             <div className='h-full flex items-center justify-center shadow-[inset_-1px_-1px_0_rgba(0,0,0,0.05),0_1px_0_1px_rgba(0,0,0,0.25),inset_1px_1px_1px_rgba(255,255,255,0.5),3px_2px_8px_rgba(0,0,0,0.25)]'>
               <p>USB</p>
             </div>
-          </div>
+          </button>
         </div>
         <div
           onClick={() => onPowerClick?.(!poweredOn)}
           className='col-start-[20] col-span-2 row-span-1 row-start-1'
         >
-          <div className='h-full flex items-center justify-center'>
+          <button className='h-full w-full flex items-center justify-center'>
             <p>POWER</p>
-          </div>
+          </button>
         </div>
       </div>
       <div
@@ -426,7 +433,7 @@ export default function EP133 ({
           <p className='text-6xl leading-none'>{title ?? 'K.O.II'}</p>
         </div>
         <div className='col-start-2 row-start-3 col-span-full flex items-center'>
-          <p className='text-ep133-orange text-3xl'>{subtitle ?? 'サンプラー'}</p>
+          <p className='text-ep133-orange text-3xl' lang='ja'>{subtitle ?? 'サンプラー'}</p>
         </div>
         <div className='col-start-2 row-[-1/-2] col-span-full flex items-center'>
           <p className='text-3xl'>{bottomTitle ?? '64 MB SAMPLER COMPOSER'}</p>
