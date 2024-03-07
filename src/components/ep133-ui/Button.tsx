@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useState } from 'react'
+import React, { FunctionComponent, KeyboardEvent, MouseEvent, MouseEventHandler, useCallback, useState } from 'react'
 
 import classNames from 'classnames'
 import { Colors } from '../../types'
@@ -309,6 +309,8 @@ export interface SquareButtonProps
   holeProps?: HoleProps
   className?: string
   children?: JSX.Element
+  isActive?: boolean
+  isHovering?: boolean
 }
 
 export function SquareButtonFresh ({
@@ -324,10 +326,15 @@ export function SquareButtonFresh ({
   Symbol,
   className,
   children,
+  isActive: userIsActive,
+  isHovering: userIsHovering,
   size = Size.Square
 }: SquareButtonProps): JSX.Element {
-  const [isHovering, setHovering] = useState(false)
-  const [isActive, setActive] = useState(false)
+  const [_isHovering, setHovering] = useState(false)
+  const [_isActive, setActive] = useState(false)
+
+  const isActive = _isActive || userIsActive
+  const isHovering = _isHovering || userIsHovering
 
   const style = { '--light-intensity': lightIntensity } as React.CSSProperties // eslint-disable-line
   const _value = Value != null ? Value : value
@@ -335,13 +342,19 @@ export function SquareButtonFresh ({
   const ButtonWrapper = buttonWrapperForColor(color)
   const sizeClassName = classNameForSize(size)
 
-  const handleHover = useCallback((isHovering: boolean) =>
-    () => setHovering(isHovering)
-  , [])
+  const handleKeyboard = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      if (e.shiftKey) {
+        handleHold()
+      } else {
+        setActive(true)
+      }
+    }
+  }, [])
 
-  const handleActive = useCallback((isActive: boolean) =>
-    () => setActive(isActive)
-  , [])
+  const handleHold = useCallback(() => {
+    onHold?.()
+  }, [])
 
   return (
     <div
@@ -349,13 +362,23 @@ export function SquareButtonFresh ({
       className={classNames(
         'relative ease-out font-ep133 [&_*]:duration-100 [&_*]:transition-all'
       )}
-      onMouseEnter={handleHover(true)}
-      onMouseDown={handleActive(true)}
-      onMouseUp={handleActive(false)}
-      onMouseLeave={() => {
-        handleActive(false)()
-        handleHover(false)()
+      onMouseDown={(e: MouseEvent) => {
+        if (e.shiftKey) {
+          handleHold()
+        }
+        setActive(true)
       }}
+      onMouseUp={() => {
+        setActive(false)
+      }}
+      onMouseEnter={() => {
+        setHovering(true)
+      }}
+      onMouseLeave={() => {
+        setHovering(false)
+        setActive(false)
+      }}
+      onKeyDown={handleKeyboard}
     >
       <Hole
         isHovered={isHovering && !isActive}
@@ -365,7 +388,7 @@ export function SquareButtonFresh ({
         <div className='p-[2px]'>
           <ButtonWrapper
             type={type}
-            onHold={onHold}
+            onHold={handleHold}
             rootClassName={classNames(
               'group/button',
               isHovering && !isActive && 'is-hovered',
