@@ -170,6 +170,189 @@ interface GridIcon {
   heightPx?: number
 }
 
+type MapButtonType = 'button' | 'button/cap' | 'knob' | 'slider'
+interface MapButton {
+  id: ButtonId
+  type: MapButtonType
+  value: string | string[]
+  color: Colors | Colors[]
+  layout?: Type
+  symbol?: string
+  position: {
+    row: number
+    col: number
+  }
+  size: {
+    rowSize: number
+    colSize: number
+  }
+}
+
+const buttonMap: MapButton[] = [
+  {
+    type: 'button/cap',
+    id: ButtonId.Sound,
+    value: ['SOUND', 'EDIT'],
+    color: [Colors.Dark, Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 15,
+      col: 5
+    }
+  },
+  {
+    type: 'button/cap',
+    id: ButtonId.Main,
+    value: ['MAIN', 'COMMIT'],
+    color: [Colors.Dark, Colors.Orange],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 15,
+      col: 8
+    }
+  },
+  {
+    type: 'button/cap',
+    id: ButtonId.Tempo,
+    value: ['TEMPO', 'LOOP'],
+    color: [Colors.Dark, Colors.DarkGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 15,
+      col: 11
+    }
+  },
+  {
+    type: 'button/cap',
+    id: ButtonId.Sample,
+    value: ['SAMPLE', 'CHOP'],
+    color: [Colors.Orange, Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 17
+    }
+  },
+  {
+    type: 'button/cap',
+    id: ButtonId.Timing,
+    value: ['TIMING', 'CORRECT'],
+    color: [Colors.Dark, Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 20
+    }
+  },
+  {
+    type: 'button/cap',
+    id: ButtonId.FX,
+    value: ['FX', 'OUTPUT'],
+    color: [Colors.Dark, Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 21,
+      col: 17
+    }
+  },
+  {
+    type: 'button/cap',
+    id: ButtonId.Erase,
+    value: ['ERASE', 'SYSTEM'],
+    color: [Colors.LightGray, Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 21,
+      col: 20
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.ABank,
+    value: ['A'],
+    symbol: 'Asterisk',
+    layout: Type.CapDual,
+    color: [Colors.Gray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 5
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.BBank,
+    value: ['B'],
+    symbol: 'CirclingArrow',
+    layout: Type.CapDual,
+    color: [Colors.Gray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 21,
+      col: 5
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.CBank,
+    value: ['C'],
+    symbol: 'OutArrow',
+    layout: Type.CapDual,
+    color: [Colors.Gray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 24,
+      col: 5
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.DBank,
+    value: ['D'],
+    symbol: 'InArrow',
+    layout: Type.CapDual,
+    color: [Colors.Gray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 27,
+      col: 5
+    }
+  }
+]
+
 export const EP133Icons: IconSet = {
   [Icon.Battery]: { Symbol: Symbol.Battery, id: 'battery', col: 1, row: 1 },
   [Icon.HighestFade]: { Symbol: Symbol.HighestFade, id: 'highest-fade', col: 2, row: 1 },
@@ -270,6 +453,53 @@ export interface EP133Props {
   onBrickClick?: (brick: BrickId) => void
   onButtonHold: (button: ButtonId) => void
   displayAnimation: string
+}
+
+interface Handlers {
+  handleButtonClick: (buttonId: ButtonId) => () => void
+  handleButtonHold: (buttonId: ButtonId) => () => void
+}
+
+function renderButtonType (
+  type: MapButtonType,
+  props: MapButton & Handlers
+): JSX.Element {
+  switch (type) {
+    case 'button/cap':
+      return (
+        <SquareButton
+          size={Size.Small}
+          type={Type.CapText}
+          holeProps={{ fullShadow: true }}
+          color={props.color[0]}
+          value={props?.value?.[0]}
+          onClick={props.handleButtonClick(props.id)}
+          onHold={props.handleButtonHold(props.id)}
+        >
+          <Cap
+            color={props.color[1]}
+            value={props?.value?.[1]}
+          />
+        </SquareButton>
+      )
+    case 'button':
+      if (!props.layout) throw new Error('Layout type required for')
+      const SymbolComp = Symbol?.[props?.symbol]
+      return (
+        <SquareButton
+          color={props.color[0]}
+          size={Size.Square}
+          type={props.layout}
+          onClick={props.handleButtonClick(props.id)}
+          onHold={props.handleButtonHold(props.id)}
+          Symbol={SymbolComp != null && (
+            <div className='size-4 *:size-full'><SymbolComp className='fill-plastic-white' /></div>
+          )}
+          className='cursor-cell'
+          value={props?.value?.[0]}
+        />
+      )
+  }
 }
 
 const CornerCircle = (): JSX.Element => (
@@ -450,17 +680,7 @@ export default function EP133 ({
           <div className='-col-start-1 row-span-full flex justify-end'>
             <div className='bg-white/5 h-full w-4 shadow-[-1px_0px_0px_rgba(255,255,255,0.1)]' />
           </div>
-          {/* <div className='col-[2/-2] row-[2/-2] bg-ep133-dark z-0' /> */}
           <div className='col-[2/-2] row-[2/-2] z-10'>
-            {/* <DisplayMatrix
-              translucentIcons={false}
-              value={displayValue}
-              backgroundColor='#1A1A1A'
-              dotValue={displayDotValue}
-              iconSet={EP133Icons}
-              iconMeta={icons}
-              className='h-full'
-            /> */}
             <Display
               displayValue={displayValue}
               dotValue={displayDotValue}
@@ -543,54 +763,29 @@ export default function EP133 ({
           color={Colors.LightGray}
         />
       </div>
-      <div className='row-start-[15] row-span-2 col-start-[5] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          type={Type.CapText}
-          holeProps={{ fullShadow: true }}
-          onClick={handleButtonClick(ButtonId.Sound)}
-          onHold={handleButtonHold(ButtonId.Sound)}
-          value='SOUND'
-        >
-          <Cap
-            color={Colors.LightGray}
-            value='EDIT'
-          />
-        </SquareButton>
-      </div>
-      <div className='row-start-[15] row-span-2 col-start-[8] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          type={Type.CapText}
-          holeProps={{ fullShadow: true }}
-          onClick={handleButtonClick(ButtonId.Main)}
-          onHold={handleButtonHold(ButtonId.Main)}
-          value='MAIN'
-        >
-          <Cap
-            color={Colors.Orange}
-            value='COMMIT'
-          />
-        </SquareButton>
-      </div>
-      <div className='row-start-[15] row-span-2 col-start-[11] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          type={Type.CapText}
-          holeProps={{ fullShadow: true }}
-          onClick={handleButtonClick(ButtonId.Tempo)}
-          onHold={handleButtonHold(ButtonId.Tempo)}
-          value='TEMPO'
-        >
-          <Cap
-            color={Colors.DarkGray}
-            value='LOOP'
-          />
-        </SquareButton>
-      </div>
+      {buttonMap.map((button) => {
+        const { size, position, type, id } = button
+        return (
+          <div
+            key={id}
+            style={{
+              gridRowStart: position.row,
+              gridRowEnd: `span ${size.rowSize}`,
+              gridColumnStart: position.col,
+              gridColumnEnd: `span ${size.colSize}`
+            }}
+          >
+            {renderButtonType(
+              type,
+              {
+                ...button,
+                handleButtonClick,
+                handleButtonHold
+              }
+            )}
+          </div>
+        )
+      })}
       <div className='row-start-[18] row-span-1 col-start-[2] col-span-2'>
         <SquareButton
           color={Colors.Dark}
@@ -603,7 +798,7 @@ export default function EP133 ({
       <div className='row-start-[17] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.ABank]?.state === true ? 'on' : 'off'} />
       </div>
-      <div className='row-start-[18] row-span-2 col-start-[5] col-span-2'>
+      {/* <div className='row-start-[18] row-span-2 col-start-[5] col-span-2'>
         <SquareButton
           color={Colors.Gray}
           size={Size.Square}
@@ -613,7 +808,7 @@ export default function EP133 ({
           className='cursor-cell'
           value='A'
         />
-      </div>
+      </div> */}
 
       <div className='row-start-[17] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
@@ -705,38 +900,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[18] row-span-2 col-start-[17] col-span-2'>
-        <SquareButton
-          color={Colors.Orange}
-          size={Size.Small}
-          type={Type.CapText}
-          holeProps={{ fullShadow: true }}
-          onClick={handleButtonClick(ButtonId.Sample)}
-          value='SAMPLE'
-        >
-          <Cap
-            color={Colors.LightGray}
-            value='CHOP'
-          />
-        </SquareButton>
-      </div>
-
-      <div className='row-start-[18] row-span-2 col-start-[20] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          type={Type.CapText}
-          holeProps={{ fullShadow: true }}
-          onClick={handleButtonClick(ButtonId.Timing)}
-          value='TIMING'
-        >
-          <Cap
-            color={Colors.LightGray}
-            value='CORRECT'
-          />
-        </SquareButton>
-      </div>
-
       <div className='row-start-[21] row-span-2 col-start-[8] col-span-2'>
         <SquareButton
           color={Colors.Dark}
@@ -790,39 +953,6 @@ export default function EP133 ({
         <div className='w-1/2'>
           <p>PAN</p>
         </div>
-      </div>
-
-      <div className='row-start-[21] row-span-2 col-start-[17] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          holeProps={{ fullShadow: true }}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.FX)}
-          onHold={handleButtonHold(ButtonId.FX)}
-          value='FX'
-        >
-          <Cap
-            color={Colors.LightGray}
-            value='OUTPUT'
-          />
-        </SquareButton>
-      </div>
-
-      <div className='row-start-[21] row-span-2 col-start-[20] col-span-2'>
-        <SquareButton
-          color={Colors.LightGray}
-          size={Size.Small}
-          holeProps={{ fullShadow: true }}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Erase)}
-          value='ERASE'
-        >
-          <Cap
-            color={Colors.LightGray}
-            value='SYSTEM'
-          />
-        </SquareButton>
       </div>
 
       <div className='row-start-[24] row-span-2 col-start-[17] col-span-2'>
@@ -959,41 +1089,11 @@ export default function EP133 ({
       <div className='row-start-[20] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.BBank]?.state === true ? 'on' : 'off'} />
       </div>
-      <div className='row-start-[21] row-span-2 col-start-[5] col-span-2'>
-        <SquareButton
-          color={Colors.Gray}
-          size={Size.Square}
-          type={Type.CapDual}
-          Symbol={<div className='w-4 *:size-full'><CirclingArrow className='fill-plastic-white' /></div>}
-          onClick={handleButtonClick(ButtonId.BBank)}
-          value='B'
-        />
-      </div>
       <div className='row-start-[23] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.CBank]?.state === true ? 'on' : 'off'} />
       </div>
-      <div className='row-start-[24] row-span-2 col-start-[5] col-span-2'>
-        <SquareButton
-          color={Colors.Gray}
-          size={Size.Square}
-          type={Type.CapDual}
-          Symbol={<div className='w-4 *:size-full'><OutArrow className='fill-plastic-white' /></div>}
-          onClick={handleButtonClick(ButtonId.CBank)}
-          value='C'
-        />
-      </div>
       <div className='row-start-[26] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.DBank]?.state === true ? 'on' : 'off'} />
-      </div>
-      <div className='row-start-[27] row-span-2 col-start-[5] col-span-2'>
-        <SquareButton
-          color={Colors.Gray}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.DBank)}
-          Symbol={<div className='w-4 *:size-full'><InArrow className='fill-plastic-white' /></div>}
-          value='D'
-        />
       </div>
       <div className='row-start-[20] row-span-1 col-start-[2] col-span-2'>
         <SquareButton

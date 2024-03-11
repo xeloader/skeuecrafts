@@ -304,7 +304,7 @@ export interface SquareButtonProps
   symbol?: string
   lightIntensity?: number
   Value?: JSX.Element
-  Symbol?: JSX.Element
+  Symbol?: JSX.Element | false
   size?: Size
   holeProps?: HoleProps
   className?: string

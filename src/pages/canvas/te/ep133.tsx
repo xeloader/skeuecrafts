@@ -73,6 +73,9 @@ const parameters = [
   { id: Parameter.TimeStretchMode, options: [{ title: 'BPM' }, { title: 'BAR' }] }
 ]
 
+// navigate sets one of the following views as current.
+// push old views to queue, fifo
+// set variable for subview to indicate which child to set / display?
 const Views = [
   { id: View.Sound },
   {
@@ -92,7 +95,14 @@ const Views = [
     id: View.Main,
     icons: { [Icon.Main]: { glow: 1 } }
   },
-  { id: View.EditSound, title: 'SND', icons: { [Icon.Note]: { glow: 1 } } },
+  {
+    id: View.EditSound,
+    title: 'SND',
+    icons: { [Icon.Note]: { glow: 0.5 } },
+    parameters: [
+      Parameter.PlayMode
+    ]
+  },
   { id: View.Trim, title: 'TRI', icons: { [Icon.Trim]: { glow: 1 } } },
   { id: View.Envelope, title: 'ENV', icons: { [Icon.Envelope]: { glow: 1 } } },
   { id: View.Time, title: 'TIM', icons: { [Icon.Rabbit]: { glow: 1 } } },
@@ -377,6 +387,15 @@ export default function EP133Page (): JSX.Element {
     dispatch(action)
   }, [state])
 
+  const handleXChange = useCallback(() => {
+    // lol
+  }, [])
+  const displayValue = useMemo(() => {
+    if (state.view === View.Sound) {
+      return 'SOU'
+    }
+  }, [state.view])
+
   const handlePower = useCallback((newState: boolean) => {
     const action: ManagePowerAction = {
       type: EP133ActionKind.POWER,
@@ -418,22 +437,20 @@ export default function EP133Page (): JSX.Element {
     }
   }, [state])
 
-  const [displayValue, displayDots] = useMemo(() => [state.displayValue.toString(), state.displayDots], [state])
+  const [_, displayDots] = useMemo(() => [state.displayValue.toString(), state.displayDots], [state])
   return (
     <div className='p-4 flex flex-col items-center justify-start'>
       <div className='flex flex-col scale-50 origin-top'>
-        <div className='grid grid-cols-22 z-0 h-8 relative'>
-          <div className='col-start-[17] col-span-2 flex justify-center translate-y-4 absolute bottom-0'>
-            <div className='transition-all' style={{ transform: `translateY(${state.usbConnected ? '11%' : '-100%'})` }}>
-              <div className='rotate-180'>
-                <USBCable />
-              </div>
+        <div className='grid grid-cols-22 grid-rows-1 z-0 h-8 relative'>
+          <div className='col-start-[17] col-span-2 flex flex-row justify-center transition-all' style={{ transform: `translateY(${state.usbConnected ? '125%' : '-100%'})` }}>
+            <div className='rotate-180'>
+              <USBCable />
             </div>
           </div>
         </div>
         <div className='z-10'>
           <EP133
-            displayValue={displayValue}
+            displayValue={state.poweredOn ? displayValue : ''}
             displayDotValue={displayDots as string}
             icons={icons}
             onButtonClick={handleButtonClick}
@@ -443,6 +460,7 @@ export default function EP133Page (): JSX.Element {
             indicators={state.poweredOn ? state.indicators : {}}
             onBrickClick={handleBrickClick}
             displayAnimation={state.displayAnimation}
+            onXChange={handleXChange}
           />
         </div>
       </div>
