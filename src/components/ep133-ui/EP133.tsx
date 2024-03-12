@@ -170,11 +170,11 @@ interface GridIcon {
   heightPx?: number
 }
 
-type MapButtonType = 'button' | 'button/cap' | 'knob' | 'slider'
+type MapButtonType = 'button' | 'button/cap'
 interface MapButton {
   id: ButtonId
   type: MapButtonType
-  value: string | string[]
+  value: string | string[] | JSX.Element[]
   color: Colors | Colors[]
   layout?: Type
   symbol?: string
@@ -350,6 +350,186 @@ const buttonMap: MapButton[] = [
       row: 27,
       col: 5
     }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit1,
+    value: ['1'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 24,
+      col: 8
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit2,
+    value: ['2'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 24,
+      col: 11
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit3,
+    value: ['3'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 24,
+      col: 14
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit4,
+    value: ['4'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 21,
+      col: 8
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit5,
+    value: ['5'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 21,
+      col: 11
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit6,
+    value: ['6'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 21,
+      col: 14
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit7,
+    value: ['7'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 8
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit8,
+    value: ['8'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 11
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit9,
+    value: ['9'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 14
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Digit0,
+    value: ['0'],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 27,
+      col: 11
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Dot,
+    value: [<div key='dottie' className='bg-white/90 rounded-full size-[0.4rem] mt-2' />],
+    layout: Type.CapDual,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 27,
+      col: 8
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Enter,
+    value: ['ENTER'],
+    layout: Type.CapText,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 27,
+      col: 14
+    }
   }
 ]
 
@@ -495,7 +675,6 @@ function renderButtonType (
           Symbol={SymbolComp != null && (
             <div className='size-4 *:size-full'><SymbolComp className='fill-plastic-white' /></div>
           )}
-          className='cursor-cell'
           value={props?.value?.[0]}
         />
       )
@@ -798,17 +977,6 @@ export default function EP133 ({
       <div className='row-start-[17] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.ABank]?.state === true ? 'on' : 'off'} />
       </div>
-      {/* <div className='row-start-[18] row-span-2 col-start-[5] col-span-2'>
-        <SquareButton
-          color={Colors.Gray}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.ABank)}
-          Symbol={<div className='size-4 *:size-full'><Asterisk className='fill-plastic-white' /></div>}
-          className='cursor-cell'
-          value='A'
-        />
-      </div> */}
 
       <div className='row-start-[17] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
@@ -819,15 +987,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[18] row-span-2 col-start-[8] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit7)}
-          value='7'
-        />
-      </div>
       <div className='row-start-[20] row-span-1 col-start-[8] col-span-1 flex items-center justify-center'>
         <Indicator state={indicators?.[IndicatorId.LPF]?.state === true ? 'on' : 'off'} />
       </div>
@@ -843,15 +1002,7 @@ export default function EP133 ({
           <p>PITCH</p>
         </div>
       </div>
-      <div className='row-start-[18] row-span-2 col-start-[11] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit8)}
-          value='8'
-        />
-      </div>
+
       <div className='row-start-[20] row-span-1 col-start-[11] col-span-1 flex items-center justify-center'>
         <Indicator state={indicators?.[IndicatorId.HPF]?.state === true ? 'on' : 'off'} />
       </div>
@@ -866,15 +1017,6 @@ export default function EP133 ({
         <div className='w-1/2'>
           <p>TIME</p>
         </div>
-      </div>
-      <div className='row-start-[18] row-span-2 col-start-[14] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit9)}
-          value='9'
-        />
       </div>
       <div className='row-start-[20] row-span-1 col-start-[14] col-span-1 flex items-center justify-center'>
         <Indicator state={indicators?.[IndicatorId.FX]?.state === true ? 'on' : 'off'} />
@@ -900,16 +1042,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[8] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit4)}
-          value='4'
-        />
-      </div>
-
       <div className='row-start-[23] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.ATK]?.state === true ? 'on' : 'off'} />
@@ -919,15 +1051,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[11] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit5)}
-          value='5'
-        />
-      </div>
       <div className='row-start-[23] row-span-1 col-start-[11] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Rel]?.state === true ? 'on' : 'off'} />
@@ -937,15 +1060,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[21] row-span-2 col-start-[14] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit6)}
-          value='6'
-        />
-      </div>
       <div className='row-start-[23] row-span-1 col-start-[14] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Pan]?.state === true ? 'on' : 'off'} />
@@ -1004,15 +1118,6 @@ export default function EP133 ({
         />
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[8] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit1)}
-          value='1'
-        />
-      </div>
       <div className='row-start-[26] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Tune]?.state === true ? 'on' : 'off'} />
@@ -1022,15 +1127,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[11] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit2)}
-          value='2'
-        />
-      </div>
       <div className='row-start-[26] row-span-1 col-start-[11] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Vel]?.state === true ? 'on' : 'off'} />
@@ -1040,15 +1136,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[14] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit3)}
-          value='3'
-        />
-      </div>
       <div className='row-start-[26] row-span-1 col-start-[14] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Mod]?.state === true ? 'on' : 'off'} />
@@ -1065,24 +1152,6 @@ export default function EP133 ({
           type={Type.CapDual}
           onClick={handleButtonClick(ButtonId.Dot)}
           Value={<div className='bg-white/90 rounded-full size-[0.4rem] mt-2' />}
-        />
-      </div>
-      <div className='row-start-[27] row-span-2 col-start-[11] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Digit0)}
-          value='0'
-        />
-      </div>
-      <div className='row-start-[27] row-span-2 col-start-[14] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Enter)}
-          value='ENTER'
         />
       </div>
 
