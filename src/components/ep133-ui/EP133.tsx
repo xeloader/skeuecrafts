@@ -176,6 +176,7 @@ interface MapButton {
   type: MapButtonType
   value: string | string[] | JSX.Element[]
   color: Colors | Colors[]
+  variant?: Size
   layout?: Type
   symbol?: string
   position: {
@@ -530,6 +531,114 @@ const buttonMap: MapButton[] = [
       row: 27,
       col: 14
     }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Keys,
+    variant: Size.Small,
+    value: ['KEYS'],
+    layout: Type.CapText,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 1,
+      colSize: 2
+    },
+    position: {
+      row: 18,
+      col: 2
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Fader,
+    variant: Size.Small,
+    value: ['FADER'],
+    layout: Type.CapText,
+    color: [Colors.Dark],
+    size: {
+      rowSize: 1,
+      colSize: 2
+    },
+    position: {
+      row: 20,
+      col: 2
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Shift,
+    variant: Size.Small,
+    value: ['SHIFT'],
+    layout: Type.CapText,
+    color: [Colors.Gray],
+    size: {
+      rowSize: 1,
+      colSize: 2
+    },
+    position: {
+      row: 28,
+      col: 2
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Record,
+    value: ['RECORD'],
+    layout: Type.CapText,
+    color: [Colors.Orange],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 27,
+      col: 17
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Play,
+    value: ['PLAY'],
+    layout: Type.CapText,
+    color: [Colors.DarkGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 27,
+      col: 20
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Minus,
+    value: [<div key='minus' className='size-6 *:size-full'><MinusSymbol className='fill-plastic-black' /></div>],
+    layout: Type.CapCenter,
+    color: [Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 24,
+      col: 17
+    }
+  },
+  {
+    type: 'button',
+    id: ButtonId.Minus,
+    value: [<div key='minus' className='size-7 *:size-full'><PlusSymbol className='fill-plastic-black' /></div>],
+    layout: Type.CapCenter,
+    color: [Colors.LightGray],
+    size: {
+      rowSize: 2,
+      colSize: 2
+    },
+    position: {
+      row: 24,
+      col: 20
+    }
   }
 ]
 
@@ -668,7 +777,7 @@ function renderButtonType (
       return (
         <SquareButton
           color={props.color[0]}
-          size={Size.Square}
+          size={props.variant ?? Size.Square}
           type={props.layout}
           onClick={props.handleButtonClick(props.id)}
           onHold={props.handleButtonHold(props.id)}
@@ -965,15 +1074,6 @@ export default function EP133 ({
           </div>
         )
       })}
-      <div className='row-start-[18] row-span-1 col-start-[2] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Keys)}
-          value='KEYS'
-        />
-      </div>
       <div className='row-start-[17] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.ABank]?.state === true ? 'on' : 'off'} />
       </div>
@@ -1069,26 +1169,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[24] row-span-2 col-start-[17] col-span-2'>
-        <SquareButton
-          color={Colors.LightGray}
-          size={Size.Square}
-          type={Type.CapCenter}
-          onClick={handleButtonClick(ButtonId.Minus)}
-          Value={<div className='size-6 *:size-full'><MinusSymbol className='fill-plastic-black' /></div>}
-        />
-      </div>
-
-      <div className='row-start-[24] row-span-2 col-start-[20] col-span-2'>
-        <SquareButton
-          color={Colors.LightGray}
-          onClick={handleButtonClick(ButtonId.Plus)}
-          size={Size.Square}
-          type={Type.CapCenter}
-          Value={<div className='size-7 *:size-full'><PlusSymbol className='fill-plastic-black' /></div>}
-        />
-      </div>
-
       <div className='row-start-[26] row-span-1 col-start-[17] col-span-2 flex items-center justify-center'>
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Record1]?.state === true ? 'on' : 'off'} />
@@ -1096,26 +1176,6 @@ export default function EP133 ({
         <div className='w-1/2 h-full flex justify-center items-center'>
           <Indicator state={indicators?.[IndicatorId.Record2]?.state === true ? 'on' : 'off'} />
         </div>
-      </div>
-
-      <div className='row-start-[27] row-span-2 col-start-[17] col-span-2'>
-        <SquareButton
-          color={Colors.Orange}
-          size={Size.Square}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Record)}
-          value='RECORD'
-        />
-      </div>
-
-      <div className='row-start-[27] row-span-2 col-start-[20] col-span-2'>
-        <SquareButton
-          color={Colors.DarkGray}
-          size={Size.Square}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Play)}
-          value='PLAY'
-        />
       </div>
 
       <div className='row-start-[26] row-span-1 col-start-[8] col-span-2 flex items-center justify-center'>
@@ -1145,16 +1205,6 @@ export default function EP133 ({
         </div>
       </div>
 
-      <div className='row-start-[27] row-span-2 col-start-[8] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Square}
-          type={Type.CapDual}
-          onClick={handleButtonClick(ButtonId.Dot)}
-          Value={<div className='bg-white/90 rounded-full size-[0.4rem] mt-2' />}
-        />
-      </div>
-
       <div className='row-start-[20] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.BBank]?.state === true ? 'on' : 'off'} />
       </div>
@@ -1164,27 +1214,11 @@ export default function EP133 ({
       <div className='row-start-[26] row-span-1 col-start-[5] col-span-1 items-center justify-center flex'>
         <Indicator state={indicators?.[IndicatorId.DBank]?.state === true ? 'on' : 'off'} />
       </div>
-      <div className='row-start-[20] row-span-1 col-start-[2] col-span-2'>
-        <SquareButton
-          color={Colors.Dark}
-          size={Size.Small}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Fader)}
-          value='FADER'
-        />
-      </div>
+
       <div className='row-start-[22] row-span-5 col-start-[2] col-span-2'>
         <Slider onChange={onSliderChange} />
       </div>
-      <div className='row-start-[28] row-span-1 col-start-[2] col-span-2'>
-        <SquareButton
-          color={Colors.Gray}
-          size={Size.Small}
-          type={Type.CapText}
-          onClick={handleButtonClick(ButtonId.Shift)}
-          value='SHIFT'
-        />
-      </div>
+
     </div>
   )
 }
