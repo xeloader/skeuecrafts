@@ -3,6 +3,7 @@ import { IconStates } from '../../../components/ep133-ui/DisplayMatrix'
 import EP133, { BrickId, ButtonId, Icon, IndicatorId, IndicatorStates } from '../../../components/ep133-ui/EP133'
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import USBCable from '../../../components/te/USBCable'
+import { HeadFC } from 'gatsby'
 interface Sound {
   id: number
   type: 'stereo' | 'mono'
@@ -467,3 +468,5 @@ export default function EP133Page (): JSX.Element {
     </div>
   )
 }
+
+export const Head: HeadFC = () => <title>EP133</title>
