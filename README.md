@@ -1,16 +1,19 @@
-# CSS "art"
+![A device with a display showing "163", a grid of 15-ish buttons and sparkles all around](/docs/cover.gif)
 
-A little manic project made by me in the heat of the moment. I wanted to push myself to recreate real life devices, restrained to "only" use Tailwind, React and SVGs (mmmmm).
+<p align="center">
+Timeless things and details turned into “kind of” interactive pixels.
+</p>
 
-Development is primarily done through the Storybook, check it out if you're curious.
+<p align="center">
+crafts.ingman.me (Coming soon)
+</p>
 
-🧑‍🎨
-*Currently implementing the [EP-133 by Teenage Engineering](https://teenage.engineering/products/ep-133)*
+> Currently recreating [EP-133 by Teenage Engineering](https://teenage.engineering/products/ep-133) 🧑‍🎨
 
-## Instructions to run and explore
-`npm run storybook`
+## About the project
+
+* Recreate timeless designs using the web
+* Focus on details and have fun
 
 ## Copyright notice
-I am using fonts (Technotype) and illustrations from Teenage Engineering, all rights reserved to Teenage Engineering.
-
-This is purely a personal project for me to learn Tailwind, Typescript and to have a little bit of fun. 🎳
+This project uses fonts and illustrations created by Teenage Engineering, all rights reserved to Teenage Engineering. I am in no way affiliated with Teenage Engineering, this is purely for educational purposes.
