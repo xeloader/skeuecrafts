@@ -627,8 +627,8 @@ const buttonMap: MapButton[] = [
   },
   {
     type: 'button',
-    id: ButtonId.Minus,
-    value: [<div key='minus' className='size-7 *:size-full'><PlusSymbol className='fill-plastic-black' /></div>],
+    id: ButtonId.Plus,
+    value: [<div key='plus' className='size-7 *:size-full'><PlusSymbol className='fill-plastic-black' /></div>],
     layout: Type.CapCenter,
     color: [Colors.LightGray],
     size: {
