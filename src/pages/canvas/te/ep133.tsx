@@ -1,9 +1,11 @@
 import useInterval from '../../../hooks/useInterval'
 import { IconStates } from '../../../components/ep133-ui/DisplayMatrix'
-import EP133, { BrickId, ButtonId, Icon, IndicatorId, IndicatorStates } from '../../../components/ep133-ui/EP133'
+import EP133, { BrickId, ButtonId, Icon, IndicatorId, IndicatorStates, ButtonStates } from '../../../components/ep133-ui/EP133'
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import USBCable from '../../../components/te/USBCable'
 import { HeadFC } from 'gatsby'
+import useSound from 'use-sound'
+import { normalize } from '../../../utils/numbers'
 interface Sound {
   id: number
   type: 'stereo' | 'mono'
@@ -33,6 +35,7 @@ interface EP133State {
   expectingInput: boolean
   usbConnected: boolean
   indicators: IndicatorStates
+  buttons: ButtonStates
   currentBank: 0 | 1 | 2 | 3
   displayAnimation: string
 }
@@ -159,6 +162,7 @@ interface SetStateAction extends EP133Action {
 const initState: EP133State = {
   view: View.Main,
   indicators: { [IndicatorId.ABank]: { state: true } },
+  buttons: {},
   gridMode: 'quantised',
   displayValue: ' Lo',
   buttonHistory: [],
@@ -244,6 +248,21 @@ const bankToIndicator: { [key in ButtonId]?: IndicatorId } = {
   [ButtonId.DBank]: IndicatorId.DBank
 }
 
+function continuosValuesFor (value: number, count: number, actualMax: number, max: number = 1): number[] {
+  const arr = Array.from(Array(count))
+  let rest = value
+  return arr.map(() => {
+    if (rest > actualMax) {
+      rest -= actualMax
+      return normalize(actualMax, 0, 25, 0, 1)
+    } else {
+      const prev = rest
+      rest = 0
+      return normalize(prev, 0, 25, 0, 1)
+    }
+  })
+}
+
 function isSoundPad (button: ButtonId): boolean {
   return soundPads.includes(button)
 }
@@ -296,6 +315,33 @@ const buttonToBank: { [key: number]: number } = {
 
 export default function EP133Page (): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initState)
+
+  const [bpm, setBpm] = useState(120)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [displayValue, setDisplayValue] = useState('')
+
+  const [volume, setVolume] = useState(100)
+
+  const [soundAmp, setSoundAmp] = useState(50)
+  const [soundPitch, setSoundPitch] = useState(50)
+
+  const [deviceScale, setDeviceScale] = useState(1)
+  const scaleByHeight = true
+
+  const [play, { sound }] = useSound('/sounds/1.mp3', {
+    volume: volume / 100
+  })
+
+  const intervalMs = 1000 / (bpm / 60)
+
+  useInterval(() => {
+    play()
+  },
+  isPlaying
+    ? intervalMs
+    : null
+  )
+
   useEffect(() => {
     if (state.poweredOn) {
       dispatch({
@@ -324,6 +370,18 @@ export default function EP133Page (): JSX.Element {
       display[Icon.Tic] = { glow: state.gridMode === 'tics' ? 1 : 0 }
       display[Icon.Bar] = { glow: state.gridMode === 'quantised' ? 1 : 0 }
       display[Icon.Main] = { glow: 1 }
+
+      const [tl, bl, br, tr] = continuosValuesFor(soundAmp, 4, 25, 1)
+      display[Icon.CircleTR] = { glow: tr }
+      display[Icon.CircleBR] = { glow: br }
+      display[Icon.CircleBL] = { glow: bl }
+      display[Icon.CircleTL] = { glow: tl }
+
+      const [gtl, gbl, gbr, gtr] = continuosValuesFor(soundPitch, 4, 25, 1)
+      display[Icon.GridCircleTR] = { glow: gtr }
+      display[Icon.GridCircleBR] = { glow: gbr }
+      display[Icon.GridCircleBL] = { glow: gbl }
+      display[Icon.GridCircleTL] = { glow: gtl }
     } else if (state.view === View.Sound) {
       display[Icon.Sound] = { glow: 1 }
     } else if (state.view === View.Tempo) {
@@ -337,7 +395,7 @@ export default function EP133Page (): JSX.Element {
       display[Icon.Finger] = { glow: 1 }
     }
     return display
-  }, [state])
+  }, [state, soundAmp, soundPitch])
   const handleButtonClick = useCallback((button: ButtonId) => {
     if (!state.poweredOn) return
     if (state.userInput && isInputButton(button)) {
@@ -376,6 +434,7 @@ export default function EP133Page (): JSX.Element {
     }
     if (button === ButtonId.Sound) {
       const action: SetViewAction = { type: EP133ActionKind.SET_VIEW, view: View.Sound }
+      setDisplayValue('SOU')
       dispatch(action)
     } else if (button === ButtonId.Main) {
       const action: SetViewAction = { type: EP133ActionKind.SET_VIEW, view: View.Main }
@@ -384,17 +443,54 @@ export default function EP133Page (): JSX.Element {
       const action: SetViewAction = { type: EP133ActionKind.SET_VIEW, view: View.Tempo }
       dispatch(action)
     }
+    if (button === ButtonId.Play) {
+      setIsPlaying(state => !state)
+    }
+    if (button === ButtonId.FX) {
+      if (state.displayAnimation != 'odd-even') {
+        dispatch({
+          type: EP133ActionKind.SET_STATE,
+          state: { displayAnimation: 'odd-even' }
+        })
+        setDisplayValue('')
+      } else {
+        dispatch({
+          type: EP133ActionKind.SET_STATE,
+          state: { displayAnimation: null }
+        })
+      }
+    }
     const action: AddButtonAction = { type: EP133ActionKind.ADD_BUTTON, button }
     dispatch(action)
   }, [state])
 
-  const handleXChange = useCallback(() => {
-    // lol
-  }, [])
-  const displayValue = useMemo(() => {
-    if (state.view === View.Sound) {
-      return 'SOU'
+  const handleXChange = useCallback((values) => {
+    if (state.view === View.Tempo) {
+      const newBpm = 120 + values
+      setBpm(newBpm)
+      setDisplayValue(newBpm.toString())
+    } else if (state.view === View.Sound) {
+      const newValue = normalize(values, -100, 100, 0, 100)
+      setDisplayValue(newValue.toString())
+    } else if (state.view === View.Main) {
+      const norm = normalize(values, -100, 100, 0, 100)
+      setDisplayValue('AMP')
+      setSoundAmp(norm)
     }
+  }, [state.view])
+
+  const handleYChange = useCallback((values) => {
+    if (state.view === View.Main) {
+      const norm = normalize(values, -100, 100, 0, 100)
+      setDisplayValue('PTC')
+      setSoundPitch(norm)
+    }
+  }, [])
+
+  const handleVolumeChange = useCallback((values) => {
+    // const newValue = normalize(values, 0, 100, 50, 125)
+    setVolume(values)
+    setDisplayValue(values.toString())
   }, [state.view])
 
   const handlePower = useCallback((newState: boolean) => {
@@ -417,14 +513,11 @@ export default function EP133Page (): JSX.Element {
         }
       }
       dispatch(action)
-    } else if (button === ButtonId.FX) {
-      dispatch({
-        type: EP133ActionKind.SET_STATE,
-        state: { displayAnimation: 'odd-even' }
-      })
     }
     const action: AddButtonAction = { type: EP133ActionKind.ADD_BUTTON, button }
     dispatch(action)
+    const action2: SetStateAction = { type: EP133ActionKind.SET_STATE, state: { buttons: { ...state.buttons, [button]: { active: true } } } }
+    dispatch(action2)
   }, [state])
 
   const handleBrickClick = useCallback((brick: BrickId) => {
@@ -439,9 +532,36 @@ export default function EP133Page (): JSX.Element {
   }, [state])
 
   const [_, displayDots] = useMemo(() => [state.displayValue.toString(), state.displayDots], [state])
+
+  useEffect(() => {
+    const obs = new ResizeObserver(() => {
+      const scaleFactor = Math.min(
+        (document.documentElement.clientHeight - (32 * 2)) / 1500,
+        (document.documentElement.clientWidth - (32 * 2)) / 1100
+      )
+      const scale = Math.min(
+        1,
+        scaleFactor
+      )
+      if (scaleByHeight) { // hide overflowin body area
+        document.body.style.height = `${document.documentElement.clientHeight}px`
+        document.body.style.overflow = 'hidden'
+      }
+      setDeviceScale(scale)
+    })
+    obs.observe(document.body, { box: 'border-box' })
+    return () => {
+      obs.disconnect()
+    }
+  })
   return (
-    <div className='p-4 flex flex-col items-center justify-start'>
-      <div className='flex flex-col scale-50 origin-top'>
+    <div className='p-4 flex flex-col items-center justify-start bg-ep133-blue-50 dark:bg-ep133-blue-950'>
+      <div
+        className='flex flex-col scale-100 origin-top'
+        style={{
+          transform: `scale(${deviceScale})`
+        }}
+      >
         <div className='grid grid-cols-22 grid-rows-1 z-0 h-8 relative'>
           <div className='col-start-[17] col-span-2 flex flex-row justify-center transition-all' style={{ transform: `translateY(${state.usbConnected ? '125%' : '-100%'})` }}>
             <div className='rotate-180'>
@@ -461,7 +581,10 @@ export default function EP133Page (): JSX.Element {
             indicators={state.poweredOn ? state.indicators : {}}
             onBrickClick={handleBrickClick}
             displayAnimation={state.displayAnimation}
+            onVolumeChange={handleVolumeChange}
+            volume={volume}
             onXChange={handleXChange}
+            onYChange={handleYChange}
           />
         </div>
       </div>
@@ -469,4 +592,8 @@ export default function EP133Page (): JSX.Element {
   )
 }
 
-export const Head: HeadFC = () => <title>EP133</title>
+export const Head: HeadFC = () => (
+  <>
+    <title>EP133</title>
+  </>
+)

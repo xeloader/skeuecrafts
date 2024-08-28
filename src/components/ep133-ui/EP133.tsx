@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import Slider from './Slider'
 import Knob from './Knob'
 import Speaker from './Speaker'
-import { Size, SquareButtonFresh as SquareButton, Type } from './Button'
+import { Size, SquareButtonFresh as SquareButton, SquareButtonProps, Type } from './Button'
 import Cap from './Cap'
 import { Colors } from '../../types'
 import { IndicatorFresh as Indicator } from './Indicator'
@@ -742,6 +742,8 @@ export interface EP133Props {
   onBrickClick?: (brick: BrickId) => void
   onButtonHold: (button: ButtonId) => void
   displayAnimation: string
+  volume: number
+  onIconRef: (name: string, ref: any) => void
 }
 
 interface Handlers {
@@ -751,7 +753,9 @@ interface Handlers {
 
 function renderButtonType (
   type: MapButtonType,
-  props: MapButton & Handlers
+  props: MapButton & Handlers & {
+    isActive?: boolean
+  }
 ): JSX.Element {
   switch (type) {
     case 'button/cap':
@@ -760,6 +764,7 @@ function renderButtonType (
           size={Size.Small}
           type={Type.CapText}
           holeProps={{ fullShadow: true }}
+          isActive={props?.isActive}
           color={props.color[0]}
           value={props?.value?.[0]}
           onClick={props.handleButtonClick(props.id)}
@@ -847,6 +852,8 @@ export default function EP133 ({
   subtitle,
   bottomTitle,
   onButtonHold,
+  volume,
+  onIconRef,
   displayAnimation
 }: EP133Props): JSX.Element {
   const handleButtonClick = useCallback((button: ButtonId) => {
@@ -974,6 +981,7 @@ export default function EP133 ({
               dotValue={displayDotValue}
               iconMeta={icons}
               iconSet={EP133Icons}
+              onIconRef={onIconRef}
               backgroundColor='#1A1A1A'
               {...animateDisplay(displayAnimation)}
             />
@@ -1016,6 +1024,7 @@ export default function EP133 ({
       <div className='row-start-[15] row-span-2 col-start-[17] col-span-2'>
         <Knob
           onChange={onXChange}
+          step={4}
           color={Colors.Orange}
         />
       </div>
@@ -1037,6 +1046,7 @@ export default function EP133 ({
       <div className='row-start-[15] row-span-2 col-start-[20] col-span-2'>
         <Knob
           onChange={onYChange}
+          step={4}
           color={Colors.Dark}
         />
       </div>
@@ -1047,12 +1057,14 @@ export default function EP133 ({
         <Knob
           onChange={onVolumeChange}
           min={0}
+          value={volume}
           max={100}
           color={Colors.LightGray}
         />
       </div>
       {buttonMap.map((button) => {
         const { size, position, type, id } = button
+        const buttonMeta = buttons[button.id]
         return (
           <div
             key={id}

@@ -1,12 +1,9 @@
 {
-  "name": "css-art",
+  "name": "skoj",
   "version": "0.1.0",
   "private": true,
-  "description": "Art and depictions of objects made primarily in CSS / Tailwind and React",
-  "author": "Victor Ingman",
-  "keywords": [
-    "gatsby"
-  ],
+  "description": "Timeless things and details turned into “kind of” interactive pixels",
+  "author": "xeloader",
   "scripts": {
     "dev": "gatsby develop",
     "start": "gatsby develop",
@@ -22,10 +19,12 @@
     "classnames": "^2.3.2",
     "gatsby": "^5.12.4",
     "gatsby-plugin-postcss": "^6.12.0",
+    "howler": "^2.2.4",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0",
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.6.0",

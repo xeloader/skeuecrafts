@@ -7,6 +7,7 @@ export interface KnobProps {
   max?: number
   min?: number
   color: Colors
+  value?: number
   onChange?: (value: number) => void
 }
 
@@ -134,6 +135,7 @@ export default function Knob ({
   max = 100,
   min = -100,
   color,
+  value: userValue,
   onChange: handleChange
 }: KnobProps): JSX.Element {
   const timeout = useRef<any>()
@@ -141,6 +143,12 @@ export default function Knob ({
   const prevValue = useRef<number>(0)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [value, setValue] = useState<number>(0)
+
+  useEffect(() => {
+    if (userValue != null) {
+      setValue(userValue)
+    }
+  }, [userValue])
 
   const Wrapper = useMemo(() => {
     return wrapperForColor(color)

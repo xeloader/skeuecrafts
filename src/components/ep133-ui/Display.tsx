@@ -1,10 +1,10 @@
-import React, { SVGProps, useEffect, useRef } from 'react'
-import * as Symbol from './Symbols'
+import React, { SVGProps, useCallback, useEffect, useRef, useState } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { normalize } from '../../utils/numbers'
+import { Buffer } from 'buffer'
 
 const markupToB64 = (markup: string): string => {
-  return `data:image/svg+xml;base64,${window.btoa(markup)}`
+  return `data:image/svg+xml;base64,${Buffer.from(markup).toString('base64')}`
 }
 
 interface InlineSVGProps {
@@ -203,6 +203,7 @@ const SegmentNumber = ({
 interface LedIconProps extends DisplayIconState, SVGProps<SVGElement> {
   filter?: string
   ledColor?: string
+  onRef?: any
 }
 
 // remove pollution filter from mixBlendMode
@@ -212,6 +213,7 @@ const LedIcon = ({
   filter,
   translucent,
   ledColor,
+  onRef,
   ...rootProps
 }: LedIconProps): JSX.Element => {
   const _glow = normalize(glow, 0, 1, 0.15, 1)
@@ -222,6 +224,7 @@ const LedIcon = ({
         opacity={translucent !== true
           ? glow
           : 0}
+        ref={onRef}
         className='transition-opacity duration-100'
         {...rootProps}
         height={rootProps.height - 4}
@@ -262,6 +265,7 @@ interface DisplayProps {
   iconSet: IconSet
   gridAnimate: boolean
   onAnimateGrid?: AnimationCallback
+  onIconRef?: (name: string, ref: any) => void
 }
 
 export interface IconStates { [key: number]: DisplayIconState }
@@ -298,6 +302,7 @@ export default function Display ({
   ledColor = 'white',
   gridAnimate = false,
   onAnimateGrid,
+  onIconRef,
   animation,
   iconMeta
 }: DisplayProps): JSX.Element {
@@ -322,6 +327,11 @@ export default function Display ({
     gridAnimate &&
     onAnimateGrid != null
   )
+
+  const handleRef = useCallback((name: string) =>
+    (ref) => {
+      onIconRef?.(name, ref)
+    }, [])
   return (
     <div>
       <svg width='100%' height='100%' viewBox='0 0 1752 343' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -375,6 +385,7 @@ export default function Display ({
                   <LedIcon
                     key={name}
                     href={`#${meta.id}`}
+                    onRef={handleRef(name)}
                     x={GridX[meta.col - 1]}
                     y={GridY[meta.row - 1]}
                     width={widthPx}

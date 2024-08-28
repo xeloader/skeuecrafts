@@ -37,6 +37,8 @@ module.exports = {
         'plastic-white': '#EBEBEB',
         'plastic-black': '#222222',
         ep133: {
+          'blue-50': '#F6F8F7',
+          'blue-950': '#0C1416',
           dark: '#1A1A1A',
           orange: '#F72900',
           gray: '#BFBEBD',
