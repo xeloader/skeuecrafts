@@ -9,7 +9,7 @@ export default function IndexPage (): JSX.Element {
         <p className='text-black/50' />
       </div>
       <ul className='text-lg pl-1'>
-        <li><Link className='text-black underline' to='canvas/te/ep133'>ep-133</Link></li>
+        <li><Link className='text-black underline' to='canvas/te/ep133'>ep-133 (WIP)</Link></li>
       </ul>
     </main>
   )
